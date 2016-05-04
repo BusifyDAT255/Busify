@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:hint="Touch here to select a date"
-        android:onClick="showDatePickerDialog"
         />
 </RelativeLayout>
 
