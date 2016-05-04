@@ -11,10 +11,11 @@ import android.widget.EditText;
 import java.util.Calendar;
 
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-    EditText txt_date;
+    private EditText txt_date;
     public DateDialog(View view){
         txt_date =(EditText)view;
     }
+
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
