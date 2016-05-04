@@ -13,7 +13,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EditText txtDate = (EditText) findViewById(R.id.txt_to_date);
+        EditText txtToDate = (EditText) findViewById(R.id.txt_to_date);
+        EditText txtFromDate = (EditText) findViewById(R.id.txt_from_date);
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -24,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-       txtDate.setOnClickListener(listener);
+        txtToDate.setOnClickListener(listener);
+        txtFromDate.setOnClickListener(listener);
+
 
     }
 

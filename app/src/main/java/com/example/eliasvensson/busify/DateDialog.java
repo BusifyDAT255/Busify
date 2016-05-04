@@ -11,9 +11,9 @@ import android.widget.EditText;
 import java.util.Calendar;
 
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-    EditText txt_to_date;
+    EditText txt_date;
     public DateDialog(View view){
-        txt_to_date=(EditText)view;
+        txt_date =(EditText)view;
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
     public void onDateSet(DatePicker view, int year, int month, int day) {
         //show to the selected date in the text box
         String date=day+"-"+(month+1)+"-"+year;
-        txt_to_date.setText(date);
+        txt_date.setText(date);
     }
 
 }
