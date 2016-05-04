@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set start date"
-        android:id="@+id/from_date_button"
+        android:id="@+id/start_date_button"
         android:layout_above="@+id/txt_to_date"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
@@ -72,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set end date"
-        android:id="@+id/to_date_button"
+        android:id="@+id/end_date_button"
         android:layout_below="@+id/txt_to_date"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
