@@ -4,7 +4,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,25 +12,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        EditText txtToDate = (EditText) findViewById(R.id.txt_to_date);
-        EditText txtFromDate = (EditText) findViewById(R.id.txt_from_date);
+        Button fromDateButton = (Button) findViewById(R.id.from_date_button);
+        Button toDateButton = (Button) findViewById(R.id.to_date_button);
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
+
             public void onClick(View v) {
-                DateDialog dialog = new DateDialog(v);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                dialog.show(ft, "DatePicker");
+                if (v == findViewById(R.id.from_date_button)){
+                    DateDialog dialog = new DateDialog(findViewById(R.id.txt_from_date));
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    dialog.show(ft, "DatePicker");
+                }
+
+                if (v == findViewById(R.id.to_date_button)){
+                    DateDialog dialog = new DateDialog(findViewById(R.id.txt_to_date));
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    dialog.show(ft, "DatePicker");
+                }
             }
         };
 
-        txtToDate.setOnClickListener(listener);
-        txtFromDate.setOnClickListener(listener);
-
-
+        fromDateButton.setOnClickListener(listener);
+        toDateButton.setOnClickListener(listener);
     }
-
-
-
 }

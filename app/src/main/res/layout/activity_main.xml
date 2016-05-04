@@ -13,21 +13,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:hint="Touch here to select a start date"
+        android:hint="xx-xx-xxxx"
         android:layout_above="@+id/txt_to_date"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="61dp"/>
+        android:layout_marginBottom="61dp"
+        android:focusable="false"/>
 
     <EditText
         android:id="@+id/txt_to_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:hint="Touch here to select an end date"
+        android:hint="xx-xx-xxxx"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:focusable="false"/>
 
     <Button
         android:layout_width="match_parent"
@@ -54,6 +56,24 @@
         android:text="Select dates and send your email"
         android:id="@+id/textView2"
         android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set start date"
+        android:id="@+id/from_date_button"
+        android:layout_above="@+id/txt_to_date"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set end date"
+        android:id="@+id/to_date_button"
+        android:layout_below="@+id/txt_to_date"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
