@@ -24,10 +24,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    // Variable that stores which EditText-object that the date will be written to
+    // Variable that stores which EditText-object  the date will be written to
     private EditText textToChange;
 
     /** Constructor that assigns which EditText-object the date will be written to
@@ -48,7 +49,9 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
+        dialog.getDatePicker().setMaxDate(System.currentTimeMillis()-1000);
+        return dialog;
     }
 
     /** Sets the selected date to a String and sets the text of a view to the date
