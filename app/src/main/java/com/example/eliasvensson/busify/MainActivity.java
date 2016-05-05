@@ -21,8 +21,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Date;
 
+
+public class MainActivity extends AppCompatActivity {
 
     /** Initiates all the functionality in the app when it is started
      * @param savedInstanceState The current state of the app
@@ -43,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
             /** Lets the user specify a date, and updates the text of a view to match that date.
              * @param v The view which will get its text updated
-             *
              */
             public void onClick(View v) {
                 if (v == findViewById(R.id.start_date_button))
@@ -70,4 +71,13 @@ public class MainActivity extends AppCompatActivity {
         fromDateButton.setOnClickListener(listener);
         toDateButton.setOnClickListener(listener);
     }
+
+    /** Sets the "start date"-text to the date specified
+     * @param date the date to use for the text
+     */
+    public void setStartDate(Date date){
+        //TODO
+    }
+
+
 }

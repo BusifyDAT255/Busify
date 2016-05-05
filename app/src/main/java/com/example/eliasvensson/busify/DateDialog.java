@@ -24,7 +24,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
@@ -36,6 +36,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
      */
     public DateDialog(View view){
         textToChange =(EditText)view;
+
     }
 
     /** Sets the current date as default for a dialog
@@ -50,6 +51,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         int day = c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
+        //Set the max date for the datepicker to current date
         dialog.getDatePicker().setMaxDate(System.currentTimeMillis()-1000);
         return dialog;
     }
@@ -64,6 +66,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         //show to the selected date in the text box
         String date=day+"-"+(month+1)+"-"+year;
         textToChange.setText(date);
+
     }
 
 }
