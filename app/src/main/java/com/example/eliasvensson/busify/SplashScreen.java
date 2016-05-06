@@ -41,6 +41,7 @@ public class SplashScreen extends Activity {
                     //launches MainActivity
                     Intent intent = new Intent(SplashScreen.this,MainActivity.class);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
             }
         };
@@ -51,6 +52,7 @@ public class SplashScreen extends Activity {
     protected void onPause() {
         //onPause is run when activity switches. Destroys the thread and therefor the splash screen
         super.onPause();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
     }
 
