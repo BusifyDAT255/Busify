@@ -7,15 +7,19 @@ import android.os.Bundle;
 /**
  * Created by jonathanfager on 16-05-04.
  *
- * This method of creating a splashscreen uses Thread class.
- * A fiarly small app, such as this one, might load soo fast that the
+ * This method of creating a splashs creen uses Thread class.
+ * A fairly small app, such as this one, might load soo fast that the
  * splash screen never shows, which for branding purposes
  * is unwanted.
  * Therefore we start a thread (timerThread) and puts it to sleep for
- * X amount of ms (here 3000). During this time the splashscreen is shown.
+ * X amount of ms (here 3000). During this time the splash screen is shown.
  * After the activity has done its purpose, we destroy it using the .onPause method.
  * This is so that the user cannot accidently return to the splash screen.
  * The finally block is what launches the actuall app.
+ *
+ * @author jonathanfager
+ * @version 1.0
+ * @since 1.0
  **/
 
 
@@ -29,7 +33,7 @@ public class SplashScreen extends Activity {
         Thread timerThread = new Thread(){
             public void run(){
                 try{
-                    //sleep is the duration of the splashscreen
+                    //sleep is the duration of the splash screen
                     sleep(3000);
                 }catch(InterruptedException e){
                     e.printStackTrace();
@@ -45,7 +49,7 @@ public class SplashScreen extends Activity {
 
     @Override
     protected void onPause() {
-        //onPause is run when activity switches. Destoyes the thread and therefor the splashscreen
+        //onPause is run when activity switches. Destroys the thread and therefor the splash screen
         super.onPause();
         finish();
     }
