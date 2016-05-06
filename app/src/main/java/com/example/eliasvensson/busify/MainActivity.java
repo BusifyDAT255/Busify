@@ -26,9 +26,6 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    /** Initiates all the functionality in the app when it is started
-     * @param savedInstanceState The current state of the app
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,11 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Initiates a View.OnClickListener to listen for clicks on the buttons
         View.OnClickListener listener = new View.OnClickListener() {
-            @Override
 
-            /** Lets the user specify a date, and updates the text of a view to match that date.
-             * @param v The view which will get its text updated
-             */
+            @Override
             public void onClick(View v) {
                 if (v == findViewById(R.id.start_date_button))
                     setDateToView(R.id.txt_from_date);
@@ -55,14 +49,16 @@ public class MainActivity extends AppCompatActivity {
             }
 
             /**
-             *This method creates an instance of the class DateDialog, which does the
+             *Creates an instance of the class DateDialog, which opens the DateDialog
              * @param  viewId  the ID of the view which the method will write the returned date to.
              *
              */
             private void setDateToView(int viewId){
                 //Initiates a DateDialog object for user interaction when choosing the date
                 DateDialog dialog = new DateDialog(findViewById(viewId));
+                //Sets a FragmentManager to track the interaction with the datedialog-fragment
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
+                //Sets the dateDialog as visible to the user
                 dialog.show(ft, "DatePicker");
             }
         };
