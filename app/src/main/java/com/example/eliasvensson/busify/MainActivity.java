@@ -1,7 +1,7 @@
 /**
  * @author Elias Svensson and David Genelov
  * @version 1.0, 2016-05-04
- *
+ * @since 1.0
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
  * how to use the app, two different textfields (start date and end date), one button for each
