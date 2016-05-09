@@ -21,8 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.Date;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,13 +65,5 @@ public class MainActivity extends AppCompatActivity {
         fromDateButton.setOnClickListener(listener);
         toDateButton.setOnClickListener(listener);
     }
-
-    /** Sets the "start date"-text to the date specified
-     * @param date the date to use for the text
-     */
-    public void setStartDate(Date date){
-        //TODO
-    }
-
 
 }
