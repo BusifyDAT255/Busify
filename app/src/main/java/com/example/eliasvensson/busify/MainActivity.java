@@ -40,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v == findViewById(R.id.start_date_button))
-                    setDateToView(R.id.txt_from_date);
+                    setDateToView(R.id.txt_start_date);
 
                 else if (v == findViewById(R.id.end_date_button))
-                    setDateToView(R.id.txt_to_date);
+                    setDateToView(R.id.txt_end_date);
             }
 
             /**
