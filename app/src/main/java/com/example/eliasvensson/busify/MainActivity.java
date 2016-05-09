@@ -1,6 +1,6 @@
 /**
  * @author Elias Svensson and David Genelov
- * @version 1.0, 2015-05-04
+ * @version 1.0, 2016-05-04
  *
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in

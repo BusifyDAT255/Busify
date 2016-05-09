@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 /**
- * Created by jonathanfager on 16-05-04.
+ * Created by jonathanfager on 2016-05-04.
  *
  * This method of creating a splashscreen uses Thread class.
  * A fairly small app, such as this one, might load so fast that the
