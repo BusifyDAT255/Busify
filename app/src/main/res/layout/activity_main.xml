@@ -9,19 +9,19 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context=".MainActivity" >
     <EditText
-        android:id="@+id/txt_from_date"
+        android:id="@+id/txt_start_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:hint="xx-xx-xxxx"
-        android:layout_above="@+id/txt_to_date"
+        android:layout_above="@+id/txt_end_date"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="61dp"
         android:focusable="false"/>
 
     <EditText
-        android:id="@+id/txt_to_date"
+        android:id="@+id/txt_end_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:text="Set start date"
         android:id="@+id/start_date_button"
-        android:layout_above="@+id/txt_to_date"
+        android:layout_above="@+id/txt_end_date"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:text="Set end date"
         android:id="@+id/end_date_button"
-        android:layout_below="@+id/txt_to_date"
+        android:layout_below="@+id/txt_end_date"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 

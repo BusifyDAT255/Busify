@@ -1,7 +1,7 @@
 /**
  * @author Elias Svensson and David Genelov
- * @version 1.0, 2015-05-04
- *
+ * @version 1.0, 2016-05-04
+ * @since 1.0
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
  * how to use the app, two different textfields (start date and end date), one button for each
@@ -21,8 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.Date;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Initiates the buttons for setting start and end date
-        Button fromDateButton = (Button) findViewById(R.id.start_date_button);
-        Button toDateButton = (Button) findViewById(R.id.end_date_button);
+        Button startDateButton = (Button) findViewById(R.id.start_date_button);
+        Button endDateButton = (Button) findViewById(R.id.end_date_button);
 
         // Initiates a View.OnClickListener to listen for clicks on the buttons
         View.OnClickListener listener = new View.OnClickListener() {
@@ -42,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v == findViewById(R.id.start_date_button))
-                    setDateToView(R.id.txt_from_date);
+                    setDateToView(R.id.txt_start_date);
 
                 else if (v == findViewById(R.id.end_date_button))
-                    setDateToView(R.id.txt_to_date);
+                    setDateToView(R.id.txt_end_date);
             }
 
             /**
@@ -64,16 +62,8 @@ public class MainActivity extends AppCompatActivity {
         };
 
         //Assigns the pre-defined listener to listen to the two buttons
-        fromDateButton.setOnClickListener(listener);
-        toDateButton.setOnClickListener(listener);
+        startDateButton.setOnClickListener(listener);
+        endDateButton.setOnClickListener(listener);
     }
-
-    /** Sets the "start date"-text to the date specified
-     * @param date the date to use for the text
-     */
-    public void setStartDate(Date date){
-        //TODO
-    }
-
 
 }

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 /**
- * Created by jonathanfager on 16-05-04.
+ * Created by jonathanfager on 2016-05-04.
  *
  * This method of creating a splashscreen uses Thread class.
  * A fairly small app, such as this one, might load so fast that the
@@ -14,10 +14,10 @@ import android.os.Bundle;
  * Therefore we start a thread (timerThread) and puts it to sleep for
  * X amount of ms (here 3000). During this time the splash screen is shown.
  * After the activity has done its purpose, we destroy it using the .onPause method.
- * This is so that the user cannot accidently return to the splash screen.
+ * This is so that the user cannot accidentally return to the splash screen.
  * The finally block is what launches the actual app.
  *
- * @author jonathanfager
+ * @author Jonathan Fager
  * @version 1.0
  * @since 1.0
  **/
