@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Initiates the buttons for setting start and end date
-        Button fromDateButton = (Button) findViewById(R.id.start_date_button);
-        Button toDateButton = (Button) findViewById(R.id.end_date_button);
+        Button startDateButton = (Button) findViewById(R.id.start_date_button);
+        Button endDateButton = (Button) findViewById(R.id.end_date_button);
 
         // Initiates a View.OnClickListener to listen for clicks on the buttons
         View.OnClickListener listener = new View.OnClickListener() {
@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
         };
 
         //Assigns the pre-defined listener to listen to the two buttons
-        fromDateButton.setOnClickListener(listener);
-        toDateButton.setOnClickListener(listener);
+        startDateButton.setOnClickListener(listener);
+        endDateButton.setOnClickListener(listener);
     }
 
 }
