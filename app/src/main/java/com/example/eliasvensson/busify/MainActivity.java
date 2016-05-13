@@ -67,12 +67,13 @@ public class MainActivity extends AppCompatActivity {
         startDateButton.setOnClickListener(listener);
         endDateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Mail m = new Mail("annie.johanna.soderstrom@gmail.com", "724545evelina");
 
-                String[] toArr = {"anniesoderstrom@hotmail.com"};
+            public void onClick(View view) {
+                Mail m = new Mail("busifydat255@gmail.com", "552tadyfisub");
+
+                String[] toArr = {"busifydat255@gmail.com"};
                 m.set_to(toArr);
-                m.set_from("annie.johanna.soderstrom@gmail.com");
+                m.set_from("busifydat255@gmail.com");
                 m.set_subject("This is an email sent using my Mail JavaMail wrapper from an Android device.");
                 m.setBody("Email body.");
 

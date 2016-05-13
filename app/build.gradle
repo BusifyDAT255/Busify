@@ -23,7 +23,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.3.0'
-    compile files('/Users/jenskarlsson/Documents/Busify/lib/activation.jar')
-    compile files('/Users/jenskarlsson/Documents/Busify/lib/additionnal.jar')
-    compile files('/Users/jenskarlsson/Documents/Busify/lib/mail.jar')
+    compile files('/Users/Sara/Documents/Busify/lib/activation.jar')
+    compile files('/Users/Sara/Documents/Busify/lib/additionnal.jar')
+    compile files('/Users/Sara/Documents/Busify/lib/mail.jar')
 }
