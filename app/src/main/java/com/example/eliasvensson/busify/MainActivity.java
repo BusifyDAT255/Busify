@@ -18,8 +18,10 @@ package com.example.eliasvensson.busify;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         // Initiates the buttons for setting start and end date
         Button startDateButton = (Button) findViewById(R.id.start_date_button);
         Button endDateButton = (Button) findViewById(R.id.end_date_button);
-
+        Button sendButton = (Button) findViewById(R.id.button);
         // Initiates a View.OnClickListener to listen for clicks on the buttons
         View.OnClickListener listener = new View.OnClickListener() {
 
@@ -64,6 +66,33 @@ public class MainActivity extends AppCompatActivity {
         //Assigns the pre-defined listener to listen to the two buttons
         startDateButton.setOnClickListener(listener);
         endDateButton.setOnClickListener(listener);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Mail m = new Mail("annie.johanna.soderstrom@gmail.com", "724545evelina");
+
+                String[] toArr = {"anniesoderstrom@hotmail.com"};
+                m.set_to(toArr);
+                m.set_from("annie.johanna.soderstrom@gmail.com");
+                m.set_subject("This is an email sent using my Mail JavaMail wrapper from an Android device.");
+                m.setBody("Email body.");
+
+                try {
+
+                    // put the .csv file (or any file type) in the sdcard of the AVD using Android Device Monitor (file explorer)
+                    m.addAttachment("/mnt/sdcard/file.csv");
+
+                    if(m.send()) {
+                        Toast.makeText(MainActivity.this, "Email was sent successfully.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Email was not sent.", Toast.LENGTH_LONG).show();
+                    }
+                } catch(Exception e) {
+                    //Toast.makeText(MailApp.this, "There was a problem sending the email.", Toast.LENGTH_LONG).show();
+                    Log.e("MailApp", "Could not send email", e);
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }
