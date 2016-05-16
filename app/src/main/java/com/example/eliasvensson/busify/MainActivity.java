@@ -8,7 +8,10 @@
  * textfield to set the date, and one button to send a .csv file
  *
  * The user simply chooses a start and an end date by clicking the buttons, and then clicks the
- * "send .csv"-button.
+ * "Send .csv"-button.
+ *
+ * When pressing the send button, an email with a .csv attachment will be sent to one or several
+ * specified email addresses. The email will also contain sender, receiver, subject and body.
  *
  * Full functionality is not yet implemented.
  */
@@ -18,8 +21,10 @@ package com.example.eliasvensson.busify;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         // Initiates the buttons for setting start and end date
         Button startDateButton = (Button) findViewById(R.id.start_date_button);
         Button endDateButton = (Button) findViewById(R.id.end_date_button);
-
+        Button sendButton = (Button) findViewById(R.id.button);
         // Initiates a View.OnClickListener to listen for clicks on the buttons
         View.OnClickListener listener = new View.OnClickListener() {
 
@@ -64,6 +69,37 @@ public class MainActivity extends AppCompatActivity {
         //Assigns the pre-defined listener to listen to the two buttons
         startDateButton.setOnClickListener(listener);
         endDateButton.setOnClickListener(listener);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                // Email account from which the email is sent
+                Mail m = new Mail("busifydat255@gmail.com", "552tadyfisub");
+
+                // Lists of receivers
+                String[] toArr = {"sara.kinell@gmail.com"};
+                m.set_to(toArr);
+
+                // Subject and body of the email
+                m.set_from("busifydat255@gmail.com");
+                m.set_subject("ElectriCity Report");
+                m.setBody("Please find the file attached.");
+
+                try {
+                    // Puts the .csv file (or any file type) in the sdcard of the AVD using Android Device Monitor (File Explorer)
+                    m.addAttachment("/mnt/sdcard/file.csv");
+
+                    // Shows if message was sent or not
+                    if(m.send()) {
+                        Toast.makeText(MainActivity.this, "Email was sent successfully.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Email was not sent.", Toast.LENGTH_LONG).show();
+                    }
+                } catch(Exception e) {
+                    Log.e("MailApp", "Could not send email", e);
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }
