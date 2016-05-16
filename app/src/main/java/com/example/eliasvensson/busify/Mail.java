@@ -1,3 +1,23 @@
+/**
+ * @author Rodi Jolak
+ * @version 1.0, 2016-05-13
+ * @see http://goo.gl/dy4tUd
+ *
+ * Class to create email, send it and attach files. Gmail API has been used
+ * to attach files properly to an email. Files needed to be added to the library
+ * in Android Studio, in order for this class to work, are activation.jar,
+ * additionnal.jar and mail.jar.
+ *
+ * The email will be sent in the background and cannot be edited by the app user.
+ * The instance variable _multipart is used to set the body of the email as well
+ * as to add an attachment.
+ *
+ * The code has been created by Rodi Jolak with inspiration from the tutorial
+ * linked above. The javadoc has been added by Annie Söderström and Sara Kinell on 2016-05-16.
+ *
+ */
+
+
 package com.example.eliasvensson.busify;
 
 import java.util.Date;
@@ -40,6 +60,9 @@ public class Mail extends javax.mail.Authenticator {
     private Multipart _multipart;
 
 
+    /**
+     * Empty constructor of the Mail class
+     */
     public Mail() {
         _host = "smtp.gmail.com"; // default smtp server
         _port = "465"; // default smtp port
@@ -66,6 +89,11 @@ public class Mail extends javax.mail.Authenticator {
         CommandMap.setDefaultCommandMap(mc);
     }
 
+    /**
+     * Constructor of the Mail class
+     * @param user The username of the email sender
+     * @param pass The password of the email sender
+     */
     public Mail(String user, String pass) {
         this();
 
@@ -73,38 +101,43 @@ public class Mail extends javax.mail.Authenticator {
         _pass = pass;
     }
 
+    /**
+     * Creates message and send to recipient(s)
+     * @return True is returned if email was sent, false otherwise
+     * @throws Exception Thrown if error occurs while sending the email
+     */
     public boolean send() throws Exception {
         Properties props = _setProperties();
 
+        // Creates a session while not username, password, recipient email, sender email, subject or body are empty
         if (!_user.equals("") && !_pass.equals("") && _to.length > 0 && !_from.equals("") && !_subject.equals("") && !_body.equals("")) {
             Session session = Session.getInstance(props, this);
 
             final MimeMessage msg = new MimeMessage(session);
-
             msg.setFrom(new InternetAddress(_from));
 
             InternetAddress[] addressTo = new InternetAddress[_to.length];
             for (int i = 0; i < _to.length; i++) {
                 addressTo[i] = new InternetAddress(_to[i]);
             }
-            msg.setRecipients(MimeMessage.RecipientType.TO, addressTo);
 
+            msg.setRecipients(MimeMessage.RecipientType.TO, addressTo);
             msg.setSubject(_subject);
             msg.setSentDate(new Date());
 
-            // setup message body
+            // Setup message body
             BodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setText(_body);
             _multipart.addBodyPart(messageBodyPart);
 
-            // Put parts in message
+            // Puts parts in message
             msg.setContent(_multipart);
 
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        // send email
+                        // Sends email
                         Transport.send(msg);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -121,23 +154,35 @@ public class Mail extends javax.mail.Authenticator {
         }
     }
 
+    /**
+     * Adds attachment to email
+     * @param filename Name of the file to be attached
+     * @throws Exception Thrown if file cannot be attached properly
+     */
     public void addAttachment(String filename) throws Exception {
         BodyPart messageBodyPart = new MimeBodyPart();
         DataSource source = new FileDataSource(filename);
         messageBodyPart.setDataHandler(new DataHandler(source));
         messageBodyPart.setFileName(filename);
-
         _multipart.addBodyPart(messageBodyPart);
     }
 
+    /**
+     * Creates and returns new PasswordAuthentication object
+     * @return Repository with a username and a password in a PasswordAuthentication object
+     */
     @Override
     public PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication(_user, _pass);
     }
 
+    /**
+     * Sets debug and SMTP, email server, authentication
+     * @return Properties object with values
+     */
     private Properties _setProperties() {
         Properties props = new Properties();
-
+        // Sets host of email server
         props.put("mail.smtp.host", _host);
 
         if(_debuggable) {
@@ -156,26 +201,45 @@ public class Mail extends javax.mail.Authenticator {
         return props;
     }
 
-    // the getters and setters
+    /**
+     * Getter for the body
+     * @return Body of the email
+     */
     public String getBody() {
         return _body;
     }
 
+    /**
+     * Setter for the body
+     * @param _body Text to be included in the email
+     */
     public void setBody(String _body) {
         this._body = _body;
     }
 
+    /**
+     * Setter for the recipient(s)
+     * @param _to Email addresses of the recipient(s) in an array
+     */
     public void set_to(String[] _to) {
         this._to = _to;
     }
 
+    /**
+     * Setter for the sender
+     * @param _from Senders email address
+     */
     public void set_from(String _from) {
         this._from = _from;
     }
 
+    /**
+     * Setter for the subject of the email
+     * @param _subject Subject of the email
+     */
     public void set_subject(String _subject) {
         this._subject = _subject;
     }
 
-    // more of the getters and setters …..
+
 }
