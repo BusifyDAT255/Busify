@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Added colors to match the design of the app.
+These are also used in the DatePicker Activity
+-->
+
 <resources>
     <color name="colorPrimary">#a8dba8</color>
     <color name="colorPrimaryDark">#79bd9a</color>
