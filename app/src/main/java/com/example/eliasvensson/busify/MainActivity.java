@@ -1,5 +1,5 @@
 /**
- * @author Elias Svensson and David Genelov
+ * @author Elias Svensson, David Genelov, Annie Söderström, Melinda Fulöp, Sara Kinell
  * @version 1.0, 2016-05-04
  * @since 1.0
  * Manages the interaction with, and function of, the main view of the app.
@@ -7,8 +7,9 @@
  * how to use the app, two different textfields (start date and end date), one button for each
  * textfield to set the date, and one button to send a .csv file
  *
- * The user simply chooses a start and an end date by clicking the buttons, and then clicks the
- * "Send .csv"-button.
+ * The user simply chooses a start and an end date by clicking the startDatebutton and endDateButton,
+ * and then enters one or several email addresses.
+ * After that the app user clicks the "Send .csv"-button.
  *
  * When pressing the send button, an email with a .csv attachment will be sent to one or several
  * specified email addresses. The email will also contain sender, receiver, subject and body.
@@ -32,7 +33,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText recieversmail;
+    EditText receiversmail;
     Button sendButton;
     Button endDateButton;
     Button startDateButton;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Initiates the email-textfield for the receivers mail
-        recieversmail = (EditText)  findViewById(R.id.reciever_mail);
+        receiversmail = (EditText)  findViewById(R.id.receiver_mail);
 
         // Initiates the buttons for setting start and end date and send
         startDateButton = (Button) findViewById(R.id.start_date_button);
@@ -88,15 +89,15 @@ public class MainActivity extends AppCompatActivity {
                 // Email account from which the email is sent
                 Mail m = new Mail("busifydat255@gmail.com", "552tadyfisub");
 
-                // Lists all receivers as a string 
-                String reciever =recieversmail.getText().toString();
-                //Separates the recievers into a list
-                String[] toArrRecievers = TextUtils.split(reciever, ",");
-                m.set_to(toArrRecievers);
+                // Lists all receivers as a string
+                String receiver =receiversmail.getText().toString();
+                //Separates the receivers into a list and adds them to mail
+                String[] ReceiversList = TextUtils.split(receiver, ",");
+                m.set_to(ReceiversList);
 
                     // Subject and body of the email
                 m.set_from("busifydat255@gmail.com");
-                m.set_subject("ElectriCity Report");
+                m.set_subject("ElectricCity Report");
                 m.setBody("Please find the file attached.");
 
                 try {
