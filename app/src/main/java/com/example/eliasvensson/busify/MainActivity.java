@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
+
+        //Initiates the email-textfield for the receivers mail
+        EditText receiversmail = (EditText)  findViewById(R.id.reciever_mail);
 
         // Initiates the buttons for setting start and end date
         Button startDateButton = (Button) findViewById(R.id.start_date_button);
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 Mail m = new Mail("busifydat255@gmail.com", "552tadyfisub");
 
                 // Lists of receivers
-                String[] toArr = {"sara.kinell@gmail.com"};
+                String[] toArr = {"recieversmail.toString()"};
                 m.set_to(toArr);
 
                 // Subject and body of the email
