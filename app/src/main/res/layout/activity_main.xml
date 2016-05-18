@@ -37,11 +37,10 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:hint="Enter your email"
-        android:focusable="false"
+        android:focusable="true"
         android:layout_marginTop="31dp"
         android:layout_below="@+id/end_date_button"
-        android:layout_centerHorizontal="true"
-        android:enabled="true"/>
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:layout_width="match_parent"

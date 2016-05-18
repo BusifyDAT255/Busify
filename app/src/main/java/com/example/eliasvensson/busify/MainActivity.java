@@ -31,6 +31,9 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     EditText recieversmail;
+    Button sendButton;
+    Button endDateButton;
+    Button startDateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +44,10 @@ public class MainActivity extends AppCompatActivity {
         //Initiates the email-textfield for the receivers mail
         recieversmail = (EditText)  findViewById(R.id.reciever_mail);
 
-
-        // Initiates the buttons for setting start and end date
-        Button startDateButton = (Button) findViewById(R.id.start_date_button);
-        Button endDateButton = (Button) findViewById(R.id.end_date_button);
-        Button sendButton = (Button) findViewById(R.id.button);
+        // Initiates the buttons for setting start and end date and send
+        startDateButton = (Button) findViewById(R.id.start_date_button);
+        endDateButton = (Button) findViewById(R.id.end_date_button);
+        sendButton = (Button) findViewById(R.id.button);
 
         // Initiates a View.OnClickListener to listen for clicks on the startDatebutton, endDatebutton
         View.OnClickListener listener = new View.OnClickListener() {
