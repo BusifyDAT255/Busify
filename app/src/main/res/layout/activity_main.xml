@@ -40,7 +40,8 @@
         android:focusable="false"
         android:layout_marginTop="31dp"
         android:layout_below="@+id/end_date_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:enabled="true"/>
 
     <Button
         android:layout_width="match_parent"

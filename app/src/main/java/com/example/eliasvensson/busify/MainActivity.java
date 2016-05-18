@@ -30,6 +30,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    EditText recieversmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,15 +39,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Initiates the email-textfield for the receivers mail
-        EditText receiversmail = (EditText)  findViewById(R.id.reciever_mail);
+        recieversmail = (EditText)  findViewById(R.id.reciever_mail);
+
 
         // Initiates the buttons for setting start and end date
         Button startDateButton = (Button) findViewById(R.id.start_date_button);
         Button endDateButton = (Button) findViewById(R.id.end_date_button);
         Button sendButton = (Button) findViewById(R.id.button);
-        // Initiates a View.OnClickListener to listen for clicks on the buttons
-        View.OnClickListener listener = new View.OnClickListener() {
 
+        // Initiates a View.OnClickListener to listen for clicks on the startDatebutton, endDatebutton
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v == findViewById(R.id.start_date_button))
@@ -73,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         //Assigns the pre-defined listener to listen to the two buttons
         startDateButton.setOnClickListener(listener);
         endDateButton.setOnClickListener(listener);
+
+        // Initiates a View.OnClickListener to listen for clicks on the send button
         sendButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
@@ -80,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
                 Mail m = new Mail("busifydat255@gmail.com", "552tadyfisub");
 
                 // Lists of receivers
-                String[] toArr = {"recieversmail.toString()"};
+                String reciever =recieversmail.getText().toString();
+                String[] toArr = {reciever};
                 m.set_to(toArr);
 
                 // Subject and body of the email
