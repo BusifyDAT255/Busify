@@ -24,10 +24,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 
@@ -90,13 +88,13 @@ public class MainActivity extends AppCompatActivity {
                 // Email account from which the email is sent
                 Mail m = new Mail("busifydat255@gmail.com", "552tadyfisub");
 
-                // Lists all receivers as a string
+                // Lists all receivers as a string 
                 String reciever =recieversmail.getText().toString();
                 //Separates the recievers into a list
-                String[] toArr = TextUtils.split(reciever, ",");
-                m.set_to(toArr);
+                String[] toArrRecievers = TextUtils.split(reciever, ",");
+                m.set_to(toArrRecievers);
 
-                // Subject and body of the email
+                    // Subject and body of the email
                 m.set_from("busifydat255@gmail.com");
                 m.set_subject("ElectriCity Report");
                 m.setBody("Please find the file attached.");
@@ -118,6 +116,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }
