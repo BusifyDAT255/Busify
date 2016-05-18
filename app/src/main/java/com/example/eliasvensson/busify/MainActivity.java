@@ -21,11 +21,15 @@ package com.example.eliasvensson.busify;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -86,9 +90,10 @@ public class MainActivity extends AppCompatActivity {
                 // Email account from which the email is sent
                 Mail m = new Mail("busifydat255@gmail.com", "552tadyfisub");
 
-                // Lists of receivers
+                // Lists all receivers as a string
                 String reciever =recieversmail.getText().toString();
-                String[] toArr = {reciever};
+                //Separates the recievers into a list
+                String[] toArr = TextUtils.split(reciever, ",");
                 m.set_to(toArr);
 
                 // Subject and body of the email
@@ -113,5 +118,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }
