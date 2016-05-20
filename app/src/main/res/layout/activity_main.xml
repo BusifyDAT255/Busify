@@ -12,7 +12,22 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context=".MainActivity"
-                android:background="@drawable/bg19">
+                android:orientation="vertical"
+                android:background="#3b8686"
+    >   >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/busify_mini"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_marginBottom="69dp"
+        android:layout_alignParentStart="false"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"/>
+
     <EditText
         android:id="@+id/txt_start_date"
         android:layout_width="fill_parent"
@@ -108,15 +123,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="148dp"
         android:textAlignment="center"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/busify_mini"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_marginBottom="69dp"/>
 
 
 </RelativeLayout>
