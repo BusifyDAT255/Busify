@@ -52,7 +52,7 @@ public class SplashScreen extends Activity {
     protected void onPause() {
         //onPause is run when activity switches. Destroys the thread and therefore the splash screen
         super.onPause();
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
     }
 
