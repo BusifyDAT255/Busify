@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Method that chooses which URL that will be sent in the email depending on the date
     private String chooseURL (String date) {
-        String link = "Report missing for chosen date";
+        String link;
         switch(date){
             case "19-5-2016":
                 link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-19.csv?alt=media&token=20520547-18b7-458d-9019-e1dc3cdd83cd";
@@ -135,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "25-5-2016":
                 link ="https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-25.csv?alt=media&token=e4ea105a-40c8-439d-9006-56514a22dfcf";
+                break;
+            default:
+                link ="Report missing for chosen date";
                 break;
         }
         return link;
