@@ -7,7 +7,8 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                tools:context=".MainActivity" >
+                tools:context=".MainActivity"
+    android:textAlignment="center">
     <EditText
         android:id="@+id/txt_start_date"
         android:layout_width="wrap_content"
@@ -33,16 +34,20 @@
 
     <EditText
         android:id="@+id/receiver_mail"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:singleLine="true"
         android:hint="Enter email of recipient"
+        android:gravity="center_horizontal"
         android:imeOptions="actionDone"
         android:focusable="true"
         android:layout_marginTop="31dp"
         android:layout_below="@+id/end_date_button"
-        android:layout_centerHorizontal="true"/>
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="match_parent"
