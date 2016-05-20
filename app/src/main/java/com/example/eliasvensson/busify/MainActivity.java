@@ -20,6 +20,7 @@
 package com.example.eliasvensson.busify;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText receiversmail;
     Button sendButton;
-    Button endDateButton;
+    //Button endDateButton;
     Button startDateButton;
 
     @Override
@@ -49,19 +50,21 @@ public class MainActivity extends AppCompatActivity {
 
         // Initiates the buttons for setting start and end date and send
         startDateButton = (Button) findViewById(R.id.start_date_button);
-        endDateButton = (Button) findViewById(R.id.end_date_button);
+            //endDateButton = (Button) findViewById(R.id.end_date_button);
         sendButton = (Button) findViewById(R.id.button);
 
         // Initiates a View.OnClickListener to listen for clicks on the startDatebutton, endDatebutton
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v == findViewById(R.id.start_date_button))
+                //if (v == findViewById(R.id.start_date_button))
                     setDateToView(R.id.txt_start_date);
 
-                else if (v == findViewById(R.id.end_date_button))
-                    setDateToView(R.id.txt_end_date);
+                //else if (v == findViewById(R.id.end_date_button))
+                  //  setDateToView(R.id.txt_end_date);
             }
+
+
 
             /**
              *Creates an instance of the class DateDialog, which opens the DateDialog
@@ -80,39 +83,28 @@ public class MainActivity extends AppCompatActivity {
 
         //Assigns the pre-defined listener to listen to the two buttons
         startDateButton.setOnClickListener(listener);
-        endDateButton.setOnClickListener(listener);
+        //endDateButton.setOnClickListener(listener);
 
         // Initiates a View.OnClickListener to listen for clicks on the send button
         sendButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                // Email account from which the email is sent
-                Mail m = new Mail("busifydat255@gmail.com", "552tadyfisub");
-
                 // Lists all receivers as a string
                 String receiver =receiversmail.getText().toString();
                 //Separates the receivers into a list and adds them to mail
                 String[] ReceiversList = TextUtils.split(receiver, ",");
-                m.set_to(ReceiversList);
+                //Fulkod för att hitta filen.
+                String AttachmentLink = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-04-27.csv?alt=media&token=40aa1d0b-9e22-4ed4-a7a6-1b2e805711b6";
 
-                    // Subject and body of the email
-                m.set_from("busifydat255@gmail.com");
-                m.set_subject("ElectricCity Report");
-                m.setBody("Please find the file attached.");
-
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , ReceiversList);
+                i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
+                i.putExtra(Intent.EXTRA_TEXT   , AttachmentLink);
                 try {
-                    // Puts the .csv file (or any file type) in the sdcard of the AVD using Android Device Monitor (File Explorer)
-                    m.addAttachment("/mnt/sdcard/file.csv");
-
-                    // Shows if message was sent or not
-                    if(m.send()) {
-                        Toast.makeText(MainActivity.this, "Email was sent successfully.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Email was not sent.", Toast.LENGTH_LONG).show();
-                    }
-                } catch(Exception e) {
-                    Log.e("MailApp", "Could not send email", e);
-                    e.printStackTrace();
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
