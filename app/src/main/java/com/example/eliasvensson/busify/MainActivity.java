@@ -1,5 +1,5 @@
 /**
- * @author Elias Svensson and David Genelov
+ * @author Elias Svensson, David Genelov, Annie Söderström, Melinda Fulöp, Sara Kinell
  * @version 1.0, 2016-05-04
  * @since 1.0
  * Manages the interaction with, and function of, the main view of the app.
@@ -7,8 +7,9 @@
  * how to use the app, two different textfields (start date and end date), one button for each
  * textfield to set the date, and one button to send a .csv file
  *
- * The user simply chooses a start and an end date by clicking the buttons, and then clicks the
- * "Send .csv"-button.
+ * The user simply chooses a start and an end date by clicking the startDatebutton and endDateButton,
+ * and then enters one or several email addresses.
+ * After that the app user clicks the "Send .csv"-button.
  *
  * When pressing the send button, an email with a .csv attachment will be sent to one or several
  * specified email addresses. The email will also contain sender, receiver, subject and body.
@@ -21,13 +22,21 @@ package com.example.eliasvensson.busify;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
+
 public class MainActivity extends AppCompatActivity {
+
+    EditText receiversmail;
+    Button sendButton;
+    Button endDateButton;
+    Button startDateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +44,16 @@ public class MainActivity extends AppCompatActivity {
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
 
-        // Initiates the buttons for setting start and end date
-        Button startDateButton = (Button) findViewById(R.id.start_date_button);
-        Button endDateButton = (Button) findViewById(R.id.end_date_button);
-        Button sendButton = (Button) findViewById(R.id.button);
-        // Initiates a View.OnClickListener to listen for clicks on the buttons
-        View.OnClickListener listener = new View.OnClickListener() {
+        //Initiates the email-textfield for the receivers mail
+        receiversmail = (EditText)  findViewById(R.id.receiver_mail);
 
+        // Initiates the buttons for setting start and end date and send
+        startDateButton = (Button) findViewById(R.id.start_date_button);
+        endDateButton = (Button) findViewById(R.id.end_date_button);
+        sendButton = (Button) findViewById(R.id.button);
+
+        // Initiates a View.OnClickListener to listen for clicks on the startDatebutton, endDatebutton
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v == findViewById(R.id.start_date_button))
@@ -69,19 +81,23 @@ public class MainActivity extends AppCompatActivity {
         //Assigns the pre-defined listener to listen to the two buttons
         startDateButton.setOnClickListener(listener);
         endDateButton.setOnClickListener(listener);
+
+        // Initiates a View.OnClickListener to listen for clicks on the send button
         sendButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 // Email account from which the email is sent
                 Mail m = new Mail("busifydat255@gmail.com", "552tadyfisub");
 
-                // Lists of receivers
-                String[] toArr = {"sara.kinell@gmail.com"};
-                m.set_to(toArr);
+                // Lists all receivers as a string
+                String receiver =receiversmail.getText().toString();
+                //Separates the receivers into a list and adds them to mail
+                String[] ReceiversList = TextUtils.split(receiver, ",");
+                m.set_to(ReceiversList);
 
-                // Subject and body of the email
+                    // Subject and body of the email
                 m.set_from("busifydat255@gmail.com");
-                m.set_subject("ElectriCity Report");
+                m.set_subject("ElectricCity Report");
                 m.setBody("Please find the file attached.");
 
                 try {
