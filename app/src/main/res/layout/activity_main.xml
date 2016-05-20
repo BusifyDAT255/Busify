@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- New layout for MainActivty from Feature/design3-->
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
@@ -8,29 +12,61 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context=".MainActivity"
-    android:textAlignment="center">
+                android:textAlignment="center"
+                android:orientation="vertical"
+                android:background="#3b8686">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/busify_mini"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_marginBottom="69dp"
+        android:layout_alignParentStart="false"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"/>
+
     <EditText
         android:id="@+id/txt_start_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="54dp"
         android:textSize="20sp"
         android:hint="xx-xx-xxxx"
-        android:layout_above="@+id/txt_end_date"
+        android:focusable="false"
+        android:background="@drawable/button1"
+        android:textAlignment="center"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="61dp"
-        android:focusable="false"/>
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/start_date_button"
+        android:background="@android:color/transparent"
+        android:textColor="#ffffffff"
+        android:layout_alignBottom="@+id/txt_start_date"
+        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/txt_start_date"
+        android:layout_alignRight="@+id/txt_start_date"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"/>
 
     <EditText
         android:id="@+id/txt_end_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="54dp"
         android:textSize="20sp"
         android:hint="xx-xx-xxxx"
-        android:layout_centerVertical="true"
+        android:focusable="false"
+        android:background="@drawable/button1"
+        android:textAlignment="center"
+        android:layout_marginTop="42dp"
+        android:layout_below="@+id/txt_start_date"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:focusable="false"/>
+        android:layout_alignParentStart="true"/>
 
     <EditText
         android:id="@+id/receiver_mail"
@@ -42,28 +78,57 @@
         android:gravity="center_horizontal"
         android:imeOptions="actionDone"
         android:focusable="true"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="24dp"
         android:layout_below="@+id/end_date_button"
         android:layout_alignRight="@+id/button"
         android:layout_alignEnd="@+id/button"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="#ffffffff"
+        android:textColorHint="#ffffffff"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/end_date_button"
+        android:background="@android:color/transparent"
+        android:textColor="#ffffffff"
+        android:layout_alignBottom="@+id/txt_end_date"
+        android:layout_centerHorizontal="true"
+        android:layout_alignRight="@+id/txt_end_date"
+        android:layout_alignLeft="@+id/txt_end_date"/>
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Send a .csv-file"
+        android:layout_height="72dp"
+        android:text="Send report"
         android:id="@+id/button"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button1"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Welcome!"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="From:"
+        android:id="@+id/fromText"
+        android:layout_above="@+id/start_date_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingBottom="10dp"
+        android:textColor="#ffffffff"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="To:"
         android:id="@+id/textView"
-        android:layout_alignParentTop="true"
+        android:paddingBottom="10dp"
+        android:textColor="#ffffffff"
+        android:layout_above="@+id/end_date_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
@@ -71,29 +136,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Select dates and send your email"
+        android:text="Select dates and click send report to generate and send your file"
         android:id="@+id/textView2"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set start date"
-        android:id="@+id/start_date_button"
-        android:layout_above="@+id/txt_end_date"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Set end date"
-        android:id="@+id/end_date_button"
-        android:layout_below="@+id/txt_end_date"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:textColor="#ffffffff"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="148dp"
+        android:textAlignment="center"/>
 
 
 </RelativeLayout>
