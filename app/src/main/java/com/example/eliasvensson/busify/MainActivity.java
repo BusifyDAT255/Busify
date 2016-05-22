@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
     private void setDateToView(int viewId){
         // Initiates a DateDialog object for user interaction when choosing the date
         DateDialog dialog = new DateDialog(findViewById(viewId));
-        // Sets a FragmentManager to track the interaction with the datedialog-fragment
+        // Sets a FragmentManager to track the interaction with the DateDialog-fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        // Sets the dateDialog as visible to the user
+        // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
     }
 
