@@ -94,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Returns a link to a specific .csv-file, corresponding to a date input
+     * Returns a link to a specific .csv-file, corresponding to a date input.
+     * Links are shortened using Bit.ly.
      * @param date The date to find a file for
      * @return A String with the link corresponding to the date for the chosen file
      */
@@ -102,25 +103,25 @@ public class MainActivity extends AppCompatActivity {
         String link;
         switch(date){
             case "19-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-19.csv?alt=media&token=20520547-18b7-458d-9019-e1dc3cdd83cd";
+                link = "http://bit.ly/1TPhSX8";
                 break;
             case "20-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-20.csv?alt=media&token=ed2ee38e-c97a-4d81-ae5f-9824f842cfed";
+                link = "http://bit.ly/1swJzxr";
                 break;
             case "21-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-21.csv?alt=media&token=4b247cec-23ea-4522-a99a-e573d550230f";
+                link = "http://bit.ly/1Tw2zp3";
                 break;
             case "22-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-22.csv?alt=media&token=f05266c0-3281-4112-8a4e-1fbf96bd6929";
+                link = "http://bit.ly/1TPhW9l";
                 break;
             case "23-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-23.csv?alt=media&token=222481d8-3d30-4069-b40d-4f631855a437";
+                link = "http://bit.ly/20mupWC";
                 break;
             case "24-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-24.csv?alt=media&token=6daa827c-8bbe-4189-999a-e89f21b3f483";
+                link = "http://bit.ly/25g6ajx";
                 break;
             case "25-5-2016":
-                link ="https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-25.csv?alt=media&token=e4ea105a-40c8-439d-9006-56514a22dfcf";
+                link ="http://bit.ly/20muYzv";
                 break;
             default:
                 link ="Report missing for chosen date";
