@@ -69,25 +69,27 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-            /**
-             *Creates an instance of the class DateDialog, which opens the DateDialog
-             * @param  viewId  the ID of the view which the method will write the returned date to.
-             *
-             */
-            private void setDateToView(int viewId){
-                //Initiates a DateDialog object for user interaction when choosing the date
-                DateDialog dialog = new DateDialog(findViewById(viewId));
-                //Sets a FragmentManager to track the interaction with the datedialog-fragment
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                //Sets the dateDialog as visible to the user
-                dialog.show(ft, "DatePicker");
-            }
         };
+
 
         //Assigns the pre-defined listener to listen to the button
         dateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(listener);
-        
+
+    }
+
+    /**
+     *Creates an instance of the class DateDialog, which opens the DateDialog
+     * @param  viewId  the ID of the view which the method will write the returned date to.
+     *
+     */
+    private void setDateToView(int viewId){
+        //Initiates a DateDialog object for user interaction when choosing the date
+        DateDialog dialog = new DateDialog(findViewById(viewId));
+        //Sets a FragmentManager to track the interaction with the datedialog-fragment
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        //Sets the dateDialog as visible to the user
+        dialog.show(ft, "DatePicker");
     }
 
     //Method that chooses which URL that will be sent in the email depending on the date
