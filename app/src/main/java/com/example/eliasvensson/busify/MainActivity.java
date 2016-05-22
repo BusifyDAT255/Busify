@@ -26,6 +26,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+
 public class MainActivity extends AppCompatActivity {
 
     Button sendButton;
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.send_button)){
                     //Returns a link to the file corresponding to the chosen date
-                    String attachmentLink = chooseURL(((EditText)findViewById(R.id.txt_date)).getText().toString());
+                    String attachmentLink = niceLink(((EditText)findViewById(R.id.txt_date)).getText().toString());
                     //Opens Androids default mail-app with a link to the above file attached.
                     sendEmail(attachmentLink);
                 }
@@ -98,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
      * @param date The date to find a file for
      * @return A String with the link corresponding to the date for the chosen file
      */
+    /**
     private String chooseURL (String date) {
         String link;
         switch(date){
@@ -128,4 +133,15 @@ public class MainActivity extends AppCompatActivity {
         }
         return link;
     }
+**/
+    private String niceLink (String date){
+        String link;
+        // Points to the root reference
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference dateRef = storageRef.child("/" + date + ".csv");
+        link = dateRef.getDownloadUrl().toString();
+        return link;
+    }
+
+
 }
