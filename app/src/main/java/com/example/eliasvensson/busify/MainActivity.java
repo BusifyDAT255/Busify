@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
 
-        // Initiates the button for setting date and the button for sending emails
+        // Initiates the buttons for setting date and sending emails
         dateButton = (Button) findViewById(R.id.date_button);
         sendButton = (Button) findViewById(R.id.send_button);
 
@@ -95,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Method that chooses which URL that will be sent in the email depending on the date
+
+    /**
+     * Returns a link to a specific .csv-file, corresponding to a date input
+     * @param date The date to find a file for
+     * @return A String with the link corresponding to the date for the chosen file
+     */
     private String chooseURL (String date) {
         String link;
         switch(date){
