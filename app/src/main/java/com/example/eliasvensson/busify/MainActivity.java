@@ -27,7 +27,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-
 public class MainActivity extends AppCompatActivity {
 
     Button sendButton;
@@ -44,38 +43,41 @@ public class MainActivity extends AppCompatActivity {
         dateButton = (Button) findViewById(R.id.date_button);
         sendButton = (Button) findViewById(R.id.send_button);
 
-        // Initiates a View.OnClickListener to listen for clicks on the dateButton
+        // Initiates a View.OnClickListener to listen for clicks on the dateButton and sendButton
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.send_button)){
-                    //Fulkod för att hitta filen.
-                    String AttachmentLink = chooseURL(((EditText)findViewById(R.id.txt_date)).getText().toString());
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("message/rfc822");
-                    i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
-                    i.putExtra(Intent.EXTRA_TEXT   , AttachmentLink);
-                    try {
-                        startActivity(Intent.createChooser(i, "Send mail..."));
-                    } catch (android.content.ActivityNotFoundException ex) {
-                        Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                    }
+                    //Returns a link to the file corresponding to the chosen date
+                    String attachmentLink = chooseURL(((EditText)findViewById(R.id.txt_date)).getText().toString());
+                    //Opens Androids default mail-app with a link to the above file attached.
+                    sendEmail(attachmentLink);
                 }
-
-
             }
-
-
-
         };
-
 
         //Assigns the pre-defined listener to listen to the button
         dateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(listener);
+    }
 
+    /**
+     *Opens Androids default mail-application with a link to a file attached.
+     * @param  attachmentLink The link to the file
+     *
+     */
+    private void sendEmail(String attachmentLink){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
+        i.putExtra(Intent.EXTRA_TEXT   , attachmentLink);
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
