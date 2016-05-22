@@ -54,22 +54,6 @@
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false"/>
 
-    <EditText
-        android:id="@+id/receiver_mail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:singleLine="true"
-        android:hint="Enter email of recipient"
-        android:gravity="center_horizontal"
-        android:imeOptions="actionDone"
-        android:focusable="true"
-        android:textColor="#ffffffff"
-        android:textColorHint="#ffffffff"
-        android:layout_marginBottom="48dp"
-        android:layout_above="@+id/button"
-        android:layout_centerHorizontal="true"/>
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="72dp"

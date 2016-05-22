@@ -23,7 +23,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +32,6 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText receiversmail;
     Button sendButton;
     Button startDateButton;
 
@@ -44,10 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
 
-        //Initiates the email-textfield for the receivers mail
-        receiversmail = (EditText)  findViewById(R.id.receiver_mail);
-
-        // Initiates the buttons for setting start and end date and send
+        // Initiates the button for setting date
         startDateButton = (Button) findViewById(R.id.start_date_button);
 
         sendButton = (Button) findViewById(R.id.button);
@@ -85,17 +80,10 @@ public class MainActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                // Lists all receivers as a string
-                String receiver =receiversmail.getText().toString();
-                //Separates the receivers into a list and adds them to mail
-                String[] ReceiversList = TextUtils.split(receiver, ",");
                 //Fulkod för att hitta filen.
                 String AttachmentLink = chooseURL(((EditText)findViewById(R.id.txt_start_date)).getText().toString());
-
-
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
-                i.putExtra(Intent.EXTRA_EMAIL  , ReceiversList);
                 i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
                 i.putExtra(Intent.EXTRA_TEXT   , AttachmentLink);
                 try {
