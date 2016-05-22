@@ -29,7 +29,7 @@
         android:layout_gravity="center"/>
 
     <EditText
-        android:id="@+id/txt_start_date"
+        android:id="@+id/txt_date"
         android:layout_width="fill_parent"
         android:layout_height="54dp"
         android:textSize="20sp"
@@ -44,13 +44,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/start_date_button"
+        android:id="@+id/date_button"
         android:background="@android:color/transparent"
         android:textColor="#ffffffff"
-        android:layout_alignBottom="@+id/txt_start_date"
+        android:layout_alignBottom="@+id/txt_date"
         android:layout_centerHorizontal="true"
-        android:layout_alignLeft="@+id/txt_start_date"
-        android:layout_alignRight="@+id/txt_start_date"
+        android:layout_alignLeft="@+id/txt_date"
+        android:layout_alignRight="@+id/txt_date"
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false"/>
 

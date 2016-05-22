@@ -1,20 +1,18 @@
 /**
  * @author Elias Svensson, David Genelov, Annie Söderström, Melinda Fulöp, Sara Kinell
- * @version 1.0, 2016-05-04
+ * @version 5.0, 2016-05-22
  * @since 1.0
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
- * how to use the app, two different textfields (start date and end date), one button for each
- * textfield to set the date, and one button to send a .csv file
+ * how to use the app, a date button to set the date and one button to send a .csv file
  *
- * The user simply chooses a start and an end date by clicking the startDatebutton and endDateButton,
- * and then enters one or several email addresses.
- * After that the app user clicks the "Send .csv"-button.
+ * The user simply chooses a date by clicking the date-button,
  *
- * When pressing the send button, an email with a .csv attachment will be sent to one or several
- * specified email addresses. The email will also contain sender, receiver, subject and body.
+ * When pressing the send button, the default android mail-application starts with a
+ * default email structure.
+ * The default email contains a link to a .csv file which can then be accessed by the recipient
+ * of the email.
  *
- * Full functionality is not yet implemented.
  */
 
 package com.example.eliasvensson.busify;
@@ -33,7 +31,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     Button sendButton;
-    Button startDateButton;
+    Button dateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +41,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Initiates the button for setting date
-        startDateButton = (Button) findViewById(R.id.start_date_button);
+        dateButton = (Button) findViewById(R.id.date_button);
 
         sendButton = (Button) findViewById(R.id.button);
 
-        // Initiates a View.OnClickListener to listen for clicks on the startDatebutton, endDatebutton
+        // Initiates a View.OnClickListener to listen for clicks on the dateButton
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if (v == findViewById(R.id.start_date_button))
-                    setDateToView(R.id.txt_start_date);
+                //if (v == findViewById(R.id.date_button))
+                    setDateToView(R.id.txt_date);
 
             }
 
@@ -74,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
         };
 
         //Assigns the pre-defined listener to listen to the button
-        startDateButton.setOnClickListener(listener);
+        dateButton.setOnClickListener(listener);
 
         // Initiates a View.OnClickListener to listen for clicks on the send button
         sendButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 //Fulkod för att hitta filen.
-                String AttachmentLink = chooseURL(((EditText)findViewById(R.id.txt_start_date)).getText().toString());
+                String AttachmentLink = chooseURL(((EditText)findViewById(R.id.txt_date)).getText().toString());
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
