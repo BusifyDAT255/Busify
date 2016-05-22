@@ -1,5 +1,5 @@
 /**
- * @author Elias Svensson, David Genelov, Annie Söderström, Melinda Fulöp, Sara Kinell
+ * @author Elias Svensson, David Genelöv, Annie Söderström, Melinda Fulöp, Sara Kinell
  * @version 5.0, 2016-05-22
  * @since 1.0
  * Manages the interaction with, and function of, the main view of the app.
@@ -40,17 +40,30 @@ public class MainActivity extends AppCompatActivity {
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
 
-        // Initiates the button for setting date
+        // Initiates the button for setting date and the button for sending emails
         dateButton = (Button) findViewById(R.id.date_button);
-
-        sendButton = (Button) findViewById(R.id.button);
+        sendButton = (Button) findViewById(R.id.send_button);
 
         // Initiates a View.OnClickListener to listen for clicks on the dateButton
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if (v == findViewById(R.id.date_button))
+                if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
+                else if (v == findViewById(R.id.send_button)){
+                    //Fulkod för att hitta filen.
+                    String AttachmentLink = chooseURL(((EditText)findViewById(R.id.txt_date)).getText().toString());
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("message/rfc822");
+                    i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
+                    i.putExtra(Intent.EXTRA_TEXT   , AttachmentLink);
+                    try {
+                        startActivity(Intent.createChooser(i, "Send mail..."));
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
 
             }
 
@@ -73,24 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Assigns the pre-defined listener to listen to the button
         dateButton.setOnClickListener(listener);
-
-        // Initiates a View.OnClickListener to listen for clicks on the send button
-        sendButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                //Fulkod för att hitta filen.
-                String AttachmentLink = chooseURL(((EditText)findViewById(R.id.txt_date)).getText().toString());
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("message/rfc822");
-                i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
-                i.putExtra(Intent.EXTRA_TEXT   , AttachmentLink);
-                try {
-                    startActivity(Intent.createChooser(i, "Send mail..."));
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        sendButton.setOnClickListener(listener);
+        
     }
 
     //Method that chooses which URL that will be sent in the email depending on the date
