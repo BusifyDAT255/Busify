@@ -73,11 +73,14 @@ public class MainActivity extends AppCompatActivity {
         // Attachment message
         String attachmentMessage = "Please click the link to download report:\n\n";
 
+        // Chosen date
+        String date = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+
         // Create relevant information used the sending of the email
         // e.g. subject matter, attached message
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
+        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + date);
         i.putExtra(Intent.EXTRA_TEXT   , attachmentMessage + attachmentLink);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
