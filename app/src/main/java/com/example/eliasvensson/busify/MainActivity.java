@@ -63,15 +63,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens Androids default mail-application with a link to a file attached.
+     * Opens Androids default mail-application with a message of attached link and
+     * link to a file.
+     *
      * @param  attachmentLink The link to the file
      *
      */
     private void sendEmail(String attachmentLink){
+        // Attachment message
+        String attachmentMessage = "Please click the link to download report:\n\n";
+
+        // Create relevant information used the sending of the email
+        // e.g. subject matter, attached message
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
-        i.putExtra(Intent.EXTRA_TEXT   , attachmentLink);
+        i.putExtra(Intent.EXTRA_TEXT   , attachmentMessage + attachmentLink);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
