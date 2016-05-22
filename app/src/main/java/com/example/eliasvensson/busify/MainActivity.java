@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
     EditText receiversmail;
     Button sendButton;
-    //Button endDateButton;
     Button startDateButton;
 
     @Override
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initiates the buttons for setting start and end date and send
         startDateButton = (Button) findViewById(R.id.start_date_button);
-            //endDateButton = (Button) findViewById(R.id.end_date_button);
+
         sendButton = (Button) findViewById(R.id.button);
 
         // Initiates a View.OnClickListener to listen for clicks on the startDatebutton, endDatebutton
@@ -60,8 +58,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //if (v == findViewById(R.id.start_date_button))
                     setDateToView(R.id.txt_start_date);
-                //else if (v == findViewById(R.id.end_date_button))
-                  //  setDateToView(R.id.txt_end_date);
+
             }
 
 
@@ -81,9 +78,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        //Assigns the pre-defined listener to listen to the two buttons
+        //Assigns the pre-defined listener to listen to the button
         startDateButton.setOnClickListener(listener);
-        //endDateButton.setOnClickListener(listener);
 
         // Initiates a View.OnClickListener to listen for clicks on the send button
         sendButton.setOnClickListener(new View.OnClickListener() {
