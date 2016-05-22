@@ -26,7 +26,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
 public class MainActivity extends AppCompatActivity {
 
     Button sendButton;
@@ -58,13 +57,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        //Assigns the pre-defined listener to listen to the button
+        // Assigns the pre-defined listener to listen to the button
         dateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(listener);
     }
 
     /**
-     *Opens Androids default mail-application with a link to a file attached.
+     * Opens Androids default mail-application with a link to a file attached.
      * @param  attachmentLink The link to the file
      *
      */
@@ -81,20 +80,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *Creates an instance of the class DateDialog, which opens the DateDialog
+     * Creates an instance of the class DateDialog, which opens the DateDialog
      * @param  viewId  the ID of the view which the method will write the returned date to.
      *
      */
     private void setDateToView(int viewId){
-        //Initiates a DateDialog object for user interaction when choosing the date
+        // Initiates a DateDialog object for user interaction when choosing the date
         DateDialog dialog = new DateDialog(findViewById(viewId));
-        //Sets a FragmentManager to track the interaction with the datedialog-fragment
+        // Sets a FragmentManager to track the interaction with the datedialog-fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        //Sets the dateDialog as visible to the user
+        // Sets the dateDialog as visible to the user
         dialog.show(ft, "DatePicker");
     }
-
-    //Method that chooses which URL that will be sent in the email depending on the date
 
     /**
      * Returns a link to a specific .csv-file, corresponding to a date input
