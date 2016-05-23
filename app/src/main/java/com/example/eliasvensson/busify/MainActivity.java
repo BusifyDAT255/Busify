@@ -12,7 +12,6 @@
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
  * of the email.
- *
  */
 
 package com.example.eliasvensson.busify;
@@ -48,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
-                else if (v == findViewById(R.id.send_button)){
+                else if (v == findViewById(R.id.send_button)) {
                     // Returns a link to the file corresponding to the chosen date
-                    String attachmentLink = chooseURL(((EditText)findViewById(R.id.txt_date)).getText().toString());
+                    String attachmentLink = chooseURL(((EditText) findViewById(R.id.txt_date)).getText().toString());
                     // If the date has not yet been chosen, display an error message
-                    if (attachmentLink == "404"){
+                    if (attachmentLink == "404") {
                         Toast.makeText(MainActivity.this, "Please start by choosing a date above.", Toast.LENGTH_SHORT).show();
                     } else
                         // Opens Androids default mail-app with a link to the above file attached.
@@ -73,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
      * @param  attachmentLink The link to the file
      *
      */
-    private void sendEmail(String attachmentLink){
+    private void sendEmail(String attachmentLink) {
         // Attachment message
         String attachmentMessage = "Please click the link to download report:\n\n";
 
         // Chosen date
-        String date = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+        String date = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
-        // Create relevant information used the sending of the email
+        // Creates relevant information used the sending of the email
         // e.g. subject matter, attached message
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
      * @param  viewId  the ID of the view which the method will write the returned date to.
      *
      */
-    private void setDateToView(int viewId){
+    private void setDateToView(int viewId) {
         // Initiates a DateDialog object for user interaction when choosing the date
         DateDialog dialog = new DateDialog(findViewById(viewId));
         // Sets a FragmentManager to track the interaction with the DateDialog-fragment
@@ -114,9 +113,9 @@ public class MainActivity extends AppCompatActivity {
      * @param date The date to find a file for
      * @return A String with the link corresponding to the date for the chosen file
      */
-    private String chooseURL (String date) {
+    private String chooseURL(String date) {
         String link;
-        switch(date){
+        switch (date) {
             case "":
                 link = "404";
                 break;
@@ -142,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 link = "http://bit.ly/22ltOWH";
                 break;
             default:
-                link ="Report missing for chosen date";
+                link = "Report missing for chosen date";
                 break;
         }
         return link;
