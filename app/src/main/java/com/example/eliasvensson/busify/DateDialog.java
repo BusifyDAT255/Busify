@@ -23,21 +23,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    // Variable that stores which EditText-object  the date will be written to
+    // Variable that stores which EditText-object the date will be written to
     private EditText textToChange;
 
     /** Constructor that assigns which EditText-object the date will be written to
      * @param view The EditText-object that the date will be written to
      */
-    public DateDialog(View view){
+    public DateDialog(View view) {
 
-        textToChange =(EditText)view;
+        if (view instanceof EditText)
+            textToChange = (EditText) view;
+        else
+            throw new IllegalArgumentException("The view is not an EditText view");
 
     }
 
@@ -53,8 +54,8 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         // that corresponds to the chosen date
         // Dates set to the week 18-24th May(!) to demonstrate one week of functionality
         // on the presentation on May 24th
-        GregorianCalendar minDate = new GregorianCalendar(2016,4,18);
-        GregorianCalendar maxDate = new GregorianCalendar(2016,4,24);
+        GregorianCalendar minDate = new GregorianCalendar(2016, 4, 18);
+        GregorianCalendar maxDate = new GregorianCalendar(2016, 4, 24);
         dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
         dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
 
@@ -68,8 +69,8 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
      * @param day The selected day
      */
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        // Show to the selected date in the text box
-        String date=String.format("%4d - %02d - %02d", year,(month+1),day);
+        // Show the selected date in the text box
+        String date = String.format("%4d - %02d - %02d", year, (month + 1), day);
         textToChange.setText(date);
 
     }
