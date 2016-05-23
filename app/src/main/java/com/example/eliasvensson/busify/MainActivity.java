@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + date);
-        i.putExtra(Intent.EXTRA_TEXT   , attachmentMessage + attachmentLink);
+        i.putExtra(Intent.EXTRA_TEXT, attachmentMessage + attachmentLink);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {

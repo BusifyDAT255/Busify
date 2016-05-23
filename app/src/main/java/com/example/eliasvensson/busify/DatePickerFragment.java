@@ -1,3 +1,13 @@
+/**
+ * @author Elias Svensson, Melinda Fulöp
+ * @version 5.0, 2016-05-23
+ * @since 1.0
+ *
+ * Handles visual datepicker popup, creating an instance and allowing the user to pick a year,
+ * month and day of month.
+ *
+ */
+
 package com.example.eliasvensson.busify;
 
 import android.app.DatePickerDialog;
@@ -8,12 +18,8 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 
-/**
- * Created by eliasvensson on 04/05/16.
- */
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
@@ -27,6 +33,6 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        // Do something with the date chosen by the user
+        // Have to implement abstract method, although not used
     }
 }
