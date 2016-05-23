@@ -67,15 +67,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens Androids default mail-application with a link to a file attached.
+     * Opens Androids default mail-application with a message of attached link and
+     * link to a file.
+     *
      * @param  attachmentLink The link to the file
      *
      */
     private void sendEmail(String attachmentLink){
+        // Attachment message
+        String attachmentMessage = "Please click the link to download report:\n\n";
+
+        // Chosen date
+        String date = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+
+        // Create relevant information used the sending of the email
+        // e.g. subject matter, attached message
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
-        i.putExtra(Intent.EXTRA_TEXT   , attachmentLink);
+        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + date);
+        i.putExtra(Intent.EXTRA_TEXT, attachmentMessage + attachmentLink);
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
@@ -98,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Returns a link to a specific .csv-file, corresponding to a date input
+     * Returns a link to a specific .csv-file, corresponding to a date input.
+     * Links are shortened using Bit.ly.
      * @param date The date to find a file for
      * @return A String with the link corresponding to the date for the chosen file
      */
@@ -108,26 +119,26 @@ public class MainActivity extends AppCompatActivity {
             case "":
                 link = "404";
                 break;
+            case "18-5-2016":
+                link = "http://bit.ly/1sxpLdr";
+                break;
             case "19-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-19.csv?alt=media&token=20520547-18b7-458d-9019-e1dc3cdd83cd";
+                link = "http://bit.ly/1WMm4xL";
                 break;
             case "20-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-20.csv?alt=media&token=ed2ee38e-c97a-4d81-ae5f-9824f842cfed";
+                link = "http://bit.ly/22ltCqu";
                 break;
             case "21-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-21.csv?alt=media&token=4b247cec-23ea-4522-a99a-e573d550230f";
+                link = "http://bit.ly/1OIqoFK";
                 break;
             case "22-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-22.csv?alt=media&token=f05266c0-3281-4112-8a4e-1fbf96bd6929";
+                link = "http://bit.ly/1Rjzg4h";
                 break;
             case "23-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-23.csv?alt=media&token=222481d8-3d30-4069-b40d-4f631855a437";
+                link = "http://bit.ly/20pzCwE";
                 break;
             case "24-5-2016":
-                link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-24.csv?alt=media&token=6daa827c-8bbe-4189-999a-e89f21b3f483";
-                break;
-            case "25-5-2016":
-                link ="https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-25.csv?alt=media&token=e4ea105a-40c8-439d-9006-56514a22dfcf";
+                link = "http://bit.ly/22ltOWH";
                 break;
             default:
                 link ="Report missing for chosen date";
