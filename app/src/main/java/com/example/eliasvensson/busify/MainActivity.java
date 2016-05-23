@@ -112,26 +112,26 @@ public class MainActivity extends AppCompatActivity {
     private String chooseURL (String date) {
         String link;
         switch(date){
+            case "18-5-2016":
+                link = "http://bit.ly/1sxpLdr";
+                break;
             case "19-5-2016":
-                link = "http://bit.ly/1TPhSX8";
+                link = "http://bit.ly/1WMm4xL";
                 break;
             case "20-5-2016":
-                link = "http://bit.ly/1swJzxr";
+                link = "http://bit.ly/22ltCqu";
                 break;
             case "21-5-2016":
-                link = "http://bit.ly/1Tw2zp3";
+                link = "http://bit.ly/1OIqoFK";
                 break;
             case "22-5-2016":
-                link = "http://bit.ly/1TPhW9l";
+                link = "http://bit.ly/1Rjzg4h";
                 break;
             case "23-5-2016":
-                link = "http://bit.ly/20mupWC";
+                link = "http://bit.ly/20pzCwE";
                 break;
             case "24-5-2016":
-                link = "http://bit.ly/25g6ajx";
-                break;
-            case "25-5-2016":
-                link ="http://bit.ly/20muYzv";
+                link = "http://bit.ly/22ltOWH";
                 break;
             default:
                 link ="Report missing for chosen date";
