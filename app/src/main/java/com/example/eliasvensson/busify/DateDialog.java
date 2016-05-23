@@ -42,7 +42,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
     }
 
     /** Sets the current date as default for a dialog
-     * @return A new instance of DatePickerDialog with today's date as default
+     * @return A new instance of DatePickerDialog with May 24th as default date.
      * @param savedInstanceState The current state of the application
      *
      */
@@ -51,8 +51,8 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
         // Set the max and min dates for the DatePicker, to guarantee that there is a file
         // that corresponds to the chosen date
-        // Dates set to the week 19-25th May(!) to demonstrate one week of functionality
-        // on the presentation on May 25th
+        // Dates set to the week 18-24th May(!) to demonstrate one week of functionality
+        // on the presentation on May 24th
         GregorianCalendar minDate = new GregorianCalendar(2016,4,18);
         GregorianCalendar maxDate = new GregorianCalendar(2016,4,24);
         dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
@@ -64,12 +64,12 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
     /** Sets the selected date to a String and sets the text of a view to the date
      * @param view The view to update the text with the date
      * @param year The selected year
-     * @param month The selected month
+     * @param month The selected month (integers ranging from 0 to 11, 0 being January)
      * @param day The selected day
      */
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Show to the selected date in the text box
-        String date=day+"-"+(month+1)+"-"+year;
+        String date=String.format("%4d - %02d - %02d", year,(month+1),day);
         textToChange.setText(date);
 
     }

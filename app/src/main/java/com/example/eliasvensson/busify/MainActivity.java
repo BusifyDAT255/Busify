@@ -101,25 +101,25 @@ public class MainActivity extends AppCompatActivity {
     private String chooseURL (String date) {
         String link;
         switch(date){
-            case "19-5-2016":
+            case "2016 - 05 - 19":
                 link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-19.csv?alt=media&token=20520547-18b7-458d-9019-e1dc3cdd83cd";
                 break;
-            case "20-5-2016":
+            case "2016 - 05 - 20":
                 link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-20.csv?alt=media&token=ed2ee38e-c97a-4d81-ae5f-9824f842cfed";
                 break;
-            case "21-5-2016":
+            case "2016 - 05 - 21":
                 link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-21.csv?alt=media&token=4b247cec-23ea-4522-a99a-e573d550230f";
                 break;
-            case "22-5-2016":
+            case "2016 - 05 - 22":
                 link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-22.csv?alt=media&token=f05266c0-3281-4112-8a4e-1fbf96bd6929";
                 break;
-            case "23-5-2016":
+            case "2016 - 05 - 23":
                 link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-23.csv?alt=media&token=222481d8-3d30-4069-b40d-4f631855a437";
                 break;
-            case "24-5-2016":
+            case "2016 - 05 - 24":
                 link = "https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-24.csv?alt=media&token=6daa827c-8bbe-4189-999a-e89f21b3f483";
                 break;
-            case "25-5-2016":
+            case "2016 - 05 - 25":
                 link ="https://firebasestorage.googleapis.com/v0/b/dat255-busify.appspot.com/o/2016-05-25.csv?alt=media&token=e4ea105a-40c8-439d-9006-56514a22dfcf";
                 break;
             default:
