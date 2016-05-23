@@ -5,9 +5,9 @@
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
  * how to use the app, a date button to set the date and one button to send a .csv file
- * <p/>
+ *
  * The user simply chooses a date by clicking the date-button,
- * <p/>
+ *
  * When pressing the send button, the default android mail-application starts with a
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         // Chosen date
         String date = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
-        // Create relevant information used the sending of the email
+        // Creates relevant information used the sending of the email
         // e.g. subject matter, attached message
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
