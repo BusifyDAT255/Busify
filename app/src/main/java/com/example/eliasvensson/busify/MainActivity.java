@@ -49,10 +49,14 @@ public class MainActivity extends AppCompatActivity {
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.send_button)){
-                    //Returns a link to the file corresponding to the chosen date
+                    // Returns a link to the file corresponding to the chosen date
                     String attachmentLink = chooseURL(((EditText)findViewById(R.id.txt_date)).getText().toString());
-                    //Opens Androids default mail-app with a link to the above file attached.
-                    sendEmail(attachmentLink);
+                    // If the date has not yet been chosen, display an error message
+                    if (attachmentLink == "404"){
+                        Toast.makeText(MainActivity.this, "Please start by choosing a date above.", Toast.LENGTH_SHORT).show();
+                    } else
+                        // Opens Androids default mail-app with a link to the above file attached.
+                        sendEmail(attachmentLink);
                 }
             }
         };
@@ -112,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
     private String chooseURL (String date) {
         String link;
         switch(date){
+            case "":
+                link = "404";
+                break;
             case "18-5-2016":
                 link = "http://bit.ly/1sxpLdr";
                 break;
