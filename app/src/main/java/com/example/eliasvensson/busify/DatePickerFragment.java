@@ -3,7 +3,7 @@
  * @version 5.0, 2016-05-23
  * @since 1.0
  *
- * Handles visual datepicker popup, creating an instance and allowing the user to pick a year,
+ * Handles visual DatePicker popup, creating an instance and allowing the user to pick a year,
  * month and day of month.
  *
  */
