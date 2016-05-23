@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
     private void setDateToView(int viewId){
         // Initiates a DateDialog object for user interaction when choosing the date
         DateDialog dialog = new DateDialog(findViewById(viewId));
-        // Sets a FragmentManager to track the interaction with the datedialog-fragment
+        // Sets a FragmentManager to track the interaction with the DateDialog-fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        // Sets the dateDialog as visible to the user
+        // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
     }
 
@@ -119,25 +119,25 @@ public class MainActivity extends AppCompatActivity {
             case "":
                 link = "404";
                 break;
-            case "18-5-2016":
+            case "2016 - 05 - 18":
                 link = "http://bit.ly/1sxpLdr";
                 break;
-            case "19-5-2016":
+            case "2016 - 05 - 19":
                 link = "http://bit.ly/1WMm4xL";
                 break;
-            case "20-5-2016":
+            case "2016 - 05 - 20":
                 link = "http://bit.ly/22ltCqu";
                 break;
-            case "21-5-2016":
+            case "2016 - 05 - 21":
                 link = "http://bit.ly/1OIqoFK";
                 break;
-            case "22-5-2016":
+            case "2016 - 05 - 22":
                 link = "http://bit.ly/1Rjzg4h";
                 break;
-            case "23-5-2016":
+            case "2016 - 05 - 23":
                 link = "http://bit.ly/20pzCwE";
                 break;
-            case "24-5-2016":
+            case "2016 - 05 - 24":
                 link = "http://bit.ly/22ltOWH";
                 break;
             default:
