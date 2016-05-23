@@ -109,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Returns a link to a specific .csv-file, corresponding to a date input.
-     * Links are shortened using Bit.ly.
+     * Links are shortened using Bit.ly. If no date is chosen by the user, "404" is returned.
+     * If there is no report, a String is returned with a report missing message.
      * @param date The date to find a file for
      * @return A String with the link corresponding to the date for the chosen file
      */
