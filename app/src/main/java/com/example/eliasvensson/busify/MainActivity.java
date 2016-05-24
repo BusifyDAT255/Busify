@@ -42,6 +42,7 @@ import static com.example.eliasvensson.busify.R.styleable.AlertDialog;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Define variables
     Button sendButton;
     Button dateButton;
     String attachmentLink;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // Initiates a View.OnClickListener to listen for clicks on the dateButton and sendButton
         View.OnClickListener listener = clickHandler();
 
-        // Assigns the pre-defined listener to listen to the button
+        // Assigns the pre-defined listener to listen to the buttons
         dateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(listener);
     }
@@ -83,14 +84,6 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private void setDownloadLink(Uri link){
-
-        attachmentLink = link.toString();
-    }
-    private String getDownloadLink(){
-
-        return attachmentLink;
-    }
     /**
      * Opens Androids default mail-application with a link to a file attached.
      * The link to the file
@@ -122,11 +115,23 @@ public class MainActivity extends AppCompatActivity {
         dialog.show(ft, "DatePicker");
     }
 
-   // Calls the server to securely obtain an unguessable download Url
+
+
+    /**
+     * Calls the server to securely obtain an unguessable download Url
+     * using an async call.
+     * @param date
+     * onSuccess sets the the downloadLink by call to setDownloadLink
+     * and initiates the email by call to sendEmail
+     *
+     * onFailure opens a dialog telling the user that no report is available for this date.
+     *
+     */
    private void getUrlAsync (String date){
        Task<Uri> link;
        // Points to the root reference
        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+       // Points to the specific file depending on date
        StorageReference dateRef = storageRef.child("/" + date + ".csv");
        link = dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
        {
@@ -160,4 +165,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * Getter and setter for download link.
+     * @param link
+     */
+    private void setDownloadLink(Uri link){
+
+        attachmentLink = link.toString();
+    }
+    private String getDownloadLink(){
+
+        return attachmentLink;
+    }
+
+
+
 }
