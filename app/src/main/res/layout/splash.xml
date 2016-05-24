@@ -2,13 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/gradientbackground">
+                android:background="@drawable/gradient_background">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/splashLogoView"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:src="@drawable/busify_logo_white"/>
 </RelativeLayout>
