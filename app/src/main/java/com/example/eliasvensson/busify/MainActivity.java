@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Opens Androids default mail-application with a link to a file attached.
-     * The link to the file
+     * uses getDownloadLink to get the link.
      *
      */
     private void sendEmail(){
