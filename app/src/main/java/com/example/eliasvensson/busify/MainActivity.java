@@ -18,9 +18,12 @@
 package com.example.eliasvensson.busify;
 
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,10 +31,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import static com.example.eliasvensson.busify.R.styleable.AlertDialog;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -52,7 +58,16 @@ public class MainActivity extends AppCompatActivity {
         sendButton = (Button) findViewById(R.id.send_button);
 
         // Initiates a View.OnClickListener to listen for clicks on the dateButton and sendButton
-        View.OnClickListener listener = new View.OnClickListener() {
+        View.OnClickListener listener = clickHandler();
+
+        // Assigns the pre-defined listener to listen to the button
+        dateButton.setOnClickListener(listener);
+        sendButton.setOnClickListener(listener);
+    }
+
+    @NonNull
+    private View.OnClickListener clickHandler() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (v == findViewById(R.id.date_button))
@@ -66,10 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
-        // Assigns the pre-defined listener to listen to the button
-        dateButton.setOnClickListener(listener);
-        sendButton.setOnClickListener(listener);
     }
 
     private void setDownloadLink(Uri link){
@@ -125,8 +136,28 @@ public class MainActivity extends AppCompatActivity {
                setDownloadLink(downloadUrl);
                sendEmail();
            }
+
+       }).addOnFailureListener(new OnFailureListener() {
+           @Override
+           public void onFailure(@NonNull Exception e) {
+               AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this, 1);
+               builder1.setMessage("Sorry, no report available for this date.");
+               builder1.setCancelable(true);
+
+               builder1.setPositiveButton(
+                       "Ok!",
+                       new DialogInterface.OnClickListener() {
+                           public void onClick(DialogInterface dialog, int id) {
+                               dialog.cancel();
+                           }
+                       });
+
+
+               AlertDialog alert11 = builder1.create();
+               alert11.show();
+           }
        });
-   }
 
 
+    }
 }
