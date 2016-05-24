@@ -1,12 +1,12 @@
 /**
- * @author Elias Svensson, David Genelöv, Annie Söderström, Melinda Fulöp, Sara Kinell
- * @version 5.0, 2016-05-22
+ * @author Elias Svensson, David Genelöv, Annie Söderström, Melinda Fulöp, Sara Kinell, Jonathan Fager
+ * @version 6.0, 2016-05-24
  * @since 1.0
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
  * how to use the app, a date button to set the date and one button to send a .csv file
  *
- * The user simply chooses a date by clicking the date-button,
+ * The user simply chooses a date by clicking the date-button.
  *
  * When pressing the send button, the default android mail-application starts with a
  * default email structure.
@@ -37,7 +37,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import static com.example.eliasvensson.busify.R.styleable.AlertDialog;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 else if (v == findViewById(R.id.send_button)){
                     //Returns a link to the file corresponding to the chosen date
                     String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
-                    Log.d("Datum", callDate);
                     getUrlAsync(callDate);
 
                 }
@@ -86,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Opens Androids default mail-application with a link to a file attached.
-     * uses getDownloadLink to get the link.
+     * Calls getDownloadLink to get the link.
      *
      */
     private void sendEmail(){
@@ -123,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
      * @param date
      * onSuccess sets the the downloadLink by call to setDownloadLink
      * and initiates the email by call to sendEmail
-     *
      * onFailure opens a dialog telling the user that no report is available for this date.
      *
      */
@@ -145,11 +142,11 @@ public class MainActivity extends AppCompatActivity {
        }).addOnFailureListener(new OnFailureListener() {
            @Override
            public void onFailure(@NonNull Exception e) {
-               AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this, 1);
-               builder1.setMessage("Sorry, no report available for this date.");
-               builder1.setCancelable(true);
+               AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, 1);
+               builder.setMessage("Sorry, no report available for this date.");
+               builder.setCancelable(true);
 
-               builder1.setPositiveButton(
+               builder.setPositiveButton(
                        "Ok!",
                        new DialogInterface.OnClickListener() {
                            public void onClick(DialogInterface dialog, int id) {
@@ -158,8 +155,8 @@ public class MainActivity extends AppCompatActivity {
                        });
 
 
-               AlertDialog alert11 = builder1.create();
-               alert11.show();
+               AlertDialog alert = builder.create();
+               alert.show();
            }
        });
 
