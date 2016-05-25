@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
        // Points to the root reference
        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
        // Points to the specific file depending on date
-       StorageReference dateRef = storageRef.child("/" + date + ".csv");
+       StorageReference dateRef = storageRef.child("/" + "2016-05-18" + ".csv");
        link = dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
        {
            @Override
