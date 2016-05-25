@@ -68,17 +68,17 @@ public class MainActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String callDate = "";
+
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.send_button)){
-                    try        {
-                    //Returns a link to the file corresponding to the chosen date
-                    callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
-                      }catch (NullPointerException e) {
-                        Toast.makeText(MainActivity.this, "Please choose a date above.", Toast.LENGTH_SHORT).show();
-                    }
-                     getUrlAsync(callDate);
+                    String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+
+                        // Checks if app user has chosen a date
+                         if (!callDate.isEmpty())
+                             getUrlAsync(callDate);
+                         else
+                             Toast.makeText(MainActivity.this, "Please start by choosing a date", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
        // Points to the root reference
        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
        // Points to the specific file depending on date
-       StorageReference dateRef = storageRef.child("/" + "2016-05-18" + ".csv");
+       StorageReference dateRef = storageRef.child("/" + date + ".csv");
        link = dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
        {
            @Override
