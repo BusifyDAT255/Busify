@@ -31,9 +31,9 @@
     <EditText
         android:id="@+id/txt_date"
         android:layout_width="fill_parent"
-        android:layout_height="54dp"
+        android:layout_height="72dp"
         android:textSize="20sp"
-        android:hint="xx-xx-xxxx"
+        android:hint="Click here to select a date"
         android:focusable="false"
         android:background="@drawable/button1"
         android:textAlignment="center"

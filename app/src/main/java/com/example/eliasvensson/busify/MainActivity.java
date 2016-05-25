@@ -12,7 +12,6 @@
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
  * of the email.
- *
  */
 
 package com.example.eliasvensson.busify;
@@ -69,28 +68,43 @@ public class MainActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String callDate = "";
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.send_button)){
+                    try        {
                     //Returns a link to the file corresponding to the chosen date
-                    String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
-                    getUrlAsync(callDate);
-
+                    callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+                      }catch (NullPointerException e) {
+                        Toast.makeText(MainActivity.this, "Please choose a date above.", Toast.LENGTH_SHORT).show();
+                    }
+                     getUrlAsync(callDate);
                 }
             }
         };
     }
 
+
     /**
-     * Opens Androids default mail-application with a link to a file attached.
-     * Calls getDownloadLink to get the link.
+     * Opens Androids default mail-application with a message of attached link and
+     * link to a file.
+     *
+     *
      *
      */
-    private void sendEmail(){
+    private void sendEmail() {
+        // Attachment message
+        String attachmentMessage = "Please click the link to download report:\n\n";
+
+        // Chosen date
+        String date = ((EditText) findViewById(R.id.txt_date)).getText().toString();
+
+        // Creates relevant information used the sending of the email
+        // e.g. subject matter, attached message
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report");
-        i.putExtra(Intent.EXTRA_TEXT   , getDownloadLink());
+        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + date);
+        i.putExtra(Intent.EXTRA_TEXT, attachmentMessage + getDownloadLink());
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
         } catch (android.content.ActivityNotFoundException ex) {
@@ -103,12 +117,12 @@ public class MainActivity extends AppCompatActivity {
      * @param  viewId  the ID of the view which the method will write the returned date to.
      *
      */
-    private void setDateToView(int viewId){
+    private void setDateToView(int viewId) {
         // Initiates a DateDialog object for user interaction when choosing the date
         DateDialog dialog = new DateDialog(findViewById(viewId));
-        // Sets a FragmentManager to track the interaction with the datedialog-fragment
+        // Sets a FragmentManager to track the interaction with the DateDialog-fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        // Sets the dateDialog as visible to the user
+        // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
     }
 
@@ -167,14 +181,10 @@ public class MainActivity extends AppCompatActivity {
      * @param link the URL link for the .csv-file
      */
     private void setDownloadLink(Uri link){
-
         attachmentLink = link.toString();
     }
     private String getDownloadLink(){
-
         return attachmentLink;
     }
-
-
 
 }
