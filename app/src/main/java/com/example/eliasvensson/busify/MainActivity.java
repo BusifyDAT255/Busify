@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Calls the server to securely obtain an unguessable download Url
      * using an async call.
-     * @param date
+     * @param date should be in the format of "YYYY-MM-DD"
      * onSuccess sets the the downloadLink by call to setDownloadLink
      * and initiates the email by call to sendEmail
      * onFailure opens a dialog telling the user that no report is available for this date.
