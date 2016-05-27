@@ -8,12 +8,16 @@
 
 package com.example.eliasvensson.busify;
 
+import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 
 /**
@@ -26,10 +30,21 @@ public class DataGenerator {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
+        HashMap<String, String> busMap = new HashMap<>();
+        ref.child("Bus").child("100020").child("Bus type").setValue("Fake bus type");
+
+
         // Add value event listener to the database reference
         ref.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot busSnapshot: dataSnapshot.getChildren()) {
+                    String busType = (String) busSnapshot.child("Bus type").getValue();
+                    //String date = (String) busSnapshot.child("Date").getValue();
+                    Log.e("Changed bus type to: ", busType);
+                }
+
 
             }
 
