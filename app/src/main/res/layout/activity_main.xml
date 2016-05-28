@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:textSize="22sp"
-        android:text="Send report"
+        android:text="Share report"
         android:id="@+id/send_button"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
