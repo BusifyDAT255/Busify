@@ -44,10 +44,9 @@ public class DataGenerator {
                 String busType ="";
                 for (DataSnapshot busSnapshot: dataSnapshot.getChildren()) {
                     busType = busSnapshot.getValue().toString();
-                    //String date = (String) busSnapshot.child("Date").getValue();
 
                 }
-                Log.e("Changed bus type to: ", busType);
+                Log.e("Changed bus type to ", busType);
 
             }
 
@@ -62,28 +61,28 @@ public class DataGenerator {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("Child added: ", dataSnapshot.getKey().toString());
+                Log.d("Child added ", dataSnapshot.getKey().toString());
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.d("Child changed: ", dataSnapshot.getKey().toString());
+                Log.d("Child changed ", dataSnapshot.getKey().toString());
 
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.d("Child removed: ", dataSnapshot.getKey().toString());
+                Log.d("Child removed ", dataSnapshot.getKey().toString());
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.d("Child moved: ", dataSnapshot.getKey().toString());
+                Log.d("Child moved ", dataSnapshot.getKey().toString());
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w("Cancelled: ", databaseError.getMessage(), databaseError.toException());
+                Log.w("Cancelled ", databaseError.getMessage(), databaseError.toException());
             }
         });
 
