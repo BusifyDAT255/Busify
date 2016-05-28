@@ -33,6 +33,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
     /** Constructor that assigns which EditText-object the date will be written to
      * @param view The EditText-object that the date will be written to
      */
+
     public DateDialog(View view) {
 
         if (view instanceof EditText)
