@@ -40,7 +40,7 @@ public class DataGenerator {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot busSnapshot: dataSnapshot.getChildren()) {
-                    String busType = (String) busSnapshot.child("Bus type").getValue();
+                    String busType = busSnapshot.getValue().toString();
                     //String date = (String) busSnapshot.child("Date").getValue();
                     Log.e("Changed bus type to: ", busType);
                 }
