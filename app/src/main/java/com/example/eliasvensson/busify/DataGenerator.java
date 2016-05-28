@@ -3,6 +3,7 @@
  * @author Annie Söderström
  * @version 2.0, 2016-05-28
  * @since 1.0, 2016-05-27
+ *
  * Information for buses from Firebase.
  * Error message will be shown if the ValueEventListener fails to
  * access the server or is removed because of Firebase settings.
