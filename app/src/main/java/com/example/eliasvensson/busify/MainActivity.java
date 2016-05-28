@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,16 +32,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -68,13 +59,16 @@ public class MainActivity extends AppCompatActivity {
         dateButton = (Button) findViewById(R.id.date_button);
         sendButton = (Button) findViewById(R.id.send_button);
 
+
         // Initiates a View.OnClickListener to listen for clicks on the dateButton and sendButton
         View.OnClickListener listener = clickHandler();
+
 
         // Assigns the pre-defined listener to listen to the buttons
         dateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(listener);
-        */
+
+*/
     }
 
     @NonNull
@@ -100,11 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Opens Androids default mail-application with a message of attached link and
+     * Opens Android's default mail-application with a message of attached link and
      * link to a file.
-     *
-     *
-     *
      */
     private void sendEmail() {
         // Attachment message
@@ -194,9 +185,11 @@ public class MainActivity extends AppCompatActivity {
      * Getter and setter for download link.
      * @param link the URL link for the .csv-file
      */
+
     private void setDownloadLink(Uri link){
         attachmentLink = link.toString();
     }
+
     private String getDownloadLink(){
         return attachmentLink;
     }

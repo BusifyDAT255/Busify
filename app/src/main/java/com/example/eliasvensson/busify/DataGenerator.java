@@ -64,6 +64,8 @@ public class DataGenerator {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.e("The string is: ", s);
+                Log.e("Changed bus type to: ", dataSnapshot.getValue().toString());
 
             }
 
