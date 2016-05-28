@@ -28,13 +28,16 @@ import java.util.HashMap;
 public class DataGenerator {
 
     private DatabaseReference ref;
+    private FirebaseDatabase database;
+
+    public DataGenerator(){
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference();
+    }
 
     // Method to test Firebase
     public void testFirebase() {
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        ref = database.getReference();
-        HashMap<String, String> busMap = new HashMap<>();
         ref.orderByChild("2016-05-18");
 
         // Add value event listener to the database reference
