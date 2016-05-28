@@ -2,7 +2,9 @@
  * @author Sara Kinell and Annie Söderström
  * @version 1.0, 2016-05-27
  * @since 1.0
- *
+ * Generates information about buses for the chosen date.
+ * Error message will be shown if the ValueEventListener fails to
+ * access the server or is removed because of Firebase settings.
  *
  */
 
@@ -31,7 +33,7 @@ public class DataGenerator {
     private FirebaseDatabase database;
     private String chosenDate;
 
-    public DataGenerator(){
+    public DataGenerator() {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
     }
@@ -40,11 +42,11 @@ public class DataGenerator {
     public void getBusValues(String date) {
         this.chosenDate = date;
         // Add value event listener to the database reference
-        ref.child(date).addValueEventListener(new ValueEventListener() {
+        ref.child(chosenDate).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("Bus values for " + chosenDate, dataSnapshot.getValue().toString());
+                FileSaver.createCsv(chosenDate, dataSnapshot.getValue().toString());
             }
 
             @Override
