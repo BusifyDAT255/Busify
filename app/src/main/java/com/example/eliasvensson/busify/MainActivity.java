@@ -47,7 +47,10 @@ import com.google.firebase.storage.StorageReference;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Define variables
+    /**
+     * Defines variables for the DatePicker button, the button used to share
+     * the link and the link attached in the email to be sent.
+     */
     Button sendButton;
     Button dateButton;
     String attachmentLink;
@@ -63,15 +66,12 @@ public class MainActivity extends AppCompatActivity {
         dateButton = (Button) findViewById(R.id.date_button);
         sendButton = (Button) findViewById(R.id.send_button);
 
-
         // Initiates a View.OnClickListener to listen for clicks on the dateButton and sendButton
         View.OnClickListener listener = clickHandler();
-
 
         // Assigns the pre-defined listener to listen to the buttons
         dateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(listener);
-
     }
 
     @NonNull
@@ -134,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.show(ft, "DatePicker");
     }
 
-
-
     /**
      * Calls the server to securely obtain an unguessable download Url
      * using an async call.
@@ -184,15 +182,12 @@ public class MainActivity extends AppCompatActivity {
                alert.show();
            }
        });
-
-
     }
 
     /**
      * Getter and setter for download link.
      * @param link the URL link for the .csv-file
      */
-
     private void setDownloadLink(Uri link){
         attachmentLink = link.toString();
     }

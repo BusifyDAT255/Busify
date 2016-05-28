@@ -21,6 +21,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class DataGenerator {
 
+    /**
+     * Defines variables handling the reference to the Firebase database
+     * and the String containing the date for which bus information is to be shown.
+     */
     private FirebaseDatabase database;
     private DatabaseReference ref;
     private String chosenDate;
