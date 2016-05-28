@@ -30,26 +30,26 @@ public class DataGenerator {
     private DatabaseReference ref;
     private FirebaseDatabase database;
 
-    public DataGenerator() {
+    public DataGenerator(){
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
     }
 
     // Method to test Firebase
     public void getBusValues(String date) {
-        ref.orderByValue();
+        ref.orderByChild("2016-05-18");
 
         // Add value event listener to the database reference
         ref.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("Buses ", dataSnapshot.getValue().toString());
+                Log.e("Changed bus type to ", dataSnapshot.getValue().toString());
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.w("Cancelled ", databaseError.getMessage(), databaseError.toException());
             }
         });
 
