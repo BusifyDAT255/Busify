@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // Checks if app user has chosen a date
                          if (!callDate.isEmpty()) {
-                             dgenerator.getBusValues(callDate);
+                             dgenerator.getBusInformation(callDate);
                              //getUrlAsync(callDate); <-- This should later be working, but does not with emulator right now
                          }
                          else
