@@ -3,28 +3,21 @@
  * @version 1.0, 2016-05-27
  * @since 1.0
  *
- *
+ * Class to query data from firebase database.
+ * If changes are made to firebase log messages will be sent
  */
 
 package com.example.eliasvensson.busify;
 
 import android.util.Log;
-import android.widget.Toast;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
 
-
-/**
- *
- */
 public class DataGenerator {
 
     private DatabaseReference ref;
