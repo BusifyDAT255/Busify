@@ -13,7 +13,7 @@ import android.util.Log;
 public class FileSaver {
 
     protected static void createCsv (String date, String busInfo) {
-        Log.i("Bus info and date", busInfo + " " + date);
+        Log.i("Bus info for " + date, busInfo);
     }
 
 }
