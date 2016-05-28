@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // Checks if app user has chosen a date
                          if (!callDate.isEmpty()) {
+                             //starts query information from firebase
                              dgenerator.getBusInformation(callDate);
                              //getUrlAsync(callDate); <-- This should later be working, but does not with emulator right now
                          }
@@ -149,16 +150,12 @@ public class MainActivity extends AppCompatActivity {
      *
      */
    private void getUrlAsync (String date){
-       Task<Uri> link;
+
        // Points to the root reference
        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-
-       // Gets the bus information for the specified date
-       new DataGenerator().getBusInformation(date);
-
        // Points to the specific file depending on date
        StorageReference dateRef = storageRef.child("/" + date + ".csv");
-       link = dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+       Task<Uri> link = dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
        {
            @Override
            public void onSuccess(Uri downloadUrl)
