@@ -36,8 +36,9 @@ public class DataGenerator {
     }
 
     // Method to test Firebase
-    public void testFirebase() {
+    public void getBusValues(String date) {
 
+        ref.orderByChild("2016-05-18");
         ref.orderByChild("2016-05-18");
 
         // Add value event listener to the database reference
@@ -45,19 +46,12 @@ public class DataGenerator {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String busType ="";
-                for (DataSnapshot busSnapshot : dataSnapshot.getChildren()) {
-                    for (DataSnapshot busDetails : busSnapshot.getChildren()) {
-                        busType = busType + busDetails.getValue().toString() + "\n";
-                    }
-                }
-                Log.e("Changed bus type to ", busType);
-
+                Log.e("Changed bus type to ", dataSnapshot.getValue().toString());
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.w("Cancelled ", databaseError.getMessage(), databaseError.toException());
             }
         });
 
