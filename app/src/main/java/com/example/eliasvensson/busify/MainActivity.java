@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initialises a DataGenerator
+        // Initializes a DataGenerator
         dgenerator = new DataGenerator();
 
         // Sets the view to be displayed upon the start of the app

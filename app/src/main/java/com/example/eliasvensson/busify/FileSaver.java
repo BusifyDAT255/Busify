@@ -21,6 +21,8 @@ public class FileSaver {
      * @param date the date for retrieved bus information
      * @param busInfo information about bus-ID, driving distance (km), electric energy
      * consumption (kWh) and bus type for one day for each bus
+     *
+     * TODO: Implement functionality
      */
     protected static void createCsv (String date, String busInfo) {
         Log.e("Bus info for " + date + " ", busInfo);
