@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Lines to test the data generator, uncomment line 63 til 77 when finished
         DataGenerator dg = new DataGenerator();
-        dg.getBusValues("2016-05-18");
+        dg.getBusValues("2016-05-19");
 
         /*
         // Sets the view to be displayed upon the start of the app
