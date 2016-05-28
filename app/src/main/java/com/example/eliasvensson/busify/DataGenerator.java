@@ -27,14 +27,15 @@ import java.util.HashMap;
  */
 public class DataGenerator {
 
+    private DatabaseReference ref;
+
     // Method to test Firebase
     public void testFirebase() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference();
+        ref = database.getReference();
         HashMap<String, String> busMap = new HashMap<>();
-        ref.child("Bus").child("100020").child("Bus type").setValue("Electric");
-
+        ref.orderByChild("2016-05-18");
 
         // Add value event listener to the database reference
         ref.addValueEventListener(new ValueEventListener() {
@@ -42,9 +43,10 @@ public class DataGenerator {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String busType ="";
-                for (DataSnapshot busSnapshot: dataSnapshot.getChildren()) {
-                    busType = busSnapshot.getValue().toString();
-
+                for (DataSnapshot busSnapshot : dataSnapshot.getChildren()) {
+                    for (DataSnapshot busDetails : busSnapshot.getChildren()) {
+                        busType = busType + busDetails.getValue().toString() + "\n";
+                    }
                 }
                 Log.e("Changed bus type to ", busType);
 
@@ -88,10 +90,6 @@ public class DataGenerator {
 
 
     }
-
-
-
-
 
    }
 
