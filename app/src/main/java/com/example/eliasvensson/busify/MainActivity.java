@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -77,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // Checks if app user has chosen a date
                          if (!callDate.isEmpty())
-                             sendEmail();
-                             //dateButton.setEnabled(true);
+                             getUrlAsync(callDate);
                          else
                              Toast.makeText(MainActivity.this, "Please start by choosing a date", Toast.LENGTH_SHORT).show();
                 }
@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Chosen date
         String date = ((EditText) findViewById(R.id.txt_date)).getText().toString();
+        Log.e("date", date);
 
         // Creates relevant information used the sending of the email
         // e.g. subject matter, attached message
@@ -126,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
-        //sendButton.setEnabled(true);
     }
 
 
@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setDownloadLink(Uri link){
         attachmentLink = link.toString();
+        Log.e("setDownload", attachmentLink);
     }
     private String getDownloadLink(){
         return attachmentLink;
