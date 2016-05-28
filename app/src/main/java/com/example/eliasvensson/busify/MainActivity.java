@@ -1,6 +1,11 @@
 /**
- * @author Elias Svensson, David Genelöv, Annie Söderström, Melinda Fulöp, Sara Kinell, Jonathan Fager
- * @version 6.0, 2016-05-24
+ * @author Elias Svensson
+ * @author David Genelöv
+ * @author Annie Söderström
+ * @author Melinda Fulöp
+ * @author Sara Kinell
+ * @author Jonathan Fager
+ * @version 7.0, 2016-05-28
  * @since 1.0
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
@@ -12,6 +17,9 @@
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
  * of the email.
+ *
+ * Note: The class is under construction. It can generate information shown in Android Monitor
+ * for the following dates: 2016-05-18 and 2016-05-19. Please try these dates initially when testing.
  */
 
 package com.example.eliasvensson.busify;
@@ -47,11 +55,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Lines to test the data generator, uncomment line 63 til 77 when finished
-        DataGenerator dg = new DataGenerator();
-        dg.getBusValues("2016-05-19");
-
-        /*
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
 
@@ -68,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         dateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(listener);
 
-*/
     }
 
     @NonNull
@@ -146,6 +148,10 @@ public class MainActivity extends AppCompatActivity {
        Task<Uri> link;
        // Points to the root reference
        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+       // Gets the bus information for the specified date
+       new DataGenerator().getBusInformation(date);
+
        // Points to the specific file depending on date
        StorageReference dateRef = storageRef.child("/" + date + ".csv");
        link = dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()

@@ -37,7 +37,7 @@ public class DataGenerator {
      * consumption (kWh) and bus type) for specified date.
      * @param date the date to get information for
      */
-    public void getBusValues(String date) {
+    public void getBusInformation(String date) {
         this.chosenDate = date;
         // Adds a value event listener to the database reference
         ref.child(chosenDate).addValueEventListener(new ValueEventListener() {
