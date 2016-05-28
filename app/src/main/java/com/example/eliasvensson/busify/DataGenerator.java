@@ -31,7 +31,7 @@ public class DataGenerator {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
         HashMap<String, String> busMap = new HashMap<>();
-        ref.child("Bus").child("100020").child("Bus type").setValue("Fake bus type");
+        ref.child("Bus").child("100020").child("Bus type").setValue("Electric");
 
 
         // Add value event listener to the database reference
@@ -39,12 +39,13 @@ public class DataGenerator {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                String busType ="";
                 for (DataSnapshot busSnapshot: dataSnapshot.getChildren()) {
-                    String busType = busSnapshot.getValue().toString();
+                    busType = busSnapshot.getValue().toString();
                     //String date = (String) busSnapshot.child("Date").getValue();
-                    Log.e("Changed bus type to: ", busType);
-                }
 
+                }
+                Log.e("Changed bus type to: ", busType);
 
             }
 
