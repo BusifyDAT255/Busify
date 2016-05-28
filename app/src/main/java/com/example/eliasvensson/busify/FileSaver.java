@@ -1,6 +1,7 @@
 
 /**
- * @author Sara Kinell and Annie Söderström
+ * @author Sara Kinell
+ * @author Annie Söderström
  * @version 1.0, 2016-05-28
  * @since 1.0
  *
@@ -16,6 +17,7 @@ public class FileSaver {
     //Create a .csv-file
     protected static void createCsv (String date, String busInfo) {
         Log.e("Bus info for " + date + " ", busInfo);
+
     }
 
 }
