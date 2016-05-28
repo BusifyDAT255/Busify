@@ -42,16 +42,16 @@ public class MainActivity extends AppCompatActivity {
     Button sendButton;
     Button dateButton;
     String attachmentLink;
+    DataGenerator dgenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Lines to test the data generator, uncomment line 63 til 77 when finished
-        DataGenerator dg = new DataGenerator();
-        dg.getBusValues("2016-05-19");
+        // Initialises a DataGenerator
+        dgenerator = new DataGenerator();
 
-        /*
+
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
 
@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         dateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(listener);
 
-*/
     }
 
     @NonNull
@@ -76,15 +75,16 @@ public class MainActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.send_button)){
                     String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
 
                         // Checks if app user has chosen a date
-                         if (!callDate.isEmpty())
-                             getUrlAsync(callDate);
+                         if (!callDate.isEmpty()) {
+                             dgenerator.getBusValues(callDate);
+                             //getUrlAsync(callDate); <-- This should later be working, but does not with emulator right now
+                         }
                          else
                              Toast.makeText(MainActivity.this, "Please start by choosing a date", Toast.LENGTH_SHORT).show();
                 }
