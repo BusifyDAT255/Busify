@@ -41,7 +41,7 @@ import com.google.firebase.storage.StorageReference;
 public class MainActivity extends AppCompatActivity {
 
     // Define variables
-    Button sendButton;
+    static Button sendButton;
     Button dateButton;
     String attachmentLink;
 
@@ -62,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
         // Assigns the pre-defined listener to listen to the buttons
         dateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(listener);
-        //sendButton.setEnabled(false);
+        sendButton.setEnabled(false);
     }
+
 
     @NonNull
     private View.OnClickListener clickHandler() {
@@ -127,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
+        //sendButton.setEnabled(true);
     }
 
 
@@ -190,5 +192,6 @@ public class MainActivity extends AppCompatActivity {
     private String getDownloadLink(){
         return attachmentLink;
     }
+
 
 }

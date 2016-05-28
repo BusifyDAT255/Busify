@@ -72,7 +72,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         // Show the selected date in the text box
         String date = String.format("%4d-%02d-%02d", year, (month + 1), day);
         textToChange.setText(date);
-
+        MainActivity.sendButton.setEnabled(true);
     }
 
 }
