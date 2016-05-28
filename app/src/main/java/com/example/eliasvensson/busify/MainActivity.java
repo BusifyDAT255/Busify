@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         // Assigns the pre-defined listener to listen to the buttons
         dateButton.setOnClickListener(listener);
         sendButton.setOnClickListener(listener);
+        //sendButton.setEnabled(false);
     }
 
     @NonNull
@@ -76,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
                         // Checks if app user has chosen a date
                          if (!callDate.isEmpty())
-                             getUrlAsync(callDate);
+                             sendEmail();
+                             //dateButton.setEnabled(true);
                          else
                              Toast.makeText(MainActivity.this, "Please start by choosing a date", Toast.LENGTH_SHORT).show();
                 }
@@ -124,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
+        //sendButton.setEnabled(true);
     }
 
 
