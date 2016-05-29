@@ -13,6 +13,7 @@
 package com.example.eliasvensson.busify;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +34,7 @@ public class DataGenerator {
     private String chosenDate;
     private final Activity mainActivity;
     private String busdata = "";
+
     /**
      * Constructor for the DataGenerator class.
      */
@@ -45,6 +47,7 @@ public class DataGenerator {
     /**
      * Gets bus information (bus-ID, driving distance (km), electric energy
      * consumption (kWh) and bus type) for specified date.
+     *
      * @param date the date to get information for
      * @return the bus info for the specified date, as a String
      */
@@ -68,13 +71,22 @@ public class DataGenerator {
             }
         });
 
+        busFields(busdata);
         return busdata;
 
     }
 
+    public String[][] busFields(String data) {
+        String[][] csvFormat = new String[11][4];
+        data = data.replace("{", ",").replace("}", ",").replace("=", ",");
+        String[] divided = data.split(",");
+        for (int i = 0; i < divided.length; i++) {
+            Log.e("Splitted data:", divided[i]);
+        }
+
+        return csvFormat;
+
+    }
 
 }
-
-
-
 
