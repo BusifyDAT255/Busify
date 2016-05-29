@@ -12,7 +12,9 @@
 
 package com.example.eliasvensson.busify;
 
-import android.util.Log;
+import android.app.Activity;
+import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,13 +31,15 @@ public class DataGenerator {
     private FirebaseDatabase database;
     private DatabaseReference ref;
     private String chosenDate;
+    private final Activity activity;
 
     /**
      * Constructor for the DataGenerator class.
      */
-    public DataGenerator() {
+    public DataGenerator(Activity act) {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
+        this.activity = act;
     }
 
     /**
@@ -45,19 +49,20 @@ public class DataGenerator {
      */
     public void getBusInformation(String date) {
         this.chosenDate = date;
-        // Adds a value event listener to the database reference
+
+        // Adds activity value event listener to the database reference
         ref.child(chosenDate).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Creates a csv file with a snapshot of the data for the chosen date
+                // Creates activity csv file with activity snapshot of the data for the chosen date
                 FileSaver.createCsv(chosenDate, dataSnapshot.getValue().toString());
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Displays an error message if the listener fails or is removed
-                Log.w("Cancelled ", databaseError.getMessage(), databaseError.toException());
+                Toast.makeText(activity, "Lost connection to database.", Toast.LENGTH_SHORT).show();
             }
         });
 

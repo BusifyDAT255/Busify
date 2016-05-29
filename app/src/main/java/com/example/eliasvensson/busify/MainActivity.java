@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Initializes a DataGenerator
-        dgenerator = new DataGenerator();
+        dgenerator = new DataGenerator(MainActivity.this);
 
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                          if (!callDate.isEmpty()) {
                              //starts query information from firebase
                              dgenerator.getBusInformation(callDate);
+
                              //getUrlAsync(callDate); <-- This should later be working, but does not with emulator right now
                          }
                          else
