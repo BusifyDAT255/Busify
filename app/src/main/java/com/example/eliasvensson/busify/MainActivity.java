@@ -103,8 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         File file = new File(dateRef.getPath());
                         if (!file.exists()) {
                             //Query information from Firebase
-                            String busInfo = dgenerator.getBusInformation(callDate);
-                            FileSaver.createCsv(callDate, busInfo);
+                            FileSaver.createCsv(callDate, dgenerator.getBusInformation(callDate));
 
                         } else {
                             getUrlAsync(callDate);

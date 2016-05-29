@@ -22,6 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 
 public class DataGenerator {
 
@@ -34,6 +37,7 @@ public class DataGenerator {
     private String chosenDate;
     private final Activity mainActivity;
     private String busdata = "";
+
 
     /**
      * Constructor for the DataGenerator class.
@@ -51,7 +55,7 @@ public class DataGenerator {
      * @param date the date to get information for
      * @return the bus info for the specified date, as a String
      */
-    public String getBusInformation(String date) {
+    public String[][] getBusInformation(String date) {
         this.chosenDate = date;
 
         // Adds mainActivity value event listener to the database reference
@@ -66,22 +70,22 @@ public class DataGenerator {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Displays an error message if the listener fails or is removed
-                Toast.makeText(mainActivity, "Can´t generate data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, "Cannot generate data", Toast.LENGTH_SHORT).show();
                 throw new InternalError(databaseError.getMessage());
             }
         });
 
-        busFields(busdata);
-        return busdata;
+        return busFields(busdata);
 
     }
 
     public String[][] busFields(String data) {
         String[][] csvFormat = new String[11][4];
-        data = data.replace("{", ",").replace("}", ",").replace("=", ",");
+        data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",");
+        data = data.replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "").replace("Bus type", "");
         String[] divided = data.split(",");
         for (int i = 0; i < divided.length; i++) {
-            Log.e("Splitted data:", divided[i]);
+            Log.e("Splitted data", divided[i]);
         }
 
         return csvFormat;
