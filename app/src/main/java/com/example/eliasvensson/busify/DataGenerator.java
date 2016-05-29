@@ -31,15 +31,15 @@ public class DataGenerator {
     private FirebaseDatabase database;
     private DatabaseReference ref;
     private String chosenDate;
-    private final Activity activity;
-    private String busdata ="";
+    private final Activity mainActivity;
+    private String busdata = "";
     /**
      * Constructor for the DataGenerator class.
      */
     public DataGenerator(Activity act) {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
-        this.activity = act;
+        this.mainActivity = act;
     }
 
     /**
@@ -50,19 +50,19 @@ public class DataGenerator {
     public String getBusInformation(String date) {
         this.chosenDate = date;
 
-        // Adds activity value event listener to the database reference
+        // Adds mainActivity value event listener to the database reference
         ref.child(chosenDate).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Creates activity csv file with activity snapshot of the data for the chosen date
+                // Creates mainActivity csv file with mainActivity snapshot of the data for the chosen date
                 busdata = dataSnapshot.getValue().toString();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Displays an error message if the listener fails or is removed
-                Toast.makeText(activity, "Lost connection to database.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, "No connection to database.", Toast.LENGTH_SHORT).show();
             }
         });
 

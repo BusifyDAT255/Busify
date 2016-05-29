@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,8 +42,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -55,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     Button dateButton;
     String attachmentLink;
     DataGenerator dgenerator;
+    StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Initializes a DataGenerator
         dgenerator = new DataGenerator(MainActivity.this);
+
+        // Initiates a storage reference to the root reference
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
@@ -85,19 +93,26 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
-                else if (v == findViewById(R.id.send_button)){
-                    String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+                else if (v == findViewById(R.id.send_button)) {
+                    String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
-                        // Checks if app user has chosen a date
-                         if (!callDate.isEmpty()) {
-                             //starts query information from firebase
-                             String busInfo = dgenerator.getBusInformation(callDate);
-                             FileSaver.createCsv (callDate, busInfo);
+                    // Checks if app user has chosen a date
+                    if (!callDate.isEmpty()) {
 
-                             //getUrlAsync(callDate); <-- This should later be working, but does not with emulator right now
-                         }
-                         else
-                             Toast.makeText(MainActivity.this, "Please start by choosing a date", Toast.LENGTH_SHORT).show();
+                        //Checks if file already exists
+                        StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
+                        File file = new File(dateRef.getPath());
+                        if (!file.exists()) {
+                            //Query information from firebase
+                            String busInfo = dgenerator.getBusInformation(callDate);
+                            FileSaver.createCsv("2016-05-19", busInfo);
+
+                        } else {
+                            //getUrlAsync(callDate); //<-- This should later be working, but does not with emulator right now
+                        }
+                    } else
+                        //Gives user instructions how to processed
+                        Toast.makeText(MainActivity.this, "Please start by choosing a date", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -153,11 +168,9 @@ public class MainActivity extends AppCompatActivity {
      */
    private void getUrlAsync (String date){
 
-       // Points to the root reference
-       StorageReference storageRef = FirebaseStorage.getInstance().getReference();
        // Points to the specific file depending on date
        StorageReference dateRef = storageRef.child("/" + date + ".csv");
-       Task<Uri> link = dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+       dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
        {
            @Override
            public void onSuccess(Uri downloadUrl)
