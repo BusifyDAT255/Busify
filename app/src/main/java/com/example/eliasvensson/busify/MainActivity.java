@@ -26,6 +26,7 @@
 package com.example.eliasvensson.busify;
 
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -33,7 +34,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,12 +41,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -103,11 +105,17 @@ public class MainActivity extends AppCompatActivity {
                         File file = new File(dateRef.getPath());
                         if (!file.exists()) {
                             //Query information from Firebase
-                            String busInfo = dgenerator.getBusInformation(callDate);
-                            FileSaver.createCsv(callDate, busInfo);
+                            //String busInfo = dgenerator.getBusInformation(callDate);
+                            //FileSaver.createCsv(callDate, busInfo);
+                            String[][] stringArray = {{"Hello World!","Hej"}, {"Hejhej","hej"}};
+                            writeCsvFile(stringArray);
+                            readCsvFile();
 
                         } else {
-                            getUrlAsync(callDate);
+                            //getUrlAsync(callDate);
+                            String[][] stringArray = {{"Hello World!","Hej"}, {"Hejhej","hej"}};
+                            writeCsvFile(stringArray);
+                            readCsvFile();
                         }
                     } else
                         //Gives user instructions how to processed
@@ -212,4 +220,53 @@ public class MainActivity extends AppCompatActivity {
         return attachmentLink;
     }
 
+
+    /**
+     * TODO: Implement parsing to correct csv format
+     * @param stringArray The array to write to a .csv
+     */
+    private void writeCsvFile(String[][] stringArray) {
+        String filename = "myfile.csv";
+        String string ="";
+        for (int i = 0; i<stringArray[0].length; i++){
+            for (int j = 0; j<stringArray.length; j++){
+                string = string + stringArray[i][j];
+            }
+        }
+
+        FileOutputStream outputStream;
+        try{
+            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(string.getBytes());
+            outputStream.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * For testing, currently writing to a toast
+     */
+    private void readCsvFile(){
+        try{
+            String Message;
+            FileInputStream fileInputStream = openFileInput("myfile.csv");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuffer stringBuffer = new StringBuffer();
+            while((Message=bufferedReader.readLine())!=null){
+                stringBuffer.append(Message + "\n");
+            }
+
+            Toast.makeText(MainActivity.this, stringBuffer.toString(), Toast.LENGTH_SHORT).show();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
+
+    }
 }
