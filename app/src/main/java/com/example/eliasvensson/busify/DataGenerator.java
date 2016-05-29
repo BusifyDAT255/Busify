@@ -32,7 +32,7 @@ public class DataGenerator {
     private DatabaseReference ref;
     private String chosenDate;
     private final Activity activity;
-
+    private String busdata ="";
     /**
      * Constructor for the DataGenerator class.
      */
@@ -47,7 +47,7 @@ public class DataGenerator {
      * consumption (kWh) and bus type) for specified date.
      * @param date the date to get information for
      */
-    public void getBusInformation(String date) {
+    public String getBusInformation(String date) {
         this.chosenDate = date;
 
         // Adds activity value event listener to the database reference
@@ -56,7 +56,7 @@ public class DataGenerator {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Creates activity csv file with activity snapshot of the data for the chosen date
-                FileSaver.createCsv(chosenDate, dataSnapshot.getValue().toString());
+                busdata = dataSnapshot.getValue().toString();
             }
 
             @Override
@@ -66,7 +66,7 @@ public class DataGenerator {
             }
         });
 
-
+        return busdata;
 
     }
 

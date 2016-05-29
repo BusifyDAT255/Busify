@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
                         // Checks if app user has chosen a date
                          if (!callDate.isEmpty()) {
                              //starts query information from firebase
-                             dgenerator.getBusInformation(callDate);
+                             String busInfo = dgenerator.getBusInformation(callDate);
+                             FileSaver.createCsv (callDate, busInfo);
 
                              //getUrlAsync(callDate); <-- This should later be working, but does not with emulator right now
                          }
