@@ -8,6 +8,8 @@
  * Error message will be shown if the ValueEventListener fails to
  * access the server or is removed because of Firebase settings.
  *
+ * TODO: The method busFields is under construction
+ *
  */
 
 package com.example.eliasvensson.busify;
