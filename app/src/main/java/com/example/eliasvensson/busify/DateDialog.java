@@ -1,5 +1,6 @@
 /**
- * @author Elias Svensson and David Genelov
+ * @author Elias Svensson
+ * @author David Genelov
  * @version 1.0, 2016-05-04
  * @since 1.0
  * This class was made with the aid of tutorials available at
@@ -30,7 +31,8 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
     // Variable that stores which EditText-object the date will be written to
     private EditText textToChange;
 
-    /** Constructor that assigns which EditText-object the date will be written to
+    /**
+     * Constructor that assigns which EditText-object the date will be written to
      * @param view The EditText-object that the date will be written to
      */
     public DateDialog(View view) {
@@ -42,18 +44,19 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     }
 
-    /** Sets the current date as default for a dialog
+    /**
+     * Sets the current date as default for a dialog
      * @return A new instance of DatePickerDialog with May 24th as default date.
      * @param savedInstanceState The current state of the application
-     *
      */
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, 2016, 5, 24);
 
-        // Set the max and min dates for the DatePicker, to guarantee that there is a file
-        // that corresponds to the chosen date
-        // Dates set to the week 18-24th May(!) to demonstrate one week of functionality
-        // on the presentation on May 24th
+        /** Set the max and min dates for the DatePicker, to guarantee that there is a file
+         * that corresponds to the chosen date.
+         * Dates set to the week 18-24th May(!) to demonstrate one week of functionality
+         * on the presentation on May 24th
+        */
         GregorianCalendar minDate = new GregorianCalendar(2016, 4, 18);
         GregorianCalendar maxDate = new GregorianCalendar(2016, 4, 24);
         dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
@@ -62,7 +65,8 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         return dialog;
     }
 
-    /** Sets the selected date to a String and sets the text of a view to the date
+    /**
+     * Sets the selected date to a String and sets the text of a view to the date
      * @param view The view to update the text with the date
      * @param year The selected year
      * @param month The selected month (integers ranging from 0 to 11, 0 being January)

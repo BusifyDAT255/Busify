@@ -1,7 +1,13 @@
 /**
- * @author Elias Svensson, David Genelöv, Annie Söderström, Melinda Fulöp, Sara Kinell, Jonathan Fager
- * @version 6.0, 2016-05-24
+ * @author Elias Svensson
+ * @author David Genelöv
+ * @author Annie Söderström
+ * @author Melinda Fulöp
+ * @author Sara Kinell
+ * @author Jonathan Fager
+ * @version 7.0, 2016-05-28
  * @since 1.0
+ *
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
  * how to use the app, a date button to set the date and one button to send a .csv file
@@ -12,6 +18,9 @@
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
  * of the email.
+ *
+ * Note: The class is under construction. It can generate information shown in Android Monitor
+ * for the following dates: 2016-05-18 and 2016-05-19. Please try these dates initially when testing.
  */
 
 package com.example.eliasvensson.busify;
@@ -24,6 +33,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,21 +42,34 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    // Define variables
+    /**
+     * Defines variables for the DatePicker button, the button used to share
+     * the link and the link attached in the email to be sent.
+     */
     Button sendButton;
     Button dateButton;
     String attachmentLink;
+    DataGenerator dgenerator;
+    StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initializes a DataGenerator
+        dgenerator = new DataGenerator(MainActivity.this);
+
+        // Initiates a storage reference to the root reference
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
@@ -68,17 +91,27 @@ public class MainActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
-                else if (v == findViewById(R.id.send_button)){
-                    String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+                else if (v == findViewById(R.id.send_button)) {
+                    String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
-                        // Checks if app user has chosen a date
-                         if (!callDate.isEmpty())
-                             getUrlAsync(callDate);
-                         else
-                             Toast.makeText(MainActivity.this, "Please start by choosing a date", Toast.LENGTH_SHORT).show();
+                    //Checks if app user has chosen a date
+                    if (!callDate.isEmpty()) {
+                        //Checks if file already exists
+                        StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
+                        File file = new File(dateRef.getPath());
+                        if (!file.exists()) {
+                            //Query information from Firebase
+                            String busInfo = dgenerator.getBusInformation(callDate);
+                            FileSaver.createCsv(callDate, busInfo);
+
+                        } else {
+                            getUrlAsync(callDate);
+                        }
+                    } else
+                        //Gives user instructions how to processed
+                        Toast.makeText(MainActivity.this, "Please start by choosing a date", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -86,11 +119,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Opens Androids default mail-application with a message of attached link and
+     * Opens Android's default mail-application with a message of attached link and
      * link to a file.
-     *
-     *
-     *
      */
     private void sendEmail() {
         // Attachment message
@@ -126,8 +156,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.show(ft, "DatePicker");
     }
 
-
-
     /**
      * Calls the server to securely obtain an unguessable download Url
      * using an async call.
@@ -138,12 +166,10 @@ public class MainActivity extends AppCompatActivity {
      *
      */
    private void getUrlAsync (String date){
-       Task<Uri> link;
-       // Points to the root reference
-       StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
        // Points to the specific file depending on date
        StorageReference dateRef = storageRef.child("/" + date + ".csv");
-       link = dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+       dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
        {
            @Override
            public void onSuccess(Uri downloadUrl)
@@ -172,8 +198,6 @@ public class MainActivity extends AppCompatActivity {
                alert.show();
            }
        });
-
-
     }
 
     /**
@@ -183,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
     private void setDownloadLink(Uri link){
         attachmentLink = link.toString();
     }
+
     private String getDownloadLink(){
         return attachmentLink;
     }
