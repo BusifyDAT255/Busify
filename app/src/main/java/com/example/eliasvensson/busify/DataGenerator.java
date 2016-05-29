@@ -80,13 +80,31 @@ public class DataGenerator {
     }
 
     public String[][] busFields(String data) {
-        String[][] csvFormat = new String[11][4];
+        String[][] csvFormat = new String[11][4]; // Should be [11][5]
         data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",");
         data = data.replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "").replace("Bus type", "");
         String[] divided = data.split(",");
-        for (int i = 0; i < divided.length; i++) {
-            Log.e("Splitted data", divided[i]);
-        }
+
+        int dataNumber = 0;
+            for (int j = 0; j < csvFormat.length; j++) {
+                //Log.e("j", "" + j);
+                for (int k = 0; k < csvFormat[j].length; k++) {
+                    //Log.e("k", "" + k);
+                    if (j == 0) {
+                        csvFormat[j][0] = "Bus ID";
+                        csvFormat[j][1] = "Driving distance (km)";
+                        csvFormat[j][2] = "Electric energy consumption (kWh)";
+                        csvFormat[j][3] = "Bus type";
+                        //csvFormat[j][4] = "Electricity per km (kWh/km)";
+                    } else {
+                        csvFormat[j][k] = divided[dataNumber];
+                        dataNumber++;
+                        //Log.e("Number ", "" + dataNumber);
+                    }
+                }
+            }
+
+
 
         return csvFormat;
 
