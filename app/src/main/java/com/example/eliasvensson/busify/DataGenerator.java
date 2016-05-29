@@ -13,7 +13,6 @@
 package com.example.eliasvensson.busify;
 
 import android.app.Activity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +46,7 @@ public class DataGenerator {
      * Gets bus information (bus-ID, driving distance (km), electric energy
      * consumption (kWh) and bus type) for specified date.
      * @param date the date to get information for
+     * @return the bus info for the specified date, as a String
      */
     public String getBusInformation(String date) {
         this.chosenDate = date;
@@ -64,6 +64,7 @@ public class DataGenerator {
             public void onCancelled(DatabaseError databaseError) {
                 // Displays an error message if the listener fails or is removed
                 Toast.makeText(mainActivity, "Can´t generate data", Toast.LENGTH_SHORT).show();
+                throw new InternalError(databaseError.getMessage());
             }
         });
 
