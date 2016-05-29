@@ -13,6 +13,7 @@
 package com.example.eliasvensson.busify;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -62,13 +63,14 @@ public class DataGenerator {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Displays an error message if the listener fails or is removed
-                Toast.makeText(mainActivity, "No connection to database.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, "Can´t generate data", Toast.LENGTH_SHORT).show();
             }
         });
 
         return busdata;
 
     }
+
 
 }
 

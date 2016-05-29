@@ -96,19 +96,18 @@ public class MainActivity extends AppCompatActivity {
                 else if (v == findViewById(R.id.send_button)) {
                     String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
-                    // Checks if app user has chosen a date
+                    //Checks if app user has chosen a date
                     if (!callDate.isEmpty()) {
-
                         //Checks if file already exists
                         StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
                         File file = new File(dateRef.getPath());
                         if (!file.exists()) {
-                            //Query information from firebase
+                            //Query information from Firebase
                             String busInfo = dgenerator.getBusInformation(callDate);
-                            FileSaver.createCsv("2016-05-19", busInfo);
+                            FileSaver.createCsv(callDate, busInfo);
 
                         } else {
-                            //getUrlAsync(callDate); //<-- This should later be working, but does not with emulator right now
+                            getUrlAsync(callDate);
                         }
                     } else
                         //Gives user instructions how to processed
