@@ -23,8 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 
 public class DataGenerator {
 
@@ -48,7 +46,6 @@ public class DataGenerator {
         ref = database.getReference();
         mainActivity = act;
         csvFormat = new String[row][col];
-
     }
 
     /**
@@ -82,29 +79,35 @@ public class DataGenerator {
 
     }
 
-    // Could make csvFormat an instance variable
+    /**
+     *
+     * @param data
+     * @return
+     */
     public String[][] busFields(String data) {
-        csvFormat = new String[11][4]; // Should be [11][5]
         data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",").replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "").replace("Bus type", "");
-        String[] splitBusInfo = data.split(",");
-        ArrayList<String> busValues = trimArray(splitBusInfo);
-        addTitles(0, csvFormat);
-        Log.e("busValues position 0 ", busValues.get(0));
-
-        int dataNumber = 0;
+        String[] splittedBusInfo = data.split(",");
+        splittedBusInfo = fixIndex(splittedBusInfo, 40);
+        addTitles(0);
+        int index = 0;
         for (int j = 1; j < csvFormat.length; j++) {
-            //Log.e("j", "" + j);
             for (int k = 0; k < csvFormat[j].length; k++) {
-                //Log.e("k", "" + k);
-                //csvFormat[j][k] = busValues.get(dataNumber);
-                Log.e("Number ", "" + dataNumber + " csvFormat [" + j + "]" + "[" + k + "] " + csvFormat[j][k]);
-                dataNumber++;
+                if (splittedBusInfo[index] != null) {
+                    csvFormat[j][k] = splittedBusInfo[index];
+                    Log.e("Number ", "" + index + " csvFormat [" + j + "]" + "[" + k + "] " + csvFormat[j][k]);
+                    index++;
+                }
+
             }
         }
         return csvFormat;
     }
 
-    private void addTitles(int firstRow, String[][] csvFormat) {
+    /**
+     * Adds titles to the first row
+     * @param firstRow the first row number
+     */
+    private void addTitles(int firstRow) {
         csvFormat[firstRow][0] = "Bus ID";
         csvFormat[firstRow][1] = "Driving distance (km)";
         csvFormat[firstRow][2] = "Electric energy consumption (kWh)";
@@ -112,13 +115,20 @@ public class DataGenerator {
         //csvFormat[firstRow][4] = "Electricity per km (kWh/km)";
     }
 
-
-    private ArrayList<String> trimArray(String[] splitted) {
-        ArrayList<String> trimmed = new ArrayList<>();
+    /**
+     * Fixes the indices of a split array
+     * @param splitted field with empty content
+     * @param size the size of the new field
+     * @return field of strings with non-empty content
+     */
+    private String[] fixIndex(String[] splitted, int size) {
+        String[] trimmed = new String[size];
+        int index = 0;
         for (int i = 0; i < splitted.length; i++) {
             if (!splitted[i].isEmpty()) {
-                trimmed.add(splitted[i]);
-                Log.e("Trimmed " + i, " " + trimmed.get(i));
+                trimmed[index] = splitted[i];
+                Log.e("right [" + index + "] " + trimmed[index], " wrong [" + i + "] " + splitted[i]);
+                index++;
             }
         }
         return trimmed;
