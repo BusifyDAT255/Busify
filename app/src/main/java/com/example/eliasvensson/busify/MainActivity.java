@@ -25,7 +25,6 @@
 package com.example.eliasvensson.busify;
 
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -43,13 +42,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private static String attachmentLink;
     DataGenerator dgenerator;
     StorageReference storageRef;
+    CsvHandler csvHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
+
+        csvHandler = new CsvHandler(MainActivity.this);
 
         // Initiates the buttons for setting date and sharing the link
         dateButton = (Button) findViewById(R.id.date_button);
@@ -115,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
                         // Query data from Firebase
                         String[][] busData = dgenerator.getBusInformation(callDate);
                         // Write the data to a .csv-file
-                        writeCsvFile(callDate, busData);
+                        csvHandler.writeFileFromArray(callDate, busData);
                         // Save the file path to that .csv-file to a String
-                        String filePath = getCsvFilePath(callDate);
+                        String filePath = csvHandler.getFilePath(callDate);
                         // Shows the information in a String
                         // TODO: Delete this Toast when file upload to fireBase works
                         Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
@@ -236,45 +232,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Method that writes a two-dimensional array with strings, to a .csv-file with a specified
-     * date as the filename.
-     * TODO: Implement parsing to correct csv format
-     *
-     * @param dataArray The array to write to a .csv
-     * @param callDate  The specified date that gets passed to the filename
-     */
-
-    private void writeCsvFile(String callDate, String[][] dataArray) {
-        String filename = callDate + ".csv";
-        //creates the String which will make up the text for the .csv
-        String csvText = "";
-        //Adds all elements in Array to the string
-        //TODO: Make sure this parses the text correctly to .csv-file format (dependent on Sara & Annies method
-        for (int i = 0; i < dataArray.length; i++) {
-            for (int j = 0; j < dataArray[0].length; j++) {
-                csvText = csvText + dataArray[i][j];
-            }
-        }
-
-        //Creates a FileOutputStream for writing the file to internal storage
-        FileOutputStream outputStream;
-        try {
-            //Opens an FileOutputStream to a file with the specified filename.
-            //Will create file if it doesn't exist.
-            outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-            //Writes the string to the specified file
-            outputStream.write(csvText.getBytes());
-            //Closes the FileOutputStream to produce a file
-            outputStream.close();
-        } catch (FileNotFoundException e) {
-            Toast.makeText(MainActivity.this, "Internal Error: No such file found", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            Toast.makeText(MainActivity.this, "Internal Error: IOException", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    /**
      * Method to extract a filePath for a specified date.
      *
      * @param callDate: a String with the date to return a filepath for
@@ -285,25 +242,5 @@ public class MainActivity extends AppCompatActivity {
         return filePath;
     }
 
-    /**
-     * TESTMETOD
-     * TODO: Ta bort innan merge med master. Låt stå till develop
-     */
-    private void readCsvFile(String callDate) {
-        try {
-            String Message;
-            FileInputStream fileInputStream = openFileInput(callDate + ".csv");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuffer stringBuffer = new StringBuffer();
-            while ((Message = bufferedReader.readLine()) != null) {
-                stringBuffer.append(Message + "\n");
-            }
-            Toast.makeText(MainActivity.this, stringBuffer.toString(), Toast.LENGTH_SHORT).show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }
