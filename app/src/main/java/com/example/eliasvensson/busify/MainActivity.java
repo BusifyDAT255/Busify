@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
      * Getter and setter for download link.
      * @param link the URL link for the .csv-file
      */
-    private void setDownloadLink(Uri link){
+    public static void setDownloadLink(Uri link){
         attachmentLink = link.toString();
     }
 
