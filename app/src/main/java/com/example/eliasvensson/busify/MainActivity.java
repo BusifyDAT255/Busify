@@ -1,6 +1,6 @@
 /**
  * @author Elias Svensson, David Genelöv, Annie Söderström, Melinda Fulöp, Sara Kinell, Jonathan Fager
- * @version 6.0, 2016-05-24
+ * @version 7.0, 2016-05-30
  * @since 1.0
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
@@ -36,14 +36,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-
-
 public class MainActivity extends AppCompatActivity {
 
     // Define variables
-    static Button sendButton;
+    Button sendButton;
     Button dateButton;
-    String attachmentLink;
+    private String attachmentLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +75,9 @@ public class MainActivity extends AppCompatActivity {
                 else if (v == findViewById(R.id.send_button)){
                     //Disable the button to prohibit several mail-apps to open at once
                     sendButton.setEnabled(false);
-
                     Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
                     String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
                     getUrlAsync(callDate);
-
 
                 }
             }
@@ -124,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setDateToView(int viewId) {
         // Initiates a DateDialog object for user interaction when choosing the date
-        DateDialog dialog = new DateDialog(findViewById(viewId));
+        DateDialog dialog = new DateDialog(findViewById(viewId), MainActivity.this);
         // Sets a FragmentManager to track the interaction with the DateDialog-fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         // Sets the DateDialog as visible to the user

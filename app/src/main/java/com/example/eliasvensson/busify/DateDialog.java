@@ -29,15 +29,18 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     // Variable that stores which EditText-object the date will be written to
     private EditText textToChange;
+    private MainActivity mainActivity;
 
     /** Constructor that assigns which EditText-object the date will be written to
      * @param view The EditText-object that the date will be written to
      */
 
-    public DateDialog(View view) {
+    public DateDialog(View view, MainActivity mainActivity) {
 
-        if (view instanceof EditText)
+        if (view instanceof EditText) {
             textToChange = (EditText) view;
+            this.mainActivity = mainActivity;
+        }
         else
             throw new IllegalArgumentException("The view is not an EditText view");
 
@@ -73,7 +76,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         // Show the selected date in the text box
         String date = String.format("%4d-%02d-%02d", year, (month + 1), day);
         textToChange.setText(date);
-        MainActivity.sendButton.setEnabled(true);
+        mainActivity.sendButton.setEnabled(true);
     }
 
 }
