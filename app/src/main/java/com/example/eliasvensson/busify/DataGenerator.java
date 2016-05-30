@@ -1,14 +1,12 @@
 /**
  * @author Sara Kinell
  * @author Annie Söderström
- * @version 3.0, 2016-05-29
+ * @version 4.0, 2016-05-30
  * @since 1.0, 2016-05-27
- * <p/>
+ *
  * Information for buses from Firebase is combined with calculated values.
  * Error message will be shown if the ValueEventListener fails to
  * access the server or is removed because of Firebase settings.
- * <p/>
- * TODO: The method busFields is under construction
  */
 
 package com.example.eliasvensson.busify;
@@ -33,13 +31,17 @@ public class DataGenerator {
     private FirebaseDatabase database;
     private DatabaseReference ref;
     private String chosenDate;
-    private final Activity mainActivity;
+    private Activity mainActivity;
     private String busdata = "";
     private String[][] csvFormat;
 
 
     /**
      * Constructor for the DataGenerator class.
+     *
+     * @param act the MainActivity view
+     * @param row number of rows in the final .csv-file
+     * @param col number of columns in the final .csv-file
      */
     public DataGenerator(Activity act, int row, int col) {
         database = FirebaseDatabase.getInstance();
@@ -76,35 +78,39 @@ public class DataGenerator {
         });
 
         return busFields(busdata);
-
     }
 
     /**
-     * 
-     * @param data
-     * @return
+     * Creates content for .csv-file
+     *
+     * @param data bus information from Firebase
+     * @return a two dimensional field of bus data
      */
     public String[][] busFields(String data) {
+        //Replaces tokens with comma for easier splitting of the String
         data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",").replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "").replace("Bus type", "");
+        //Splits String into a field
         String[] splittedBusInfo = data.split(",");
-        splittedBusInfo = fixIndex(splittedBusInfo, (csvFormat.length-1)*(csvFormat[0].length-1));
+        //Fixes correct indices and add titles to csvFormate
+        splittedBusInfo = fixIndex(splittedBusInfo, (csvFormat.length - 1) * (csvFormat[0].length));
         addTitles(0);
+
         int index = 0;
         for (int j = 1; j < csvFormat.length; j++) {
             for (int k = 0; k < csvFormat[j].length; k++) {
+                //Fills a two dimensional field with values from a one dimensional field representing Firebase data
                 if (splittedBusInfo[index] != null) {
                     csvFormat[j][k] = splittedBusInfo[index];
-                    Log.e("Number ", "" + index + " csvFormat [" + j + "]" + "[" + k + "] " + csvFormat[j][k]);
                     index++;
                 }
             }
-            calculateElectricityPerKm(j);
         }
         return csvFormat;
     }
 
     /**
      * Adds titles to the first row
+     *
      * @param firstRow the first row number
      */
     private void addTitles(int firstRow) {
@@ -112,13 +118,13 @@ public class DataGenerator {
         csvFormat[firstRow][1] = "Driving distance (km)";
         csvFormat[firstRow][2] = "Electric energy consumption (kWh)";
         csvFormat[firstRow][3] = "Bus type";
-        csvFormat[firstRow][4] = "Electricity per km (kWh/km)";
     }
 
     /**
      * Fixes the indices of a split array
+     *
      * @param splitted field with empty content
-     * @param size the size of the new field
+     * @param size     the size of the new field
      * @return field of strings with non-empty content
      */
     private String[] fixIndex(String[] splitted, int size) {
@@ -127,20 +133,12 @@ public class DataGenerator {
         for (int i = 0; i < splitted.length; i++) {
             if (!splitted[i].isEmpty()) {
                 trimmed[index] = splitted[i];
-                Log.e("right [" + index + "] " + trimmed[index], " wrong [" + i + "] " + splitted[i]);
                 index++;
             }
         }
         return trimmed;
     }
 
-    private void calculateElectricityPerKm (int row) {
-        Log.e("In", "calculateElec");
-        double electricityPerKm = (Double.parseDouble(csvFormat[row][2])/Double.parseDouble(csvFormat[row][1]));
-        Log.e("After", "double calc");
-        csvFormat[row][4] = String.valueOf(electricityPerKm);
-        Log.e("5th column ", csvFormat[row][4]);
-    }
 
 }
 
