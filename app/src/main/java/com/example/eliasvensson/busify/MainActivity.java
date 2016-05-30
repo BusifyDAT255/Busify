@@ -39,7 +39,7 @@ import com.google.firebase.storage.StorageReference;
 public class MainActivity extends AppCompatActivity {
 
     // Define variables
-    Button sendButton;
+    Button shareButton;
     Button dateButton;
     private String attachmentLink;
 
@@ -52,15 +52,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Initiates the buttons for setting date and sending emails
         dateButton = (Button) findViewById(R.id.date_button);
-        sendButton = (Button) findViewById(R.id.send_button);
+        shareButton = (Button) findViewById(R.id.share_button);
 
-        // Initiates a View.OnClickListener to listen for clicks on the dateButton and sendButton
+        // Initiates a View.OnClickListener to listen for clicks on the dateButton and shareButton
         View.OnClickListener listener = clickHandler();
 
         // Assigns the pre-defined listener to listen to the buttons
         dateButton.setOnClickListener(listener);
-        sendButton.setOnClickListener(listener);
-        sendButton.setEnabled(false);
+        shareButton.setOnClickListener(listener);
+
+        //Disables the share-button by default
+        shareButton.setEnabled(false);
     }
 
 
@@ -72,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
-                else if (v == findViewById(R.id.send_button)){
+                else if (v == findViewById(R.id.share_button)){
                     //Disable the button to prohibit several mail-apps to open at once
-                    sendButton.setEnabled(false);
+                    shareButton.setEnabled(false);
                     Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
                     String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
                     getUrlAsync(callDate);
@@ -153,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                setDownloadLink(downloadUrl);
                sendEmail();
                //Re-enables the "Share-button" when method has loaded
-               sendButton.setEnabled(true);
+               shareButton.setEnabled(true);
            }
 
        }).addOnFailureListener(new OnFailureListener() {

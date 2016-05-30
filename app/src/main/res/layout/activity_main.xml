@@ -64,7 +64,7 @@
         android:layout_height="72dp"
         android:textSize="22sp"
         android:text="Share report"
-        android:id="@+id/send_button"
+        android:id="@+id/share_button"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/button1"/>
