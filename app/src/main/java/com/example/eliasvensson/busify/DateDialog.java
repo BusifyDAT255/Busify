@@ -79,7 +79,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         String date = String.format("%4d-%02d-%02d", year, (month + 1), day);
         textToChange.setText(date);
 
-        //Re-enables the shareButton in the mainactivity class when the text is set.
+        //Re-enables the shareButton in the MainActivity class when the text is set.
         mainActivity.shareButton.setEnabled(true);
     }
 
