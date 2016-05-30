@@ -1,7 +1,7 @@
 /**
  * @author Elias Svensson
- * @author David Genelov
- * @version 1.0, 2016-05-04
+ * @author David Genelöv
+ * @version 7.0, 2016-05-30
  * @since 1.0
  * This class was made with the aid of tutorials available at
  * http://developer.android.com/guide/topics/ui/controls/pickers.html#DatePicker
@@ -30,15 +30,20 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     // Variable that stores which EditText-object the date will be written to
     private EditText textToChange;
+    private MainActivity mainActivity;
 
     /**
      * Constructor that assigns which EditText-object the date will be written to
      * @param view The EditText-object that the date will be written to
+     * @param mainActivity The activity this fragment will be run from
      */
-    public DateDialog(View view) {
 
-        if (view instanceof EditText)
+    public DateDialog(View view, MainActivity mainActivity) {
+
+        if (view instanceof EditText) {
             textToChange = (EditText) view;
+            this.mainActivity = mainActivity;
+        }
         else
             throw new IllegalArgumentException("The view is not an EditText view");
 
@@ -77,6 +82,8 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         String date = String.format("%4d-%02d-%02d", year, (month + 1), day);
         textToChange.setText(date);
 
+        //Re-enables the shareButton in the MainActivity class when the text is set.
+        mainActivity.shareButton.setEnabled(true);
     }
 
 }

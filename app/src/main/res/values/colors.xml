@@ -7,5 +7,5 @@ These are also used in the DatePicker Activity
 <resources>
     <color name="colorPrimary">#a8dba8</color>
     <color name="colorPrimaryDark">#79bd9a</color>
-    <color name="colorAccent">#cff09e</color>
+    <color name="colorAccent">#79bd9a</color>
 </resources>

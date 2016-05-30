@@ -5,7 +5,7 @@
  * @author Melinda Fulöp
  * @author Sara Kinell
  * @author Jonathan Fager
- * @version 7.0, 2016-05-28
+ * @version 8.0, 2016-05-30
  * @since 1.0
  *
  * Manages the interaction with, and function of, the main view of the app.
@@ -33,7 +33,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,12 +40,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.io.File;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -54,12 +49,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Defines variables for the DatePicker button, the button used to share
      * the link and the link attached in the email to be sent.
+     * A storage reference and DataGenerator is defined.
      */
-    Button sendButton;
-    Button dateButton;
-    String attachmentLink;
+    protected Button shareButton;
+    protected Button dateButton;
+    private String attachmentLink;
     DataGenerator dgenerator;
     StorageReference storageRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,17 +71,21 @@ public class MainActivity extends AppCompatActivity {
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
 
-        // Initiates the buttons for setting date and sending emails
+        // Initiates the buttons for setting date and sharing the link
         dateButton = (Button) findViewById(R.id.date_button);
-        sendButton = (Button) findViewById(R.id.send_button);
+        shareButton = (Button) findViewById(R.id.share_button);
 
-        // Initiates a View.OnClickListener to listen for clicks on the dateButton and sendButton
+        // Initiates a View.OnClickListener to listen for clicks on the dateButton and shareButton
         View.OnClickListener listener = clickHandler();
 
         // Assigns the pre-defined listener to listen to the buttons
         dateButton.setOnClickListener(listener);
-        sendButton.setOnClickListener(listener);
+        shareButton.setOnClickListener(listener);
+
+        // Disables the shareButton by default
+        shareButton.setEnabled(false);
     }
+
 
     @NonNull
     private View.OnClickListener clickHandler() {
@@ -93,24 +94,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
-                else if (v == findViewById(R.id.send_button)) {
-                    String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
+                else if (v == findViewById(R.id.share_button)){
+                    // Disable the button to prohibit several mail-apps to open at once
+                    shareButton.setEnabled(false);
+                    Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
 
-                    //Checks if app user has chosen a date
-                    if (!callDate.isEmpty()) {
-                        //Checks if file already exists
-                        StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
-                        File file = new File(dateRef.getPath());
-                        if (!file.exists()) {
-                            //Query information from Firebase
-                            FileSaver.createCsv(callDate, dgenerator.getBusInformation(callDate));
+                    // Save the user specified date as a String
+                    String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+                    // Get the url from Firebase AND open the email app
+                    // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
+                    getUrlAsync(callDate);
 
-                        } else {
-                            getUrlAsync(callDate);
-                        }
-                    } else
-                        //Gives user instructions how to processed
-                        Toast.makeText(MainActivity.this, "Please start by choosing a date", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -128,14 +122,16 @@ public class MainActivity extends AppCompatActivity {
         // Chosen date
         String date = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
-        // Creates relevant information used the sending of the email
-        // e.g. subject matter, attached message
+        //Opens up the choice for sharing
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
+        //Sets subject and content of email
         i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + date);
         i.putExtra(Intent.EXTRA_TEXT, attachmentMessage + getDownloadLink());
+        // Start the email client
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
+            // Show a toast if there is no email client available
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
@@ -144,13 +140,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Creates an instance of the class DateDialog, which opens the DateDialog
      * @param  viewId  the ID of the view which the method will write the returned date to.
-     *
      */
     private void setDateToView(int viewId) {
         // Initiates a DateDialog object for user interaction when choosing the date
-        DateDialog dialog = new DateDialog(findViewById(viewId));
+        DateDialog dialog = new DateDialog(findViewById(viewId), MainActivity.this);
+
         // Sets a FragmentManager to track the interaction with the DateDialog-fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
+
         // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
     }
@@ -162,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
      * onSuccess sets the the downloadLink by call to setDownloadLink
      * and initiates the email by call to sendEmail
      * onFailure opens a dialog telling the user that no report is available for this date.
-     *
+     *TODO: Comment this method
      */
    private void getUrlAsync (String date){
 
@@ -175,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
            {
                setDownloadLink(downloadUrl);
                sendEmail();
+               //Re-enables the "Share-button" when user returns to the view with share button
+               shareButton.setEnabled(true);
            }
 
        }).addOnFailureListener(new OnFailureListener() {
@@ -183,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, 1);
                builder.setMessage("Sorry, no report available for this date.");
                builder.setCancelable(true);
-
                builder.setPositiveButton(
                        "Ok!",
                        new DialogInterface.OnClickListener() {
@@ -191,12 +189,11 @@ public class MainActivity extends AppCompatActivity {
                                dialog.cancel();
                            }
                        });
-
-
                AlertDialog alert = builder.create();
                alert.show();
            }
        });
+
     }
 
     /**
@@ -210,5 +207,6 @@ public class MainActivity extends AppCompatActivity {
     private String getDownloadLink(){
         return attachmentLink;
     }
+
 
 }
