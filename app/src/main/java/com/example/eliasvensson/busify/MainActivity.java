@@ -5,8 +5,9 @@
  * @author Melinda Fulöp
  * @author Sara Kinell
  * @author Jonathan Fager
- * @version 7.0, 2016-05-30
+ * @version 8.0, 2016-05-30
  * @since 1.0
+ *
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
  * how to use the app, a date button to set the date and one button to send a .csv file
@@ -17,6 +18,9 @@
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
  * of the email.
+ *
+ * Note: The class is under construction. It can generate information shown in Android Monitor
+ * for the following dates: 2016-05-18 and 2016-05-19. Please try these dates initially when testing.
  */
 
 package com.example.eliasvensson.busify;
@@ -36,20 +40,33 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+
 public class MainActivity extends AppCompatActivity {
 
-    // Define variables
+    /**
+     * Defines variables for the DatePicker button, the button used to share
+     * the link and the link attached in the email to be sent.
+     * A storage reference and DataGenerator is defined.
+     */
     protected Button shareButton;
     protected Button dateButton;
     private String attachmentLink;
+    DataGenerator dgenerator;
+    StorageReference storageRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initializes a DataGenerator
+        dgenerator = new DataGenerator(MainActivity.this);
+
+        // Initiates a storage reference to the root reference
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
@@ -87,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     // Get the url from Firebase AND open the email app
                     // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
                     getUrlAsync(callDate);
+
                 }
             }
         };
@@ -94,9 +112,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Opens Androids default mail-application with a message of attached link and
+     * Opens Android's default mail-application with a message of attached link and
      * link to a file.
-     *
      */
     private void sendEmail() {
         // Attachment message
@@ -135,8 +152,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.show(ft, "DatePicker");
     }
 
-
-
     /**
      * Calls the server to securely obtain an unguessable download Url
      * using an async call.
@@ -147,12 +162,10 @@ public class MainActivity extends AppCompatActivity {
      *TODO: Comment this method
      */
    private void getUrlAsync (String date){
-       Task<Uri> link;
-       // Points to the root reference
-       StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
        // Points to the specific file depending on date
        StorageReference dateRef = storageRef.child("/" + date + ".csv");
-       link = dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+       dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
        {
            @Override
            public void onSuccess(Uri downloadUrl)
@@ -190,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
     private void setDownloadLink(Uri link){
         attachmentLink = link.toString();
     }
+
     private String getDownloadLink(){
         return attachmentLink;
     }
