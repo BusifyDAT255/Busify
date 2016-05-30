@@ -91,7 +91,7 @@ public class DataGenerator {
         data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",").replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "").replace("Bus type", "");
         //Splits String into a field
         String[] splittedBusInfo = data.split(",");
-        //Fixes correct indices and add titles to csvFormate
+        //Fixes correct indices and add titles to csvFormat
         splittedBusInfo = fixIndex(splittedBusInfo, (csvFormat.length - 1) * (csvFormat[0].length - 1));
         addTitles(0);
 
@@ -99,13 +99,13 @@ public class DataGenerator {
         for (int j = 1; j < csvFormat.length; j++) {
             for (int k = 0; k < csvFormat[j].length; k++) {
                 //Fills a two dimensional field with values from a one dimensional field representing Firebase data
-                    if (k == 4) {
-                        csvFormat[j][k] = calculateElectricityPerKm(j);
-                    } else {
-                        if (splittedBusInfo[index] != null) {
+                if (k == 4) {
+                    csvFormat[j][k] = calculateElectricityPerKm(j);
+                } else {
+                    if (splittedBusInfo[index] != null) {
                         csvFormat[j][k] = splittedBusInfo[index];
                         index++;
-                            Log.e("csvFormat[" + j + "][" + k + "] ", csvFormat[j][k]);
+                        Log.e("csvFormat[" + j + "][" + k + "] ", csvFormat[j][k]);
                     }
 
                 }
@@ -147,7 +147,7 @@ public class DataGenerator {
         return trimmed;
     }
 
-    private String calculateElectricityPerKm (int row) {
+    private String calculateElectricityPerKm(int row) {
         double electricityPerKm = 0.0;
         if (csvFormat[row][2] != null && csvFormat[row][1] != null)
             electricityPerKm = (Double.parseDouble(csvFormat[row][2]) / Double.parseDouble(csvFormat[row][1]));
