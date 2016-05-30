@@ -7,17 +7,17 @@
  * @author Jonathan Fager
  * @version 8.0, 2016-05-30
  * @since 1.0
- * <p/>
+ *
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
  * how to use the app, a date button to set the date and one button to send a .csv file
- * <p/>
+ *
  * The user simply chooses a date by clicking the date-button.
  * When pressing the send button, the default android mail-application starts with a
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
  * of the email.
- * <p/>
+ *
  * Note: The class is under construction. It can generate information shown in Android Monitor
  * for the following dates: 2016-05-18 and 2016-05-19. Please try these dates initially when testing.
  */
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
                         // TODO: Take the filepath (URI) and upload file to FireBase
                         // TODO: return a String (URL) to file
-                        // TODO: Open email app with the specified file as an attachment
+                        // TODO: Call getUrlAsync to open email app and send link
 
                     } else {
                         // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
@@ -165,7 +165,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Creates an instance of the class DateDialog, which opens the DateDialog
-     * @param  viewId  the ID of the view which the method will write the returned date to.
+     *
+     * @param viewId the ID of the view which the method will write the returned date to.
      */
     private void setDateToView(int viewId) {
         // Initiates a DateDialog object for user interaction when choosing the date
@@ -181,16 +182,16 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Calls the server to securely obtain an unguessable download Url
      * using an async call.
+     *
      * @param date should be in the format of "YYYY-MM-DD"
-     * onSuccess sets the the downloadLink by call to setDownloadLink
-     * and initiates the email by call to sendEmail
-     * onFailure opens a dialog telling the user that no report is available for this date.
-     *TODO: Comment this method
+     *             onSuccess sets the the downloadLink by call to setDownloadLink
+     *             and initiates the email by call to sendEmail
+     *             onFailure opens a dialog telling the user that no report is available for this date.
+     *             TODO: Comment this method
      */
     private void getUrlAsync(String date) {
 
         // Points to the specific file depending on date
-        // TODO: Comment this method
         StorageReference dateRef = storageRef.child("/" + date + ".csv");
         dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -223,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Getter and setter for download link.
+     *
      * @param link the URL link for the .csv-file
      */
     public static void setDownloadLink(Uri link) {
@@ -237,8 +239,9 @@ public class MainActivity extends AppCompatActivity {
      * Method that writes a two-dimensional array with strings, to a .csv-file with a specified
      * date as the filename.
      * TODO: Implement parsing to correct csv format
+     *
      * @param dataArray The array to write to a .csv
-     * @param callDate The specified date that gets passed to the filename
+     * @param callDate  The specified date that gets passed to the filename
      */
 
     private void writeCsvFile(String callDate, String[][] dataArray) {
@@ -273,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method to extract a filePath for a specified date.
+     *
      * @param callDate: a String with the date to return a filepath for
      * @return the filepath for the specified date
      */
