@@ -5,7 +5,7 @@
  * @author Melinda Fulöp
  * @author Sara Kinell
  * @author Jonathan Fager
- * @version 7.0, 2016-05-28
+ * @version 7.0, 2016-05-30
  * @since 1.0
  *
  * Manages the interaction with, and function of, the main view of the app.
@@ -13,7 +13,6 @@
  * how to use the app, a date button to set the date and one button to send a .csv file
  *
  * The user simply chooses a date by clicking the date-button.
- *
  * When pressing the send button, the default android mail-application starts with a
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
@@ -52,7 +51,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
 public class MainActivity extends AppCompatActivity {
 
     /**
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
      */
     Button sendButton;
     Button dateButton;
-    String attachmentLink;
+    static String attachmentLink;
     DataGenerator dgenerator;
     StorageReference storageRef;
 
@@ -184,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
    private void getUrlAsync (String date){
 
        // Points to the specific file depending on date
+       // TODO: Comment this method
        StorageReference dateRef = storageRef.child("/" + date + ".csv");
        dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
        {
@@ -208,8 +207,6 @@ public class MainActivity extends AppCompatActivity {
                                dialog.cancel();
                            }
                        });
-
-
                AlertDialog alert = builder.create();
                alert.show();
            }
@@ -228,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
         return attachmentLink;
     }
 
-
     /**
      * Method that writes a two-dimensional array with strings, to a .csv-file with a specified
      * date as the filename.
@@ -238,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void writeCsvFile(String[][] stringArray, String callDate) {
         String filename = callDate + ".csv";
+
         //creates the String which will make up the text for the .csv
         String csvText ="";
         //Adds all elements in Array to the string
@@ -252,18 +249,18 @@ public class MainActivity extends AppCompatActivity {
         //Creates a FileOutputStream for writing the file to internal storage
         FileOutputStream outputStream;
         try{
-            //Opens an FileOutputStream to a file with the specified filename
+            //Opens an FileOutputStream to a file with the specified filename.
+            //Will create file if it doesn't exist.
             outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
             //Writes the string to the specified file
             outputStream.write(csvText.getBytes());
-            //Closes the outputstream to produce a file
+            //Closes the FileOutputStream to produce a file
             outputStream.close();
         }catch (FileNotFoundException e){
             Toast.makeText(MainActivity.this, "Internal Error: No such file found", Toast.LENGTH_SHORT).show();
         }catch (IOException e){
             Toast.makeText(MainActivity.this, "Internal Error: IOException", Toast.LENGTH_SHORT).show();
         }
-
 
     }
 
@@ -297,9 +294,5 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
-
-
     }
 }
