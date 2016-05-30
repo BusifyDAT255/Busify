@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 public class DataGenerator {
 
@@ -80,8 +82,8 @@ public class DataGenerator {
     public String[][] busFields(String data) {
         String[][] csvFormat = new String[11][4]; // Should be [11][5]
         data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",").replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "").replace("Bus type", "");
-        String[] divided = data.split(",");
-        divided = fixIndex(divided, 40);
+        String[] splitBusInfo = data.split(",");
+        ArrayList<String> busValues = trimArray(splitBusInfo);
 
         int dataNumber = 0;
         for (int j = 0; j < csvFormat.length; j++) {
@@ -91,10 +93,8 @@ public class DataGenerator {
                 if (j == 0) {
                     addTitles(j, csvFormat);
                 } else {
-                        if (divided[dataNumber] != null) {
-                            csvFormat[j][k] = divided[dataNumber];
-                            Log.e("Number ", "" + dataNumber + " csvFormat [" + j + "]" + "[" + k + "] " + csvFormat[j][k]);
-                        }
+                    csvFormat[j][k] = busValues.get(dataNumber);
+                    Log.e("Number ", "" + dataNumber + " csvFormat [" + j + "]" + "[" + k + "] " + csvFormat[j][k]);
                     dataNumber++;
 
                 }
@@ -112,17 +112,15 @@ public class DataGenerator {
     }
 
 
-    private String[] fixIndex(String[] wrong, int size) {
-        String[] right = new String[size];
-        int index = 0;
-        for (int i = 0; i < wrong.length; i++) {
-            if (!wrong[i].isEmpty()) {
-                right[index] = wrong[i];
-                Log.e("right [" + index + "] " +  right[index], " wrong [" + i + "] " +  wrong[i]);
-                index++;
+    private ArrayList<String> trimArray(String[] splitted) {
+        ArrayList<String> trimmed = new ArrayList<>();
+        for (int i = 0; i < splitted.length; i++) {
+            if (!splitted[i].isEmpty()) {
+                trimmed.add(splitted[i]);
+                Log.e("Trimmed " + i, " " + trimmed.get(i));
             }
         }
-        return right;
+        return trimmed;
     }
 
 }
