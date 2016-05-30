@@ -3,13 +3,12 @@
  * @author Annie Söderström
  * @version 3.0, 2016-05-29
  * @since 1.0, 2016-05-27
- *
+ * <p/>
  * Information for buses from Firebase is combined with calculated values.
  * Error message will be shown if the ValueEventListener fails to
  * access the server or is removed because of Firebase settings.
- *
+ * <p/>
  * TODO: The method busFields is under construction
- *
  */
 
 package com.example.eliasvensson.busify;
@@ -23,7 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 
 
 public class DataGenerator {
@@ -83,22 +81,25 @@ public class DataGenerator {
         String[][] csvFormat = new String[11][4]; // Should be [11][5]
         data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",").replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "").replace("Bus type", "");
         String[] divided = data.split(",");
+        divided = fixIndex(divided, 40);
 
         int dataNumber = 0;
-            for (int j = 0; j < csvFormat.length; j++) {
-                //Log.e("j", "" + j);
-                for (int k = 0; k < csvFormat[j].length; k++) {
-                    //Log.e("k", "" + k);
-                    if (j == 0) {
-                        addTitles(j, csvFormat);
-                    } else {
-                        if (dataNumber < 40)
-                        //csvFormat[j][k] = divided[dataNumber];
-                        dataNumber++;
-                        Log.e("Number ", "" + dataNumber);
-                    }
+        for (int j = 0; j < csvFormat.length; j++) {
+            //Log.e("j", "" + j);
+            for (int k = 0; k < csvFormat[j].length; k++) {
+                //Log.e("k", "" + k);
+                if (j == 0) {
+                    addTitles(j, csvFormat);
+                } else {
+                        if (divided[dataNumber] != null) {
+                            csvFormat[j][k] = divided[dataNumber];
+                            Log.e("Number ", "" + dataNumber + " csvFormat [" + j + "]" + "[" + k + "] " + csvFormat[j][k]);
+                        }
+                    dataNumber++;
+
                 }
             }
+        }
         return csvFormat;
     }
 
@@ -108,6 +109,20 @@ public class DataGenerator {
         csvFormat[firstRow][2] = "Electric energy consumption (kWh)";
         csvFormat[firstRow][3] = "Bus type";
         //csvFormat[firstRow][4] = "Electricity per km (kWh/km)";
+    }
+
+
+    private String[] fixIndex(String[] wrong, int size) {
+        String[] right = new String[size];
+        int index = 0;
+        for (int i = 0; i < wrong.length; i++) {
+            if (!wrong[i].isEmpty()) {
+                right[index] = wrong[i];
+                Log.e("right [" + index + "] " +  right[index], " wrong [" + i + "] " +  wrong[i]);
+                index++;
+            }
+        }
+        return right;
     }
 
 }
