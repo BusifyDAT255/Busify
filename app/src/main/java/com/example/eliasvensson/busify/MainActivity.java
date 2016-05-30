@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
 
-        // Initiates the buttons for setting date and sending emails
+        // Initiates the buttons for setting date and sharing the link
         dateButton = (Button) findViewById(R.id.date_button);
         shareButton = (Button) findViewById(R.id.share_button);
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         dateButton.setOnClickListener(listener);
         shareButton.setOnClickListener(listener);
 
-        //Disables the share-button by default
+        // Disables the shareButton by default
         shareButton.setEnabled(false);
     }
 
@@ -71,16 +71,18 @@ public class MainActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.share_button)){
-                    //Disable the button to prohibit several mail-apps to open at once
+                    // Disable the button to prohibit several mail-apps to open at once
                     shareButton.setEnabled(false);
                     Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
-                    String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
-                    getUrlAsync(callDate);
 
+                    // Save the user specified date as a String
+                    String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+                    // Get the url from Firebase AND open the email app
+                    // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
+                    getUrlAsync(callDate);
                 }
             }
         };
@@ -91,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
      * Opens Androids default mail-application with a message of attached link and
      * link to a file.
      *
-     *
-     *
      */
     private void sendEmail() {
         // Attachment message
@@ -102,14 +102,16 @@ public class MainActivity extends AppCompatActivity {
         String date = ((EditText) findViewById(R.id.txt_date)).getText().toString();
         Log.e("date", date);
 
-        // Creates relevant information used the sending of the email
+        // Creates relevant information used the sending of the email,
         // e.g. subject matter, attached message
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + date);
         i.putExtra(Intent.EXTRA_TEXT, attachmentMessage + getDownloadLink());
+        // Start the email client
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
+            // Show a toast if there is no email client available
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
@@ -118,13 +120,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Creates an instance of the class DateDialog, which opens the DateDialog
      * @param  viewId  the ID of the view which the method will write the returned date to.
-     *
      */
     private void setDateToView(int viewId) {
         // Initiates a DateDialog object for user interaction when choosing the date
         DateDialog dialog = new DateDialog(findViewById(viewId), MainActivity.this);
+
         // Sets a FragmentManager to track the interaction with the DateDialog-fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
+
         // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
     }
@@ -138,10 +141,9 @@ public class MainActivity extends AppCompatActivity {
      * onSuccess sets the the downloadLink by call to setDownloadLink
      * and initiates the email by call to sendEmail
      * onFailure opens a dialog telling the user that no report is available for this date.
-     *
+     *TODO: Comment this method
      */
    private void getUrlAsync (String date){
-
        Task<Uri> link;
        // Points to the root reference
        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -164,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, 1);
                builder.setMessage("Sorry, no report available for this date.");
                builder.setCancelable(true);
-
                builder.setPositiveButton(
                        "Ok!",
                        new DialogInterface.OnClickListener() {
@@ -172,8 +173,6 @@ public class MainActivity extends AppCompatActivity {
                                dialog.cancel();
                            }
                        });
-
-
                AlertDialog alert = builder.create();
                alert.show();
            }
