@@ -17,7 +17,6 @@ package com.example.eliasvensson.busify;
 
 import android.content.Context;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,7 +26,7 @@ import java.io.InputStreamReader;
 
 public class CsvHandler {
 
-    MainActivity mainActivity;
+    private MainActivity mainActivity;
 
     public CsvHandler(MainActivity mainActivity){
         this.mainActivity = mainActivity;
@@ -73,7 +72,7 @@ public class CsvHandler {
      * TESTMETOD
      * TODO: Ta bort innan merge med master. Låt stå till develop
      */
-    private void readCsvFile(String callDate) {
+    public void readCsvFile(String callDate) {
         try {
             String Message;
             FileInputStream fileInputStream = mainActivity.openFileInput(callDate + ".csv");
