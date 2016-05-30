@@ -75,13 +75,14 @@ public class MainActivity extends AppCompatActivity {
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.send_button)){
-                    String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+                    //Disable the button to prohibit several mail-apps to open at once
+                    sendButton.setEnabled(false);
 
-                        // Checks if app user has chosen a date
-                         if (!callDate.isEmpty())
-                             getUrlAsync(callDate);
-                         else
-                             Toast.makeText(MainActivity.this, "Please start by choosing a date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
+                    String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
+                    getUrlAsync(callDate);
+
+
                 }
             }
         };
@@ -128,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
-        //sendButton.setEnabled(true);
     }
 
 
@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
      *
      */
    private void getUrlAsync (String date){
+
        Task<Uri> link;
        // Points to the root reference
        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
@@ -155,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
            {
                setDownloadLink(downloadUrl);
                sendEmail();
+               //Re-enables the "Share-button" when method has loaded
+               sendButton.setEnabled(true);
            }
 
        }).addOnFailureListener(new OnFailureListener() {
@@ -177,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
                alert.show();
            }
        });
-
 
     }
 
