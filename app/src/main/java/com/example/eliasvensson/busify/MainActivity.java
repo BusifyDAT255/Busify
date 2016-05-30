@@ -104,27 +104,34 @@ public class MainActivity extends AppCompatActivity {
                     shareButton.setEnabled(false);
                     Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
 
+                    //Saves the date chosen by the user as a String
                     String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
-                    //Checks if app user has chosen a date
-
+                        // TODO: Detta borde flyttas till DataGenerator.java, som borde sköta allt som har med databasen att göra
                         StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
                         File file = new File(dateRef.getPath());
-                        //Checks if file already exists
+
+                        // Checks if file already exists
+                        // TODO: Fix this if-statement. It's broken and always returns true
                         if (!file.exists()) {
-                            //Query information from Firebase
-                            String[][] busInfo = dgenerator.getBusInformation(callDate);
-                            writeCsvFile(busInfo, callDate);
+                            // Query data from Firebase
+                            String[][] busData = dgenerator.getBusInformation(callDate);
+                            // Write the data to a .csv-file
+                            writeCsvFile(callDate,busData);
+                            // Save the file path to that .csv-file to a String
                             String filePath = getCsvFilePath(callDate);
+                            // Shows the information in a String
+                            // TODO: Delete this Toast when file upload to fireBase works
                             Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
-                            //TODO: Take the filepath and upload file to FireBase
-                            //TODO: return link to file
+                            // TODO: Take the filepath (URI) and upload file to FireBase
+                            // TODO: return a String (URL) to file
+                            // TODO: Open email app with the specified file as an attachment
 
                         } else {
                             // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
+                            //Get the URL of the file that already exists on Firebase Storage
                             getUrlAsync(callDate);
                         }
-
                 }
             }
         };
@@ -144,9 +151,11 @@ public class MainActivity extends AppCompatActivity {
         //Opens up the choice for sharing
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
+
         //Sets subject and content of email
         i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + date);
         i.putExtra(Intent.EXTRA_TEXT, attachmentMessage + getDownloadLink());
+
         // Start the email client
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
@@ -232,20 +241,19 @@ public class MainActivity extends AppCompatActivity {
      * Method that writes a two-dimensional array with strings, to a .csv-file with a specified
      * date as the filename.
      * TODO: Implement parsing to correct csv format
-     * @param stringArray The array to write to a .csv
+     * @param dataArray The array to write to a .csv
      * @param callDate The specified date that gets passed to the filename
      */
 
-    private void writeCsvFile(String[][] stringArray, String callDate) {
+    private void writeCsvFile(String callDate, String[][] dataArray) {
         String filename = callDate + ".csv";
         //creates the String which will make up the text for the .csv
         String csvText ="";
         //Adds all elements in Array to the string
-        //TODO: Make sure this parses the text correctly to .csv-file format (dependent on Sara &
-        //Annies method
-        for (int i = 0; i<stringArray.length; i++){
-            for (int j = 0; j<stringArray[0].length; j++){
-                csvText = csvText + stringArray[i][j];
+        //TODO: Make sure this parses the text correctly to .csv-file format (dependent on Sara & Annies method
+        for (int i = 0; i<dataArray.length; i++){
+            for (int j = 0; j<dataArray[0].length; j++){
+                csvText = csvText + dataArray[i][j];
             }
         }
 
@@ -279,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * TESTMETOD
-     * TODO: Ta bort innan merge med master
+     * TODO: Ta bort innan merge med master. Låt stå till develop
      */
     private void readCsvFile(String callDate){
         try{
@@ -291,7 +299,6 @@ public class MainActivity extends AppCompatActivity {
             while((Message=bufferedReader.readLine())!=null){
                 stringBuffer.append(Message + "\n");
             }
-
             Toast.makeText(MainActivity.this, stringBuffer.toString(), Toast.LENGTH_SHORT).show();
 
         }catch (Exception e){
