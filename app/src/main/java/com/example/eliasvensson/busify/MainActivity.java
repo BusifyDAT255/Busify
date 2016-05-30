@@ -1,5 +1,10 @@
 /**
- * @author Elias Svensson, David Genelöv, Annie Söderström, Melinda Fulöp, Sara Kinell, Jonathan Fager
+ * @author Elias Svensson
+ * @author David Genelöv
+ * @author Annie Söderström
+ * @author Melinda Fulöp
+ * @author Sara Kinell
+ * @author Jonathan Fager
  * @version 7.0, 2016-05-30
  * @since 1.0
  * Manages the interaction with, and function of, the main view of the app.
@@ -24,7 +29,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,8 +43,8 @@ import com.google.firebase.storage.StorageReference;
 public class MainActivity extends AppCompatActivity {
 
     // Define variables
-    Button shareButton;
-    Button dateButton;
+    protected Button shareButton;
+    protected Button dateButton;
     private String attachmentLink;
 
     @Override
@@ -100,12 +104,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Chosen date
         String date = ((EditText) findViewById(R.id.txt_date)).getText().toString();
-        Log.e("date", date);
 
-        // Creates relevant information used the sending of the email,
-        // e.g. subject matter, attached message
+        //Opens up the choice for sharing
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
+        //Sets subject and content of email
         i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + date);
         i.putExtra(Intent.EXTRA_TEXT, attachmentMessage + getDownloadLink());
         // Start the email client
@@ -156,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
            {
                setDownloadLink(downloadUrl);
                sendEmail();
-               //Re-enables the "Share-button" when method has loaded
+               //Re-enables the "Share-button" when user returns to the view with share button
                shareButton.setEnabled(true);
            }
 
@@ -186,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setDownloadLink(Uri link){
         attachmentLink = link.toString();
-        Log.e("setDownload", attachmentLink);
     }
     private String getDownloadLink(){
         return attachmentLink;
