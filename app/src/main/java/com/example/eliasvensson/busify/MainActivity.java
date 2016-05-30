@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Initializes a DataGenerator
-        dgenerator = new DataGenerator(MainActivity.this);
+        dgenerator = new DataGenerator(MainActivity.this, 11, 4);
 
         // Initiates a storage reference to the root reference
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -103,8 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         File file = new File(dateRef.getPath());
                         if (!file.exists()) {
                             //Query information from Firebase
-                            String busInfo = dgenerator.getBusInformation(callDate);
-                            FileSaver.createCsv(callDate, busInfo);
+                            FileSaver.createCsv(callDate, dgenerator.getBusInformation(callDate));
 
                         } else {
                             getUrlAsync(callDate);
