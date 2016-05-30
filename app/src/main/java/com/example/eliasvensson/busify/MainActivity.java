@@ -7,17 +7,17 @@
  * @author Jonathan Fager
  * @version 8.0, 2016-05-30
  * @since 1.0
- *
+ * <p/>
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
  * how to use the app, a date button to set the date and one button to send a .csv file
- *
+ * <p/>
  * The user simply chooses a date by clicking the date-button.
  * When pressing the send button, the default android mail-application starts with a
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
  * of the email.
- *
+ * <p/>
  * Note: The class is under construction. It can generate information shown in Android Monitor
  * for the following dates: 2016-05-18 and 2016-05-19. Please try these dates initially when testing.
  */
@@ -107,31 +107,29 @@ public class MainActivity extends AppCompatActivity {
                     //Saves the date chosen by the user as a String
                     String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
-                        // TODO: Detta borde flyttas till DataGenerator.java, som borde sköta allt som har med databasen att göra
-                        StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
-                        File file = new File(dateRef.getPath());
+                    // Checks if file already exists
+                    // TODO: Fix this if-statement. It's broken and always returns true
+                    StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
+                    File file = new File(dateRef.getPath());
+                    if (!file.exists()) {
+                        // Query data from Firebase
+                        String[][] busData = dgenerator.getBusInformation(callDate);
+                        // Write the data to a .csv-file
+                        writeCsvFile(callDate, busData);
+                        // Save the file path to that .csv-file to a String
+                        String filePath = getCsvFilePath(callDate);
+                        // Shows the information in a String
+                        // TODO: Delete this Toast when file upload to fireBase works
+                        Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
+                        // TODO: Take the filepath (URI) and upload file to FireBase
+                        // TODO: return a String (URL) to file
+                        // TODO: Open email app with the specified file as an attachment
 
-                        // Checks if file already exists
-                        // TODO: Fix this if-statement. It's broken and always returns true
-                        if (!file.exists()) {
-                            // Query data from Firebase
-                            String[][] busData = dgenerator.getBusInformation(callDate);
-                            // Write the data to a .csv-file
-                            writeCsvFile(callDate,busData);
-                            // Save the file path to that .csv-file to a String
-                            String filePath = getCsvFilePath(callDate);
-                            // Shows the information in a String
-                            // TODO: Delete this Toast when file upload to fireBase works
-                            Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
-                            // TODO: Take the filepath (URI) and upload file to FireBase
-                            // TODO: return a String (URL) to file
-                            // TODO: Open email app with the specified file as an attachment
-
-                        } else {
-                            // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
-                            //Get the URL of the file that already exists on Firebase Storage
-                            getUrlAsync(callDate);
-                        }
+                    } else {
+                        // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
+                        //Get the URL of the file that already exists on Firebase Storage
+                        getUrlAsync(callDate);
+                    }
                 }
             }
         };
@@ -189,39 +187,37 @@ public class MainActivity extends AppCompatActivity {
      * onFailure opens a dialog telling the user that no report is available for this date.
      *TODO: Comment this method
      */
-   private void getUrlAsync (String date){
+    private void getUrlAsync(String date) {
 
-       // Points to the specific file depending on date
-       // TODO: Comment this method
-       StorageReference dateRef = storageRef.child("/" + date + ".csv");
-       dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
-       {
-           @Override
-           public void onSuccess(Uri downloadUrl)
-           {
-               setDownloadLink(downloadUrl);
-               sendEmail();
-               //Re-enables the "Share-button" when user returns to the view with share button
-               shareButton.setEnabled(true);
-           }
+        // Points to the specific file depending on date
+        // TODO: Comment this method
+        StorageReference dateRef = storageRef.child("/" + date + ".csv");
+        dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri downloadUrl) {
+                setDownloadLink(downloadUrl);
+                sendEmail();
+                //Re-enables the "Share-button" when user returns to the view with share button
+                shareButton.setEnabled(true);
+            }
 
-       }).addOnFailureListener(new OnFailureListener() {
-           @Override
-           public void onFailure(@NonNull Exception e) {
-               AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, 1);
-               builder.setMessage("Sorry, no report available for this date.");
-               builder.setCancelable(true);
-               builder.setPositiveButton(
-                       "Ok!",
-                       new DialogInterface.OnClickListener() {
-                           public void onClick(DialogInterface dialog, int id) {
-                               dialog.cancel();
-                           }
-                       });
-               AlertDialog alert = builder.create();
-               alert.show();
-           }
-       });
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, 1);
+                builder.setMessage("Sorry, no report available for this date.");
+                builder.setCancelable(true);
+                builder.setPositiveButton(
+                        "Ok!",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
 
     }
 
@@ -229,11 +225,11 @@ public class MainActivity extends AppCompatActivity {
      * Getter and setter for download link.
      * @param link the URL link for the .csv-file
      */
-    public static void setDownloadLink(Uri link){
+    public static void setDownloadLink(Uri link) {
         attachmentLink = link.toString();
     }
 
-    private String getDownloadLink(){
+    private String getDownloadLink() {
         return attachmentLink;
     }
 
@@ -248,18 +244,18 @@ public class MainActivity extends AppCompatActivity {
     private void writeCsvFile(String callDate, String[][] dataArray) {
         String filename = callDate + ".csv";
         //creates the String which will make up the text for the .csv
-        String csvText ="";
+        String csvText = "";
         //Adds all elements in Array to the string
         //TODO: Make sure this parses the text correctly to .csv-file format (dependent on Sara & Annies method
-        for (int i = 0; i<dataArray.length; i++){
-            for (int j = 0; j<dataArray[0].length; j++){
+        for (int i = 0; i < dataArray.length; i++) {
+            for (int j = 0; j < dataArray[0].length; j++) {
                 csvText = csvText + dataArray[i][j];
             }
         }
 
         //Creates a FileOutputStream for writing the file to internal storage
         FileOutputStream outputStream;
-        try{
+        try {
             //Opens an FileOutputStream to a file with the specified filename.
             //Will create file if it doesn't exist.
             outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
@@ -267,9 +263,9 @@ public class MainActivity extends AppCompatActivity {
             outputStream.write(csvText.getBytes());
             //Closes the FileOutputStream to produce a file
             outputStream.close();
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             Toast.makeText(MainActivity.this, "Internal Error: No such file found", Toast.LENGTH_SHORT).show();
-        }catch (IOException e){
+        } catch (IOException e) {
             Toast.makeText(MainActivity.this, "Internal Error: IOException", Toast.LENGTH_SHORT).show();
         }
 
@@ -280,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
      * @param callDate: a String with the date to return a filepath for
      * @return the filepath for the specified date
      */
-    private String getCsvFilePath(String callDate){
+    private String getCsvFilePath(String callDate) {
         String filePath = MainActivity.this.getFilesDir().getAbsolutePath() + callDate + ".csv";
         return filePath;
     }
@@ -289,19 +285,19 @@ public class MainActivity extends AppCompatActivity {
      * TESTMETOD
      * TODO: Ta bort innan merge med master. Låt stå till develop
      */
-    private void readCsvFile(String callDate){
-        try{
+    private void readCsvFile(String callDate) {
+        try {
             String Message;
             FileInputStream fileInputStream = openFileInput(callDate + ".csv");
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             StringBuffer stringBuffer = new StringBuffer();
-            while((Message=bufferedReader.readLine())!=null){
+            while ((Message = bufferedReader.readLine()) != null) {
                 stringBuffer.append(Message + "\n");
             }
             Toast.makeText(MainActivity.this, stringBuffer.toString(), Toast.LENGTH_SHORT).show();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

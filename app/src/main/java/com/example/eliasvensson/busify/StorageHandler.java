@@ -1,3 +1,12 @@
+/**
+ *
+ *
+ * @author Jonathan Fager
+ * @version 2.0, 2016-05-30
+ * @since 1.0, 2016-05-29
+ *
+ */
+
 package com.example.eliasvensson.busify;
 
 import android.net.Uri;
@@ -15,9 +24,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 
-/**
- * Created by jonathanfager on 16-05-28.
- */
 public class StorageHandler {
 
     //Declare variables
