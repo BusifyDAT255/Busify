@@ -99,15 +99,17 @@ public class DataGenerator {
         for (int j = 1; j < csvFormat.length; j++) {
             for (int k = 0; k < csvFormat[j].length; k++) {
                 //Fills a two dimensional field with values from a one dimensional field representing Firebase data
-                if (splittedBusInfo[index] != null) {
                     if (k == 4) {
                         csvFormat[j][k] = calculateElectricityPerKm(j);
                     } else {
+                        if (splittedBusInfo[index] != null) {
                         csvFormat[j][k] = splittedBusInfo[index];
                         index++;
+                            Log.e("csvFormat[" + j + "][" + k + "] ", csvFormat[j][k]);
                     }
-                    Log.e("csvFormat[" + j + "][" + k + "] ", csvFormat[j][k]);
+
                 }
+
             }
         }
         return csvFormat;
@@ -149,7 +151,9 @@ public class DataGenerator {
         double electricityPerKm = 0.0;
         if (csvFormat[row][2] != null && csvFormat[row][1] != null)
             electricityPerKm = (Double.parseDouble(csvFormat[row][2]) / Double.parseDouble(csvFormat[row][1]));
+        Log.e("csvFormat[" + row + "][" + 4 + "] ", Double.toString(electricityPerKm));
         return Double.toString(electricityPerKm);
+
     }
 
 

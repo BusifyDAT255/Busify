@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.share_button)) {
                     // Disable the button to prohibit several mail-apps to open at once
-                    shareButton.setEnabled(false);
+                    //shareButton.setEnabled(false);
                     Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
 
                     // Save the user specified date as a String
