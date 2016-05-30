@@ -37,15 +37,18 @@ public class DataGenerator {
     private String chosenDate;
     private final Activity mainActivity;
     private String busdata = "";
+    private String[][] csvFormat;
 
 
     /**
      * Constructor for the DataGenerator class.
      */
-    public DataGenerator(Activity act) {
+    public DataGenerator(Activity act, int row, int col) {
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
-        this.mainActivity = act;
+        mainActivity = act;
+        csvFormat = new String[row][col];
+
     }
 
     /**
@@ -79,25 +82,23 @@ public class DataGenerator {
 
     }
 
+    // Could make csvFormat an instance variable
     public String[][] busFields(String data) {
-        String[][] csvFormat = new String[11][4]; // Should be [11][5]
+        csvFormat = new String[11][4]; // Should be [11][5]
         data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",").replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "").replace("Bus type", "");
         String[] splitBusInfo = data.split(",");
         ArrayList<String> busValues = trimArray(splitBusInfo);
+        addTitles(0, csvFormat);
+        Log.e("busValues position 0 ", busValues.get(0));
 
         int dataNumber = 0;
-        for (int j = 0; j < csvFormat.length; j++) {
+        for (int j = 1; j < csvFormat.length; j++) {
             //Log.e("j", "" + j);
             for (int k = 0; k < csvFormat[j].length; k++) {
                 //Log.e("k", "" + k);
-                if (j == 0) {
-                    addTitles(j, csvFormat);
-                } else {
-                    csvFormat[j][k] = busValues.get(dataNumber);
-                    Log.e("Number ", "" + dataNumber + " csvFormat [" + j + "]" + "[" + k + "] " + csvFormat[j][k]);
-                    dataNumber++;
-
-                }
+                //csvFormat[j][k] = busValues.get(dataNumber);
+                Log.e("Number ", "" + dataNumber + " csvFormat [" + j + "]" + "[" + k + "] " + csvFormat[j][k]);
+                dataNumber++;
             }
         }
         return csvFormat;
