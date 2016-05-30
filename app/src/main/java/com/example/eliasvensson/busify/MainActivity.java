@@ -43,6 +43,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Initializes a DataGenerator
-        dgenerator = new DataGenerator(MainActivity.this, 11, 4);
+        dgenerator = new DataGenerator(MainActivity.this, 11, 5);
 
         // Initiates a storage reference to the root reference
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -94,22 +96,33 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
-                else if (v == findViewById(R.id.share_button)){
+                else if (v == findViewById(R.id.share_button)) {
                     // Disable the button to prohibit several mail-apps to open at once
                     shareButton.setEnabled(false);
                     Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
 
                     // Save the user specified date as a String
-                    String callDate = ((EditText)findViewById(R.id.txt_date)).getText().toString();
-                    // Get the url from Firebase AND open the email app
-                    // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
-                    getUrlAsync(callDate);
+                    String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
+                    // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
+
+                    //Checks if app user has chosen a date
+                    if (!callDate.isEmpty()) {
+                        //Checks if file already exists
+                        StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
+                        File file = new File(dateRef.getPath());
+                        if (!file.exists()) {
+                            //Query information from Firebase
+                            FileSaver.createCsv(callDate, dgenerator.getBusInformation(callDate));
+
+                        } else {
+                            getUrlAsync(callDate);
+                        }
+                    }
                 }
             }
         };
     }
-
 
     /**
      * Opens Android's default mail-application with a message of attached link and
@@ -139,7 +152,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Creates an instance of the class DateDialog, which opens the DateDialog
-     * @param  viewId  the ID of the view which the method will write the returned date to.
+     *
+     * @param viewId the ID of the view which the method will write the returned date to.
      */
     private void setDateToView(int viewId) {
         // Initiates a DateDialog object for user interaction when choosing the date
@@ -155,56 +169,56 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Calls the server to securely obtain an unguessable download Url
      * using an async call.
+     *
      * @param date should be in the format of "YYYY-MM-DD"
-     * onSuccess sets the the downloadLink by call to setDownloadLink
-     * and initiates the email by call to sendEmail
-     * onFailure opens a dialog telling the user that no report is available for this date.
-     *TODO: Comment this method
+     *             onSuccess sets the the downloadLink by call to setDownloadLink
+     *             and initiates the email by call to sendEmail
+     *             onFailure opens a dialog telling the user that no report is available for this date.
+     *             TODO: Comment this method
      */
-   private void getUrlAsync (String date){
+    private void getUrlAsync(String date) {
 
-       // Points to the specific file depending on date
-       StorageReference dateRef = storageRef.child("/" + date + ".csv");
-       dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
-       {
-           @Override
-           public void onSuccess(Uri downloadUrl)
-           {
-               setDownloadLink(downloadUrl);
-               sendEmail();
-               //Re-enables the "Share-button" when user returns to the view with share button
-               shareButton.setEnabled(true);
-           }
+        // Points to the specific file depending on date
+        StorageReference dateRef = storageRef.child("/" + date + ".csv");
+        dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri downloadUrl) {
+                setDownloadLink(downloadUrl);
+                sendEmail();
+                //Re-enables the "Share-button" when user returns to the view with share button
+                shareButton.setEnabled(true);
+            }
 
-       }).addOnFailureListener(new OnFailureListener() {
-           @Override
-           public void onFailure(@NonNull Exception e) {
-               AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, 1);
-               builder.setMessage("Sorry, no report available for this date.");
-               builder.setCancelable(true);
-               builder.setPositiveButton(
-                       "Ok!",
-                       new DialogInterface.OnClickListener() {
-                           public void onClick(DialogInterface dialog, int id) {
-                               dialog.cancel();
-                           }
-                       });
-               AlertDialog alert = builder.create();
-               alert.show();
-           }
-       });
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, 1);
+                builder.setMessage("Sorry, no report available for this date.");
+                builder.setCancelable(true);
+                builder.setPositiveButton(
+                        "Ok!",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
 
     }
 
     /**
      * Getter and setter for download link.
+     *
      * @param link the URL link for the .csv-file
      */
-    private void setDownloadLink(Uri link){
+    private void setDownloadLink(Uri link) {
         attachmentLink = link.toString();
     }
 
-    private String getDownloadLink(){
+    private String getDownloadLink() {
         return attachmentLink;
     }
 
