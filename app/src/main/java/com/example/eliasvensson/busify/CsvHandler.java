@@ -1,3 +1,18 @@
+/**
+ * @author Elias Svensson
+ * @author David Genelöv
+ * @author Melinda Fulöp
+ * @version 1.0, 2016-05-30
+ * @since 1.0
+ *
+ * Manages all handling of .csv-files needed for the Busify app
+
+ * Note: The class is under construction. There is still a test-method for reading csv-files
+ * and the writeFileFromArray method will need to be adjusted to Sara and Annies last version of
+ * the DataGenerators array with database info
+ *  TODO: Implement a method for creating a java file object if Fager's uploadFileToFirebase-method will need this.
+ */
+
 package com.example.eliasvensson.busify;
 
 import android.content.Context;
@@ -10,9 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Created by davidgenelov on 2016-05-30.
- */
 public class CsvHandler {
 
     MainActivity mainActivity;
@@ -24,7 +36,6 @@ public class CsvHandler {
     /**
      * Method that writes a two-dimensional array with strings, to a .csv-file with a specified
      * date as the filename.
-     * TODO: Implement parsing to correct csv format
      *
      * @param dataArray The array to write to a .csv
      * @param callDate  The specified date that gets passed to the filename
@@ -34,7 +45,7 @@ public class CsvHandler {
         //creates the String which will make up the text for the .csv
         String csvText = "";
         //Adds all elements in Array to the string
-        //TODO: Make sure this parses the text correctly to .csv-file format (dependent on Sara & Annies method
+        //TODO: Make sure this parses the text correctly to .csv-file format (dependent on Sara & Annies method)
         for (int i = 0; i < dataArray.length; i++) {
             for (int j = 0; j < dataArray[0].length; j++) {
                 csvText = csvText + dataArray[i][j];
@@ -89,5 +100,4 @@ public class CsvHandler {
         String filePath = mainActivity.getFilesDir().getAbsolutePath() + callDate + ".csv";
         return filePath;
     }
-
 }

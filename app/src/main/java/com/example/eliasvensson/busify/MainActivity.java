@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
                         // TODO: Take the filepath (URI) and upload file to FireBase
                         // TODO: return a String (URL) to file
-                        // TODO: Call getUrlAsync to open email app and send link
+                        // TODO: Call method to open email app with URL attached
 
                     } else {
                         // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
@@ -219,28 +219,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Getter and setter for download link.
-     *
+     * Sets the downloadlink to the specified Uri.
      * @param link the URL link for the .csv-file
      */
     public static void setDownloadLink(Uri link) {
         attachmentLink = link.toString();
     }
 
+    /**
+     * Gets the download link to the last created attachment
+     * @return The link to the created attachment
+     */
     private String getDownloadLink() {
         return attachmentLink;
     }
-
-    /**
-     * Method to extract a filePath for a specified date.
-     *
-     * @param callDate: a String with the date to return a filepath for
-     * @return the filepath for the specified date
-     */
-    private String getCsvFilePath(String callDate) {
-        String filePath = MainActivity.this.getFilesDir().getAbsolutePath() + callDate + ".csv";
-        return filePath;
-    }
-
 
 }
