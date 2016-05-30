@@ -80,14 +80,14 @@ public class DataGenerator {
     }
 
     /**
-     *
+     * 
      * @param data
      * @return
      */
     public String[][] busFields(String data) {
         data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",").replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "").replace("Bus type", "");
         String[] splittedBusInfo = data.split(",");
-        splittedBusInfo = fixIndex(splittedBusInfo, 40);
+        splittedBusInfo = fixIndex(splittedBusInfo, (csvFormat.length-1)*(csvFormat[0].length-1));
         addTitles(0);
         int index = 0;
         for (int j = 1; j < csvFormat.length; j++) {
@@ -97,8 +97,8 @@ public class DataGenerator {
                     Log.e("Number ", "" + index + " csvFormat [" + j + "]" + "[" + k + "] " + csvFormat[j][k]);
                     index++;
                 }
-
             }
+            calculateElectricityPerKm(j);
         }
         return csvFormat;
     }
@@ -112,7 +112,7 @@ public class DataGenerator {
         csvFormat[firstRow][1] = "Driving distance (km)";
         csvFormat[firstRow][2] = "Electric energy consumption (kWh)";
         csvFormat[firstRow][3] = "Bus type";
-        //csvFormat[firstRow][4] = "Electricity per km (kWh/km)";
+        csvFormat[firstRow][4] = "Electricity per km (kWh/km)";
     }
 
     /**
@@ -132,6 +132,14 @@ public class DataGenerator {
             }
         }
         return trimmed;
+    }
+
+    private void calculateElectricityPerKm (int row) {
+        Log.e("In", "calculateElec");
+        double electricityPerKm = (Double.parseDouble(csvFormat[row][2])/Double.parseDouble(csvFormat[row][1]));
+        Log.e("After", "double calc");
+        csvFormat[row][4] = String.valueOf(electricityPerKm);
+        Log.e("5th column ", csvFormat[row][4]);
     }
 
 }
