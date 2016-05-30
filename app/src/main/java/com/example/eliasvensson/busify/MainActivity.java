@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                             /* EXAMPLE CODE FOR USING CSV WRITER
                             String[][] stringArray = {{"Hello World!","Hej"}, {"Hejhej","hej"}};
                             writeCsvFile(stringArray, callDate);
-                            getCsvFilePath(callDate);
+                            String filePath = getCsvFilePath(callDate);
                             */
 
 
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                             /* EXAMPLE CODE FOR USING CSV WRITER
                             String[][] stringArray = {{"Hello World!","Hej"}, {"Hejhej","hej"}};
                             writeCsvFile(stringArray, callDate);
-                            getCsvFilePath(callDate);
+                            String filePath = getCsvFilePath(callDate);
                             */
                         }
                     } else
