@@ -1,6 +1,7 @@
 /**
- * @author Elias Svensson and David Genelov
- * @version 1.0, 2016-05-04
+ * @author Elias Svensson
+ * @author David Genelöv
+ * @version 7.0, 2016-05-30
  * @since 1.0
  * This class was made with the aid of tutorials available at
  * http://developer.android.com/guide/topics/ui/controls/pickers.html#DatePicker
