@@ -34,6 +34,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
 
     /** Constructor that assigns which EditText-object the date will be written to
      * @param view The EditText-object that the date will be written to
+     * @param mainActivity The activity this fragment will be run from
      */
 
     public DateDialog(View view, MainActivity mainActivity) {
@@ -77,6 +78,8 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         // Show the selected date in the text box
         String date = String.format("%4d-%02d-%02d", year, (month + 1), day);
         textToChange.setText(date);
+
+        //Re-enables the shareButton in the mainactivity class when the text is set.
         mainActivity.shareButton.setEnabled(true);
     }
 
