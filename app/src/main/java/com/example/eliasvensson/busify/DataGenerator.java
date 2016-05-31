@@ -26,7 +26,6 @@ import java.math.MathContext;
 
 
 public class DataGenerator {
-
     /**
      * Defines variables handling the reference to the Firebase database,
      * the String containing the date for which bus information is to be shown,
@@ -43,7 +42,7 @@ public class DataGenerator {
     /**
      * Constructor for the DataGenerator class.
      *
-     * @param act the MainActivity view
+     * @param act MainActivity view
      * @param row number of rows in the final .csv-file
      * @param col number of columns in the final .csv-file
      */
@@ -88,7 +87,7 @@ public class DataGenerator {
      * Creates content for a .csv-file.
      *
      * @param data bus information from Firebase
-     * @return a two dimensional field of bus data
+     * @return two dimensional field of bus data
      */
     public String[][] busFields(String data) {
         //Replaces tokens with comma for easier splitting of the String
@@ -131,6 +130,7 @@ public class DataGenerator {
                     // Increments index for the one-dimensional array, IFF values for column
                     // 1-4 was changed
                     index++;
+                    Log.e("csvFormat [" + j + "][" + k + "]", csvFormat[j][k]);
                 }
             }
         }
