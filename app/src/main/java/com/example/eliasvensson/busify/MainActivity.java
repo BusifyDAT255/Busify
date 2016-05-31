@@ -109,19 +109,32 @@ public class MainActivity extends AppCompatActivity {
 
                     //Checks if app user has chosen a date
                     if (!callDate.isEmpty()) {
+                        dataGenerator.getBusInformation(callDate);
                         //Checks if file already exists
                         StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
                         File file = new File(dateRef.getPath());
                         if (!file.exists()) {
-                            //Query information from Firebase
-                            FileSaver.createCsv(callDate, dataGenerator.getBusInformation(callDate));
+                            Thread timerThread = new Thread() {
+                                public void run() {
+                                    try {
+                                        //Sets the duration of the splash screen
+                                        sleep(3000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        //Query information from Firebase
+                                        FileSaver.createCsv(callDate, dataGenerator.getBusInformation(callDate));
+                                    }
+                                }
+                            };
+                            timerThread.start();
+                        }
 
                         } else {
                             getUrlAsync(callDate);
                         }
                     }
                 }
-            }
         };
     }
 
