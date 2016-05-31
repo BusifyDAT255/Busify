@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
      * Takes a string with a date, gets the data from that date from database,
      * saves it as a .csv-file on internal storage, and displays the
      * filepath of this file in a toast.
+     *
      * @param callDate date of file to convert to a .csv-file.
      */
     private void buildCsv(String callDate) {
@@ -204,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Sets the downloadlink to the specified Uri.
+     *
      * @param link the URL link for the .csv-file
      */
     public static void setDownloadLink(Uri link) {
@@ -212,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Gets the download link to the last created attachment
+     * 
      * @return The link to the created attachment
      */
     private String getDownloadLink() {
