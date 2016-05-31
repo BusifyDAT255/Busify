@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
     protected Button shareButton;
     protected Button dateButton;
     private static String attachmentLink;
-    DataGenerator dgenerator;
-    StorageReference storageRef;
-    CsvHandler csvHandler;
+    protected DataGenerator dgenerator;
+    protected StorageReference storageRef;
+    protected CsvHandler csvHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
                 buildCsv(date);
             }
         });
-
     }
 
     /**
