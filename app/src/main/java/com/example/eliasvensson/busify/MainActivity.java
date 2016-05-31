@@ -151,27 +151,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Takes a string with a date, gets the data from that date from database,
-     * saves it as a .csv-file on internal storage, and displays the
-     * filepath of this file in a toast.
-     * @param callDate date of file to convert to a .csv-file.
-     */
-    private void buildCsv(String callDate) {
-        // Queries data from Firebase
-        String[][] busData = dgenerator.getBusInformation(callDate);
-        // Writes the data to a .csv-file
-        csvHandler.writeFileFromArray(callDate, busData);
-        // Saves the file path to that .csv-file to a String
-        String filePath = csvHandler.getFilePath(callDate);
-        // Shows the information in a String
-        // TODO: Delete this Toast when file upload to fireBase works
-        Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
-        // TODO: Take the filepath (URI) and upload file to FireBase
-        // TODO: return a String (URL) to file
-        // TODO: Call method to open email app with URL attached
-    }
-
-    /**
      * Calls the server to securely obtain an unguessable download Url
      * using an async call.
      *
@@ -200,6 +179,27 @@ public class MainActivity extends AppCompatActivity {
                 buildCsv(date);
             }
         });
+    }
+
+    /**
+     * Takes a string with a date, gets the data from that date from database,
+     * saves it as a .csv-file on internal storage, and displays the
+     * filepath of this file in a toast.
+     * @param callDate date of file to convert to a .csv-file.
+     */
+    private void buildCsv(String callDate) {
+        // Queries data from Firebase
+        String[][] busData = dgenerator.getBusInformation(callDate);
+        // Writes the data to a .csv-file
+        csvHandler.writeFileFromArray(callDate, busData);
+        // Saves the file path to that .csv-file to a String
+        String filePath = csvHandler.getFilePath(callDate);
+        // Shows the information in a String
+        // TODO: Delete this Toast when file upload to fireBase works
+        Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
+        // TODO: Take the filepath (URI) and upload file to FireBase
+        // TODO: return a String (URL) to file
+        // TODO: Call method to open email app with URL attached
     }
 
     /**
