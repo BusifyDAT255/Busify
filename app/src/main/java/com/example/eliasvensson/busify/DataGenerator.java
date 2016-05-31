@@ -7,6 +7,7 @@
  * Information for buses from Firebase is combined with calculated values.
  * Error message will be shown if the ValueEventListener fails to
  * access the server or is removed because of Firebase settings.
+ *
  */
 
 package com.example.eliasvensson.busify;
@@ -25,8 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 public class DataGenerator {
 
     /**
-     * Defines variables handling the reference to the Firebase database
-     * and the String containing the date for which bus information is to be shown.
+     * Defines variables handling the reference to the Firebase database,
+     * the String containing the date for which bus information is to be shown,
+     * a MainActivity reference and the csvFormat to be used when creating a .csv-file.
+     * The busdata variable is used to contain data from Firebase.
      */
     private FirebaseDatabase database;
     protected DatabaseReference ref;
@@ -34,7 +37,6 @@ public class DataGenerator {
     private Activity mainActivity;
     private String busdata = "";
     private String[][] csvFormat;
-
 
     /**
      * Constructor for the DataGenerator class.
@@ -60,17 +62,18 @@ public class DataGenerator {
     public String[][] getBusInformation(String date) {
         this.chosenDate = date;
 
-        // Adds mainActivity value event listener to the database reference
+        //Adds mainActivity value event listener to the database reference
         ref.child(chosenDate).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                //Gets a snapshot of the data in Firebase for chosenDate
                 busdata = dataSnapshot.getValue().toString();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Displays an error message if the listener fails or is removed
+                //Displays an error message if the listener fails or is removed
                 Toast.makeText(mainActivity, "Cannot generate data", Toast.LENGTH_SHORT).show();
                 throw new InternalError(databaseError.getMessage());
             }
@@ -80,7 +83,7 @@ public class DataGenerator {
     }
 
     /**
-     * Creates content for .csv-file
+     * Creates content for a .csv-file.
      *
      * @param data bus information from Firebase
      * @return a two dimensional field of bus data
@@ -94,17 +97,22 @@ public class DataGenerator {
         splittedBusInfo = fixIndex(splittedBusInfo, (csvFormat.length - 1) * (csvFormat[0].length - 1));
         addTitles(0);
 
+        //Fills a two dimensional field with values from a one dimensional field representing Firebase data
         int index = 0;
         for (int j = 1; j < csvFormat.length; j++) {
             for (int k = 0; k < csvFormat[j].length; k++) {
-                //Fills a two dimensional field with values from a one dimensional field representing Firebase data
                 if (k == 4) {
+                    //Adds a fifth column with calculated electricity per km
                     csvFormat[j][k] = calculateElectricityPerKm(j);
                 } else {
                     if (splittedBusInfo[index] != null) {
+                        //Adds values from the database into csvFormat
                         csvFormat[j][k] = splittedBusInfo[index];
                         index++;
+
+                        /* TODO: May be used for testing when merging with develop
                         Log.e("csvFormat[" + j + "][" + k + "] ", csvFormat[j][k]);
+                        */
                     }
 
                 }
@@ -115,7 +123,7 @@ public class DataGenerator {
     }
 
     /**
-     * Adds titles to the first row
+     * Adds titles to the first row, which represents the first row of the .csv-file.
      *
      * @param firstRow the first row number
      */
@@ -128,15 +136,16 @@ public class DataGenerator {
     }
 
     /**
-     * Fixes the indices of a split array
+     * Fixes the indices in a split array.
      *
      * @param splitted field with empty content
-     * @param size     the size of the new field
+     * @param size the size of the new field
      * @return field of strings with non-empty content
      */
     private String[] fixIndex(String[] splitted, int size) {
         String[] trimmed = new String[size];
         int index = 0;
+        //Adds values from the split array to the trimmed array and ignores empty Strings
         for (int i = 0; i < splitted.length; i++) {
             if (!splitted[i].isEmpty()) {
                 trimmed[index] = splitted[i];
@@ -146,6 +155,13 @@ public class DataGenerator {
         return trimmed;
     }
 
+    /**
+     * Calculates electricity per km from values representing
+     * electricity and driving distance for a certain bus.
+     *
+     * @param row row to be filled with a fifth column
+     * @return electricity per km for a specified bus as a String
+     */
     private String calculateElectricityPerKm(int row) {
         double electricityPerKm = 0.0;
         if (csvFormat[row][2] != null && csvFormat[row][1] != null)
