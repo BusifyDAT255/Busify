@@ -1,7 +1,7 @@
 /**
  * @author Sara Kinell
  * @author Annie Söderström
- * @version 4.0, 2016-05-30
+ * @version 5.0, 2016-05-31
  * @since 1.0, 2016-05-27
  *
  * Information for buses from Firebase is combined with calculated values.
@@ -29,7 +29,7 @@ public class DataGenerator {
      * and the String containing the date for which bus information is to be shown.
      */
     private FirebaseDatabase database;
-    private DatabaseReference ref;
+    protected DatabaseReference ref;
     private String chosenDate;
     private Activity mainActivity;
     private String busdata = "";
@@ -140,9 +140,6 @@ public class DataGenerator {
         int index = 0;
         for (int i = 0; i < splitted.length; i++) {
             if (!splitted[i].isEmpty()) {
-                if(splitted[i].equals(null)) {
-                    Log.e("Index " + index, "splitted.length" + splitted.length);
-                }
                 trimmed[index] = splitted[i];
                 index++;
             }
