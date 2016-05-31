@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                         StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
                         File file = new File(dateRef.getPath());
                         if (!file.exists()) {
+                            // Creates a thread to handle time delay in database access
                             Thread databaseTimer = new Thread() {
                                 public void run() {
                                     try {
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     } finally {
-                                        //Queries information from Firebase
+                                        //Creates a .csv-file with queried information from Firebase for date callDate
                                         FileSaver.createCsv(callDate, dataGenerator.getBusInformation(callDate));
                                     }
                                 }
