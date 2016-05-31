@@ -29,7 +29,7 @@ public class DataGenerator {
      * and the String containing the date for which bus information is to be shown.
      */
     private FirebaseDatabase database;
-    protected DatabaseReference ref;
+    private DatabaseReference ref;
     private String chosenDate;
     private Activity mainActivity;
     private String busdata = "";

@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private String attachmentLink;
     DataGenerator dataGenerator;
     StorageReference storageRef;
+    protected String callDate;
 
 
     @Override
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Initializes a DataGenerator
-        this.dataGenerator = SplashScreen.dataGenerator;
+        dataGenerator = new DataGenerator(this, 11, 5);
 
         // Initiates a storage reference to the root reference
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
 
                     // Save the user specified date as a String
-                    String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
+                    callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
                     // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
 
@@ -111,9 +112,21 @@ public class MainActivity extends AppCompatActivity {
                         //Checks if file already exists
                         StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
                         File file = new File(dateRef.getPath());
+                        dataGenerator.getBusInformation(callDate);
                         if (!file.exists()) {
-                            //Query information from Firebase
-                            FileSaver.createCsv(callDate, dataGenerator.getBusInformation(callDate));
+                            Thread timerThread = new Thread() {
+                                public void run() {
+                                    try {
+                                        //Sets the duration of the splash screen
+                                        sleep(3000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        //Query information from Firebase
+                                        FileSaver.createCsv(callDate, dataGenerator.getBusInformation(callDate));
+                                    }
+                                }
+                            };
 
                         } else {
                             getUrlAsync(callDate);
