@@ -7,18 +7,18 @@
  * @author Jonathan Fager
  * @version 8.0, 2016-05-30
  * @since 1.0
- *
+ * <p/>
  * Manages the interaction with, and function of, the main view of the app.
  * The main screen consists of a "Welcome" label, a "hint-label" to guide the user in
  * how to use the app, a date button to set the date and one button to send a .csv file
- *
+ * <p/>
  * The user simply chooses a date by clicking the date-button.
- *
+ * <p/>
  * When pressing the send button, the default android mail-application starts with a
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
  * of the email.
- *
+ * <p/>
  * Note: The class is under construction. It can generate information shown in Android Monitor
  * for the following dates: 2016-05-18 and 2016-05-19. Please try these dates initially when testing.
  */
@@ -112,21 +112,9 @@ public class MainActivity extends AppCompatActivity {
                         //Checks if file already exists
                         StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
                         File file = new File(dateRef.getPath());
-                        dataGenerator.getBusInformation(callDate);
                         if (!file.exists()) {
-                            Thread timerThread = new Thread() {
-                                public void run() {
-                                    try {
-                                        //Sets the duration of the splash screen
-                                        sleep(3000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    } finally {
-                                        //Query information from Firebase
-                                        FileSaver.createCsv(callDate, dataGenerator.getBusInformation(callDate));
-                                    }
-                                }
-                            };
+                            //Query information from Firebase
+                            FileSaver.createCsv(callDate, dataGenerator.getBusInformation(callDate));
 
                         } else {
                             getUrlAsync(callDate);

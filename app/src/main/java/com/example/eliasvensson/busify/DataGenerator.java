@@ -65,7 +65,18 @@ public class DataGenerator {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                busdata = dataSnapshot.getValue().toString();
                 // Gets a snapshot of the data in the database as a String
+                    Thread timerThread = new Thread() {
+                        public void run() {
+                            try {
+                                //Sets the duration of the splash screen
+                                sleep(3000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
                 busdata = dataSnapshot.getValue().toString();
             }
 
