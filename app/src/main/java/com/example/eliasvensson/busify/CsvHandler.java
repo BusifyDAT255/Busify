@@ -36,8 +36,8 @@ public class CsvHandler {
      * Method that writes a two-dimensional array with strings, to a .csv-file with a specified
      * date as the filename.
      *
-     * @param dataArray The array to write to a .csv
-     * @param callDate  The specified date that gets passed to the filename
+     * @param dataArray array to write to a .csv
+     * @param callDate specified date that gets passed to the filename
      */
     public void writeFileFromArray(String callDate, String[][] dataArray) {
         String filename = callDate + ".csv";
@@ -55,7 +55,7 @@ public class CsvHandler {
         FileOutputStream outputStream;
         try {
             //Opens a FileOutputStream to a file with the specified filename.
-            //Will create file if it doesn't exist.
+            //Creates file if it doesn't exist.
             outputStream = mainActivity.openFileOutput(filename, Context.MODE_PRIVATE);
             //Writes the string to the specified file
             outputStream.write(csvText.getBytes());
@@ -92,7 +92,7 @@ public class CsvHandler {
     /**
      * Method to extract a filePath for a specified date.
      *
-     * @param callDate: a String with the date to return a filepath for
+     * @param callDate a String with the date to return a filepath for
      * @return the filepath for the specified date
      */
     public String getFilePath(String callDate) {

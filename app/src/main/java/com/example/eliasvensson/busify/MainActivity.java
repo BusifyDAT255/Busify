@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 if (v == findViewById(R.id.date_button))
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.share_button)) {
-                    // Disable the button to prohibit several mail-apps to open at once
+                    // Disables the button to prohibit several mail-apps to open at once
                     shareButton.setEnabled(false);
                     Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
 
@@ -108,11 +108,11 @@ public class MainActivity extends AppCompatActivity {
                     StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
                     File file = new File(dateRef.getPath());
                     if (!file.exists()) {
-                        // Query data from Firebase
+                        // Queries data from Firebase
                         String[][] busData = dgenerator.getBusInformation(callDate);
-                        // Write the data to a .csv-file
+                        // Writes the data to a .csv-file
                         csvHandler.writeFileFromArray(callDate, busData);
-                        // Save the file path to that .csv-file to a String
+                        // Saves the file path to that .csv-file to a String
                         String filePath = csvHandler.getFilePath(callDate);
                         // Shows the information in a String
                         // TODO: Delete this Toast when file upload to fireBase works
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
                     } else {
                         // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
-                        //Get the URL of the file that already exists on Firebase Storage
+                        //Gets the URL of the file that already exists on Firebase Storage
                         getUrlAsync(callDate);
                     }
                 }
@@ -150,10 +150,10 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + date);
         i.putExtra(Intent.EXTRA_TEXT, attachmentMessage + getDownloadLink());
 
-        // Start the email client
+        // Starts the email client
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));
-            // Show a toast if there is no email client available
+            // Shows a toast if there is no email client available
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Creates an instance of the class DateDialog, which opens the DateDialog
      *
-     * @param viewId the ID of the view which the method will write the returned date to.
+     * @param viewId ID of the view which the method will write the returned date to.
      */
     private void setDateToView(int viewId) {
         // Initiates a DateDialog object for user interaction when choosing the date

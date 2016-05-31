@@ -38,7 +38,7 @@ public class DataGenerator {
     /**
      * Constructor for the DataGenerator class.
      *
-     * @param act the MainActivity view
+     * @param act MainActivity view
      * @param row number of rows in the final .csv-file
      * @param col number of columns in the final .csv-file
      */
@@ -83,7 +83,7 @@ public class DataGenerator {
      * Creates content for .csv-file
      *
      * @param data bus information from Firebase
-     * @return a two dimensional field of bus data
+     * @return two dimensional field of bus data
      */
     public String[][] busFields(String data) {
         //Replaces tokens with comma for easier splitting of the String
@@ -123,7 +123,7 @@ public class DataGenerator {
      * Fixes the indices of a split array
      *
      * @param splitted field with empty content
-     * @param size     the size of the new field
+     * @param size size of the new field
      * @return field of strings with non-empty content
      */
     private String[] fixIndex(String[] splitted, int size) {
