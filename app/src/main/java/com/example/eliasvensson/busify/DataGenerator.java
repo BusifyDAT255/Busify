@@ -3,11 +3,10 @@
  * @author Annie Söderström
  * @version 5.0, 2016-05-31
  * @since 1.0, 2016-05-27
- *
+ * <p/>
  * Information for buses from Firebase is combined with calculated values.
  * Error message will be shown if the ValueEventListener fails to
  * access the server or is removed because of Firebase settings.
- *
  */
 
 package com.example.eliasvensson.busify;
@@ -114,7 +113,7 @@ public class DataGenerator {
                         Double electricity = (Double.parseDouble(csvFormat[j][2]));
                         Double distance = (Double.parseDouble(csvFormat[j][1]));
                         double electricityPerKm = electricity / distance;
-                        
+
                         //Rounds the double to three significant figures
                         BigDecimal bd = new BigDecimal(electricityPerKm);
                         bd = bd.round(new MathContext(3));
@@ -124,13 +123,14 @@ public class DataGenerator {
                         csvFormat[j][k] = String.valueOf(rounded);
                         Log.e("LOG: ", csvFormat[j][k].toString());
                     }
-                } else {
-                    if (splittedBusInfo[index] != null) {
-                        //Adds values from the database into csvFormat
-                        csvFormat[j][k] = splittedBusInfo[index];
-                        Log.e("LOG: ", csvFormat[j][k].toString());
-                        index++;
-                    }
+                } else if (splittedBusInfo[index] != null){
+                    //Adds values from the database into csvFormat
+                    csvFormat[j][k] = splittedBusInfo[index];
+                    Log.e("LOG: ", csvFormat[j][k].toString());
+
+                    // Increments index for the one-dimensional array, IFF values for column
+                    // 1-4 was changed
+                    index++;
                 }
             }
         }
