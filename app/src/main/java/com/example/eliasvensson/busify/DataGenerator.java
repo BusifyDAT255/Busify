@@ -12,6 +12,7 @@
 package com.example.eliasvensson.busify;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 
 
 public class DataGenerator {
-
     /**
      * Defines variables handling the reference to the Firebase database
      * and the String containing the date for which bus information is to be shown.
@@ -101,6 +101,7 @@ public class DataGenerator {
                 if (splittedBusInfo[index] != null) {
                     csvFormat[j][k] = splittedBusInfo[index];
                     index++;
+                    Log.e("csvFormat [" + j + "][" + k + "]", csvFormat[j][k]);
                 }
             }
         }

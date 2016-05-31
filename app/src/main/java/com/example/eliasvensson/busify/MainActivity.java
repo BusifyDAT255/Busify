@@ -5,7 +5,7 @@
  * @author Melinda Fulöp
  * @author Sara Kinell
  * @author Jonathan Fager
- * @version 8.0, 2016-05-30
+ * @version 9.0, 2016-05-31
  * @since 1.0
  *
  * Manages the interaction with, and function of, the main view of the app.
@@ -25,6 +25,7 @@
 package com.example.eliasvensson.busify;
 
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,16 +52,18 @@ public class MainActivity extends AppCompatActivity {
     protected Button shareButton;
     protected Button dateButton;
     private static String attachmentLink;
-    protected DataGenerator dgenerator;
+    protected ProgressDialog progress;
+    protected DataGenerator dataGenerator;
     protected StorageReference storageRef;
     protected CsvHandler csvHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Initializes a DataGenerator
-        dgenerator = new DataGenerator(MainActivity.this, 11, 4);
+        dataGenerator = new DataGenerator(MainActivity.this, 11, 4);
 
         // Initiates a storage reference to the root reference
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -82,7 +85,10 @@ public class MainActivity extends AppCompatActivity {
         shareButton.setOnClickListener(listener);
 
         // Disables the shareButton by default
-        shareButton.setEnabled(false);
+        //shareButton.setEnabled(false);
+
+        //Defines progressbar
+        progress = new ProgressDialog(this);
     }
 
     @NonNull
@@ -95,7 +101,11 @@ public class MainActivity extends AppCompatActivity {
                 else if (v == findViewById(R.id.share_button)) {
                     // Disables the button to prohibit several mail-apps to open at once
                     shareButton.setEnabled(false);
-                    Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
+                    //Starts the progressbar
+                    progress.setMessage("Generating report");
+                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progress.setIndeterminate(true);
+                    progress.show();
 
                     //Saves the date chosen by the user as a String
                     String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
@@ -106,11 +116,65 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+
+    /**
+     * Calls the server to securely obtain an unguessable download Url
+     * using an async call.
+     *
+     * @param date should be in the format of "YYYY-MM-DD"
+     *             onSuccess sets the the downloadLink by call to setDownloadLink
+     *             and initiates the email by call to sendEmail
+     *             onFailure opens a dialog telling the user that no report is available for this date.
+     *             TODO: Comment this method
+     */
+    private void getUrlAsync(final String date) {
+        buildCsv(date);
+        // Points to the specific file depending on date
+        StorageReference dateRef = storageRef.child("/reports/" + date + ".csv");
+        dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri downloadUrl) {
+                setDownloadLink(downloadUrl);
+                sendEmail();
+                //Re-enables the "Share-button" when user returns to the view with share button
+                shareButton.setEnabled(true);
+
+            }
+
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                buildCsv(date);
+            }
+        });
+    }
+
+    /**
+     * Takes a string with a date, gets the data from that date from database,
+     * saves it as a .csv-file on internal storage, and displays the
+     * filepath of this file in a toast.
+     *
+     * @param callDate date of file to convert to a .csv-file.
+     */
+    private void buildCsv(String callDate) {
+        // Queries data from Firebase
+        String[][] busData = dataGenerator.getBusInformation(callDate);
+        // Writes the data to a .csv-file
+        csvHandler.writeFileFromArray(callDate, busData);
+        // Saves the file path to that .csv-file to a String
+        String filePath = csvHandler.getFilePath(callDate);
+        csvHandler.csvUploader(filePath);
+        // TODO: Take the filepath (URI) and upload file to FireBase
+        // TODO: return a String (URL) to file
+        // TODO: Call method to open email app with URL attached
+    }
+
     /**
      * Opens Android's default mail-application with a message of attached link and
      * link to a file.
      */
-    private void sendEmail() {
+    protected void sendEmail() {
+        progress.cancel();
         // Attachment message
         String attachmentMessage = "Please click the link to download report:\n\n";
 
@@ -148,59 +212,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
-    }
-
-    /**
-     * Calls the server to securely obtain an unguessable download Url
-     * using an async call.
-     *
-     * @param date should be in the format of "YYYY-MM-DD"
-     *             onSuccess sets the the downloadLink by call to setDownloadLink
-     *             and initiates the email by call to sendEmail
-     *             onFailure opens a dialog telling the user that no report is available for this date.
-     *             TODO: Comment this method
-     */
-    private void getUrlAsync(final String date) {
-
-        // Points to the specific file depending on date
-        StorageReference dateRef = storageRef.child("/" + date + ".csv");
-        dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri downloadUrl) {
-                setDownloadLink(downloadUrl);
-                sendEmail();
-                //Re-enables the "Share-button" when user returns to the view with share button
-                shareButton.setEnabled(true);
-            }
-
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                buildCsv(date);
-            }
-        });
-    }
-
-    /**
-     * Takes a string with a date, gets the data from that date from database,
-     * saves it as a .csv-file on internal storage, and displays the
-     * filepath of this file in a toast.
-     *
-     * @param callDate date of file to convert to a .csv-file.
-     */
-    private void buildCsv(String callDate) {
-        // Queries data from Firebase
-        String[][] busData = dgenerator.getBusInformation(callDate);
-        // Writes the data to a .csv-file
-        csvHandler.writeFileFromArray(callDate, busData);
-        // Saves the file path to that .csv-file to a String
-        String filePath = csvHandler.getFilePath(callDate);
-        // Shows the information in a String
-        // TODO: Delete this Toast when file upload to fireBase works
-        Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
-        // TODO: Take the filepath (URI) and upload file to FireBase
-        // TODO: return a String (URL) to file
-        // TODO: Call method to open email app with URL attached
     }
 
     /**
