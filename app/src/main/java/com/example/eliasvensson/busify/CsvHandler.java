@@ -47,8 +47,8 @@ public class CsvHandler {
     }
 
     /**
-     * Method that writes a two-dimensional array with strings, to a .csv-file with a specified
-     * date as the filename.
+     * Method that writes a two-dimensional array with string fields,
+     * to a string on .csv-format with a specified date as the filename.
      *
      * @param dataArray array to write to a .csv
      * @param callDate  specified date that gets passed to the filename
@@ -57,12 +57,12 @@ public class CsvHandler {
         String filename = callDate + ".csv";
         //Creates the String which will make up the text for the .csv
         String csvText = "";
-        //Adds all elements in Array to the string
-        //TODO: Make sure this parses the text correctly to .csv-file format (dependent on Sara & Annies method)
+        // parse 2D array to string in .csv format
         for (int i = 0; i < dataArray.length; i++) {
             for (int j = 0; j < dataArray[0].length; j++) {
-                csvText = csvText + dataArray[i][j];
+                csvText += dataArray[i][j] + ", ";
             }
+            csvText += "\n";
         }
 
         //Creates a FileOutputStream for writing the file to internal storage
