@@ -16,6 +16,7 @@
 package com.example.eliasvensson.busify;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -47,8 +48,9 @@ public class CsvHandler {
         //TODO: Make sure this parses the text correctly to .csv-file format (dependent on Sara & Annies method)
         for (int i = 0; i < dataArray.length; i++) {
             for (int j = 0; j < dataArray[0].length; j++) {
-                csvText = csvText + dataArray[i][j];
+                csvText += dataArray[i][j] + ", ";
             }
+            csvText += "\n";
         }
 
         //Creates a FileOutputStream for writing the file to internal storage
