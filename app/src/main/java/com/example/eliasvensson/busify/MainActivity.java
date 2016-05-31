@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,9 +41,13 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+import static java.lang.String.valueOf;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -103,29 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     //Saves the date chosen by the user as a String
                     String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
-                    // Checks if file already exists
-                    // TODO: Fix this if-statement. It's broken and always returns true
-                    StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
-                    File file = new File(dateRef.getPath());
-                    if (!file.exists()) {
-                        // Queries data from Firebase
-                        String[][] busData = dgenerator.getBusInformation(callDate);
-                        // Writes the data to a .csv-file
-                        csvHandler.writeFileFromArray(callDate, busData);
-                        // Saves the file path to that .csv-file to a String
-                        String filePath = csvHandler.getFilePath(callDate);
-                        // Shows the information in a String
-                        // TODO: Delete this Toast when file upload to fireBase works
-                        Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
-                        // TODO: Take the filepath (URI) and upload file to FireBase
-                        // TODO: return a String (URL) to file
-                        // TODO: Call method to open email app with URL attached
-
-                    } else {
-                        // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
-                        //Gets the URL of the file that already exists on Firebase Storage
-                        getUrlAsync(callDate);
-                    }
+                    getUrlAsync(callDate);
                 }
             }
         };
@@ -176,6 +159,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Takes a string with a date, gets the data from that date from database,
+     * saves it as a .csv-file on internal storage, and displays the
+     * filepath of this file in a toast.
+     * @param callDate Date of file to convert to a .csv-file.
+     */
+    private void buildCsv(String callDate) {
+        // Queries data from Firebase
+        String[][] busData = dgenerator.getBusInformation(callDate);
+        // Writes the data to a .csv-file
+        csvHandler.writeFileFromArray(callDate, busData);
+        // Saves the file path to that .csv-file to a String
+        String filePath = csvHandler.getFilePath(callDate);
+        // Shows the information in a String
+        // TODO: Delete this Toast when file upload to fireBase works
+        Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
+        // TODO: Take the filepath (URI) and upload file to FireBase
+        // TODO: return a String (URL) to file
+        // TODO: Call method to open email app with URL attached
+    }
+
+    /**
      * Calls the server to securely obtain an unguessable download Url
      * using an async call.
      *
@@ -185,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
      *             onFailure opens a dialog telling the user that no report is available for this date.
      *             TODO: Comment this method
      */
-    private void getUrlAsync(String date) {
+    private void getUrlAsync(final String date) {
 
         // Points to the specific file depending on date
         StorageReference dateRef = storageRef.child("/" + date + ".csv");
@@ -201,18 +205,7 @@ public class MainActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, 1);
-                builder.setMessage("Sorry, no report available for this date.");
-                builder.setCancelable(true);
-                builder.setPositiveButton(
-                        "Ok!",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = builder.create();
-                alert.show();
+                buildCsv(date);
             }
         });
 
