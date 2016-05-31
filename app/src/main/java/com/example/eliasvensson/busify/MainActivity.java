@@ -25,6 +25,7 @@
 package com.example.eliasvensson.busify;
 
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     DataGenerator dgenerator;
     StorageReference storageRef;
     CsvHandler csvHandler;
+    protected ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Disables the shareButton by default
         shareButton.setEnabled(false);
+
+        //Defines progressbar
+        progress = new ProgressDialog(this);
     }
 
     @NonNull
@@ -98,7 +103,13 @@ public class MainActivity extends AppCompatActivity {
                 else if (v == findViewById(R.id.share_button)) {
                     // Disables the button to prohibit several mail-apps to open at once
                     shareButton.setEnabled(false);
-                    Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
+
+                    progress.setMessage("Generating report");
+                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progress.setIndeterminate(true);
+                    progress.setProgress(0);
+                    progress.show();
 
                     //Saves the date chosen by the user as a String
                     String callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();

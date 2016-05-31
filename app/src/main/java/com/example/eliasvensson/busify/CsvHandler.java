@@ -134,7 +134,7 @@ public class CsvHandler {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                //System.out.println("Upload is " + progress + "% done");
+                mainActivity.setProgress((int) progress);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
