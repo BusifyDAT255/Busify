@@ -140,6 +140,9 @@ public class DataGenerator {
         int index = 0;
         for (int i = 0; i < splitted.length; i++) {
             if (!splitted[i].isEmpty()) {
+                if(splitted[i].equals(null)) {
+                    Log.e("Index " + index, "splitted.length" + splitted.length);
+                }
                 trimmed[index] = splitted[i];
                 index++;
             }

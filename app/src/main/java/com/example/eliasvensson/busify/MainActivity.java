@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     protected Button shareButton;
     protected Button dateButton;
     private String attachmentLink;
-    DataGenerator dgenerator;
+    DataGenerator dataGenerator;
     StorageReference storageRef;
 
 
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Initializes a DataGenerator
-        dgenerator = new DataGenerator(MainActivity.this, 11, 5);
+        this.dataGenerator = SplashScreen.dataGenerator;
 
         // Initiates a storage reference to the root reference
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                         File file = new File(dateRef.getPath());
                         if (!file.exists()) {
                             //Query information from Firebase
-                            FileSaver.createCsv(callDate, dgenerator.getBusInformation(callDate));
+                            FileSaver.createCsv(callDate, dataGenerator.getBusInformation(callDate));
 
                         } else {
                             getUrlAsync(callDate);
