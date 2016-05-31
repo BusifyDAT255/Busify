@@ -68,7 +68,7 @@ public class CsvHandler {
         //Creates a FileOutputStream for writing the file to internal storage
         FileOutputStream outputStream;
         try {
-            //Opens a FileOutputStream to a file with the specified filename.
+            //Opens a FileOutputStream to a file with the specified filename
             //Creates file if it doesn't exist.
             outputStream = mainActivity.openFileOutput(filename, Context.MODE_PRIVATE);
             //Writes the string to the specified file
@@ -117,17 +117,18 @@ public class CsvHandler {
 
 
     /**
-     * Takes filePath as a string, finds the Uri, reserve place at "/reports/date.csv"
+     * Takes filePath as a String, finds the Uri, reserve place at "/reports/date.csv"
      * Build metadata.
      * Initiate a CancellableTask uploadTask and uses .putFile to upload file.
      *
      * Calls sendEmail().
      *
      * TODO: refactor the sendEmail after checking execution order.
+     * TODO: Look through comments for this code
      * TODO: Fix what happends if Failure.
      * TODO: Fix the progress in MainActivity to use "onProgress"?
      *
-     * @param filePath
+     * @param filePath file path ending with [date].csv
      */
     public void csvUploader(String filePath) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -151,16 +152,17 @@ public class CsvHandler {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
+                // Handles unsuccessful uploads
                 Log.e("LOG", "Unsucessfull in CSVUPLOADER");
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // Handle successful uploads on complete
+                // Handles successful uploads on complete
                 Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
-                Log.e("LOG", "Successfull in CSVUPLOADER");
+                Log.e("LOG", "Successfull CSVUPLOADER");
                 Log.e("LOG", taskSnapshot.getMetadata().getPath());
+                // Sets link to be downloaded and sends an email
                 mainActivity.setDownloadLink(downloadUrl);
                 mainActivity.sendEmail();
             }
