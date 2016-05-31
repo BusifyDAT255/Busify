@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
      * Takes a string with a date, gets the data from that date from database,
      * saves it as a .csv-file on internal storage, and displays the
      * filepath of this file in a toast.
-     * @param callDate Date of file to convert to a .csv-file.
+     * @param callDate date of file to convert to a .csv-file.
      */
     private void buildCsv(String callDate) {
         // Queries data from Firebase
