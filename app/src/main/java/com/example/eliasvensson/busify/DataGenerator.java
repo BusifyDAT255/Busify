@@ -12,7 +12,6 @@
 package com.example.eliasvensson.busify;
 
 import android.app.Activity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -120,17 +119,14 @@ public class DataGenerator {
 
                         //Sets the rounded double into the correct field, as a String
                         csvFormat[j][k] = String.valueOf(rounded);
-                        Log.e("LOG: ", csvFormat[j][k].toString());
                     }
                 } else if (splittedBusInfo[index] != null){
                     //Adds values from the database into csvFormat
                     csvFormat[j][k] = splittedBusInfo[index];
-                    Log.e("LOG: ", csvFormat[j][k].toString());
 
                     // Increments index for the one-dimensional array, IFF values for column
                     // 1-4 was changed
                     index++;
-                    Log.e("csvFormat [" + j + "][" + k + "]", csvFormat[j][k]);
                 }
             }
         }

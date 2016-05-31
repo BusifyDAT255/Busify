@@ -13,21 +13,18 @@
  * how to use the app, a date button to set the date and one button to send a .csv file
  * <p/>
  * The user simply chooses a date by clicking the date-button.
- * <<<<<<< HEAD
  * When pressing the send button, the default android mail-application starts with a
  * default email structure.
  * The default email contains a link to a .csv file which can then be accessed by the recipient
  * of the email.
  * <p/>
- * Note: The class is under construction. It can generate information shown in Android Monitor
- * for the following dates: 2016-05-18 and 2016-05-19. Please try these dates initially when testing.
+ * Note: The class works as intended, but is in need of some serious refactoring.
  */
 
 package com.example.eliasvensson.busify;
 
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,9 +40,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.net.URL;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
      */
     protected Button shareButton;
     protected Button dateButton;
-
-    private static String attachmentLink;
+    private String attachmentLink;
     protected ProgressDialog progress;
     protected DataGenerator dataGenerator;
     protected StorageReference storageRef;
@@ -77,7 +70,11 @@ public class MainActivity extends AppCompatActivity {
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
 
+        // Creates a CsvHandler object for handling everything concerning .csv-files
         csvHandler = new CsvHandler(MainActivity.this);
+
+        // Initiates progressbar
+        progress = new ProgressDialog(this);
 
         // Initiates the buttons for setting date and sharing the link
         dateButton = (Button) findViewById(R.id.date_button);
@@ -90,11 +87,8 @@ public class MainActivity extends AppCompatActivity {
         dateButton.setOnClickListener(listener);
         shareButton.setOnClickListener(listener);
 
-        // Disables the shareButton by default
-        //shareButton.setEnabled(false);
-
-        //Defines progressbar
-        progress = new ProgressDialog(this);
+        // Disables the shareButton by default, so the user has to start by choosing date
+        shareButton.setEnabled(false);
     }
 
     @NonNull
@@ -106,37 +100,34 @@ public class MainActivity extends AppCompatActivity {
                     setDateToView(R.id.txt_date);
                 else if (v == findViewById(R.id.share_button)) {
 
-                    // Disable the button to prohibit several mail-apps to open at once
-                    shareButton.setEnabled(false);
-                    Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
-
-                    // Save the user specified date as a String
+                    // Saves the user specified date as a String
                     callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
-
 
                     // Creates a thread to handle time delay in database access
                     Thread databaseTimer = new Thread() {
                         public void run() {
                             try {
-                                //Makes a call to the database to get access
+                                // Makes a call to the database to get access
                                 dataGenerator.getBusInformation(callDate);
-                                //Waits to get access to the database
+                                // Waits to get access to the database
                                 sleep(500);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }
                     };
-                    databaseTimer.start();
-                    // Disables the button to prohibit several mail-apps to open at once
-                    shareButton.setEnabled(false);
 
-                    //Starts the progressbar
+                    // Starts the timer
+                    databaseTimer.start();
+
+                    // Starts the progress bar
                     progress.setMessage("Generating report");
                     progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progress.setIndeterminate(true);
                     progress.show();
 
+                    // Finds or creates the URL for the specified date, and opens a mail-application
+                    // with the link attached
                     getUrlAsync(callDate);
                 }
             }
@@ -146,29 +137,35 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Calls the server to securely obtain an unguessable download Url
      * using an async call.
+     * onSuccess sets the the downloadLink by call to setDownloadLink
+     * and initiates the email by call to sendEmail
+     * onFailure opens a dialog telling the user that no report is available for this date.
+     * TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
      *
      * @param date should be in the format of "YYYY-MM-DD"
-     *             onSuccess sets the the downloadLink by call to setDownloadLink
-     *             and initiates the email by call to sendEmail
-     *             onFailure opens a dialog telling the user that no report is available for this date.
-     *             TODO: Comment this method
-     *             // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
      */
     private void getUrlAsync(final String date) {
-        //buildCsv(date);
-        // Points to the specific file depending on date
+
+        // Make a reference to the date-specific file on storage
         StorageReference dateRef = storageRef.child("/reports/" + date + ".csv");
+
+        // Try to get the file from Firebase storage, based on the reference defined above
         dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
 
+            /**
+             * If the specified file exists on storage, find its URL and attach it to an email
+             * @param downloadUrl
+             */
             @Override
             public void onSuccess(Uri downloadUrl) {
                 setDownloadLink(downloadUrl);
                 sendEmail();
-                //Re-enables the "Share-button" when user returns to the view with share button
-                shareButton.setEnabled(true);
             }
 
         }).addOnFailureListener(new OnFailureListener() {
+            /**
+             * If the specified file does not exist on storage, make a new one and attach to an email
+             */
             @Override
             public void onFailure(@NonNull Exception e) {
                 buildCsv(date);
@@ -177,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Takes a string with a date, gets the data from that date from database,
+     * Takes a String with a date, gets the data from that date from database,
      * saves it as a .csv-file on internal storage, and displays the
      * filepath of this file in a toast.
      *
@@ -186,14 +183,15 @@ public class MainActivity extends AppCompatActivity {
     private void buildCsv(String callDate) {
         // Queries data from Firebase
         String[][] busData = dataGenerator.getBusInformation(callDate);
+
         // Writes the data to a .csv-file
         csvHandler.writeFileFromArray(callDate, busData);
+
         // Saves the file path to that .csv-file to a String
         String filePath = csvHandler.getFilePath(callDate);
+
+        // Upload the file to storage and open email app with the link to the file attached
         csvHandler.csvUploader(filePath);
-        // TODO: Take the filepath (URI) and upload file to FireBase
-        // TODO: return a String (URL) to file
-        // TODO: Call method to open email app with URL attached
     }
 
     /**
@@ -201,20 +199,17 @@ public class MainActivity extends AppCompatActivity {
      * link to a file.
      */
     protected void sendEmail() {
+
+        // Stop the progress bar from running
         progress.cancel();
-        // Attachment message
-        String attachmentMessage = "Please click the link to download report:\n\n";
 
-        // Chosen date
-        String date = ((EditText) findViewById(R.id.txt_date)).getText().toString();
-
-        //Opens up the choice for sharing
+        //Opens up the choice for sharing, e.g. via Gmail, other email clients, Slack etc.
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
 
         //Sets subject and content of email
-        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + date);
-        i.putExtra(Intent.EXTRA_TEXT, attachmentMessage + getDownloadLink());
+        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + callDate);
+        i.putExtra(Intent.EXTRA_TEXT, "Please click the link to download report:\n\n" + getDownloadLink());
 
         // Starts the email client
         try {
@@ -228,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Creates an instance of the class DateDialog, which opens the DateDialog
      *
-     <<<<<<< HEAD
      * @param viewId the ID of the view which the method will write the returned date to.
      */
     private void setDateToView(int viewId) {
@@ -247,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param link the URL link for the .csv-file
      */
-    private void setDownloadLink(Uri link) {
+    public void setDownloadLink(Uri link) {
         attachmentLink = link.toString();
     }
 
@@ -259,5 +253,4 @@ public class MainActivity extends AppCompatActivity {
     private String getDownloadLink() {
         return attachmentLink;
     }
-
 }

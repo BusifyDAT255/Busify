@@ -2,14 +2,10 @@
  * @author Elias Svensson
  * @author David Genelöv
  * @author Melinda Fulöp
- * @version 1.0, 2016-05-30
+ * @version 2.0, 2016-05-31
  * @since 1.0
  *
  * Manages all handling of .csv-files needed for the Busify app
-
- * Note: The class is under construction. There is still a test-method for reading csv-files
- * and the writeFileFromArray method will need to be adjusted to Sara and Annies last version of
- * the DataGenerators array with database info
  *
  */
 
@@ -30,16 +26,14 @@ import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class CsvHandler {
 
+    // Initiates the mainActivity this class will talk with
     private MainActivity mainActivity;
 
     public CsvHandler(MainActivity mainActivity) {
@@ -67,6 +61,7 @@ public class CsvHandler {
 
         //Creates a FileOutputStream for writing the file to internal storage
         FileOutputStream outputStream;
+
         try {
             //Opens a FileOutputStream to a file with the specified filename
             //Creates file if it doesn't exist.
@@ -75,31 +70,11 @@ public class CsvHandler {
             outputStream.write(csvText.getBytes());
             //Closes the FileOutputStream to produce a file
             outputStream.close();
+
         } catch (FileNotFoundException e) {
             Toast.makeText(mainActivity, "Internal Error: No such file found", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             Toast.makeText(mainActivity, "Internal Error: IOException", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
-     * TESTMETOD
-     * TODO: Ta bort innan merge med master. Låt stå till develop
-     */
-    public void readCsvFile(String callDate) {
-        try {
-            String Message;
-            FileInputStream fileInputStream = mainActivity.openFileInput(callDate + ".csv");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuffer stringBuffer = new StringBuffer();
-            while ((Message = bufferedReader.readLine()) != null) {
-                stringBuffer.append(Message + "\n");
-            }
-            Toast.makeText(mainActivity, stringBuffer.toString(), Toast.LENGTH_SHORT).show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -114,7 +89,6 @@ public class CsvHandler {
         Log.e("LOG", "Output from getFilePath " + filePath);
         return filePath;
     }
-
 
     /**
      * Takes filePath as a String, finds the Uri, reserve place at "/reports/date.csv"
@@ -133,13 +107,12 @@ public class CsvHandler {
         Uri file = Uri.fromFile(new File(filePath));
         Log.e("csvUploader Uri File:", filePath.toString());
 
-        // Create the file metadata
+        // Creates the file metadata
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("text/csv").build();
         Log.e("LOG","Metadata: " + metadata.toString());
 
-        // Upload file and metadata to the path 'reports/date.csv'
+        // Uploads file and metadata to the path 'reports/date.csv'
         CancellableTask uploadTask = storageReference.child("reports/" + file.getLastPathSegment()).putFile(file, metadata);
-
 
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
