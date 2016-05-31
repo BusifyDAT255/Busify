@@ -23,14 +23,10 @@ import android.os.Bundle;
 
 public class SplashScreen extends Activity {
 
-    protected static DataGenerator dataGenerator;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-        //dataGenerator = new DataGenerator(this, 11, 5);
-        //dataGenerator.getBusInformation("2016-05-18");
 
         //Creates new thread
         Thread timerThread = new Thread() {

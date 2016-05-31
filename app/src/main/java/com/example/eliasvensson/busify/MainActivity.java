@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
                     //Checks if app user has chosen a date
                     if (!callDate.isEmpty()) {
-                        dataGenerator.getBusInformation(callDate);
                         //Checks if file already exists
                         StorageReference dateRef = storageRef.child("/" + callDate + ".csv");
                         File file = new File(dateRef.getPath());
@@ -117,8 +116,10 @@ public class MainActivity extends AppCompatActivity {
                             Thread timerThread = new Thread() {
                                 public void run() {
                                     try {
-                                        //Sets the duration of the splash screen
-                                        sleep(3000);
+                                        //Makes a call to the database to get access
+                                        dataGenerator.getBusInformation(callDate);
+                                        //Wait to get access to the database
+                                        sleep(500);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     } finally {
