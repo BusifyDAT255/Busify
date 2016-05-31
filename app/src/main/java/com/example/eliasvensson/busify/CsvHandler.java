@@ -10,7 +10,7 @@
  * Note: The class is under construction. There is still a test-method for reading csv-files
  * and the writeFileFromArray method will need to be adjusted to Sara and Annies last version of
  * the DataGenerators array with database info
- *  TODO: Implement a method for creating a java file object if Fager's uploadFileToFirebase-method will need this.
+ *
  */
 
 package com.example.eliasvensson.busify;
@@ -18,6 +18,7 @@ package com.example.eliasvensson.busify;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,7 +42,7 @@ public class CsvHandler {
 
     private MainActivity mainActivity;
 
-    public CsvHandler(MainActivity mainActivity){
+    public CsvHandler(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
@@ -50,7 +51,7 @@ public class CsvHandler {
      * date as the filename.
      *
      * @param dataArray array to write to a .csv
-     * @param callDate specified date that gets passed to the filename
+     * @param callDate  specified date that gets passed to the filename
      */
     public void writeFileFromArray(String callDate, String[][] dataArray) {
         String filename = callDate + ".csv";
@@ -109,50 +110,50 @@ public class CsvHandler {
      * @return the filepath for the specified date
      */
     public String getFilePath(String callDate) {
-        String filePath = mainActivity.getFilesDir().getAbsolutePath() + callDate + ".csv";
+        String filePath = mainActivity.getFilesDir().getAbsolutePath() + "/" + callDate + ".csv";
+        Log.e("LOG", "Output from getFilePath " + filePath);
         return filePath;
     }
 
 
-    public void csvUploader (String filePath, String date){
-            StorageReference mStorageReference = FirebaseStorage.getInstance().getReference();
+    public void csvUploader(String filePath) {
+        StorageReference mStorageReference = FirebaseStorage.getInstance().getReference();
+        Log.e("LOG", "Entering CSVUPLOADER");
+        Uri file = Uri.fromFile(new File(filePath));
+        Log.e("csvUploader Uri File:", filePath.toString());
 
-            Uri file = Uri.fromFile(new File("reports/" + date + ".csv"));
+        // Create the file metadata
+        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("text/csv").build();
+        Log.e("LOG","Metadata: " + metadata.toString());
 
-            // Create the file metadata
-            StorageMetadata metadata = new StorageMetadata.Builder().setContentType("text/csv").build();
-
-            // Upload file and metadata to the path 'reportds/date.csv'
-            CancellableTask uploadTask = mStorageReference.child("reports/" + file.getLastPathSegment()).putFile(file, metadata);
-
-
-            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                    System.out.println("Upload is " + progress + "% done");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // Handle successful uploads on complete
-                    Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
-                }
-            });
+        // Upload file and metadata to the path 'reports/date.csv'
+        CancellableTask uploadTask = mStorageReference.child("reports/" + file.getLastPathSegment()).putFile(file, metadata);
 
 
-        }
-
-
-
-
-
-
+        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                //System.out.println("Upload is " + progress + "% done");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Log.e("LOG", "Unsucessfull in CSVUPLOADER");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // Handle successful uploads on complete
+                Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
+                Log.e("LOG", "Successfull in CSVUPLOADER");
+                Log.e("LOG", taskSnapshot.getMetadata().getPath());
+                mainActivity.setDownloadLink(downloadUrl);
+                mainActivity.sendEmail();
+            }
+        });
     }
-
 }
+
+

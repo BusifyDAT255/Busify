@@ -116,9 +116,13 @@ public class MainActivity extends AppCompatActivity {
                         String filePath = csvHandler.getFilePath(callDate);
                         // Shows the information in a String
                         // TODO: Delete this Toast when file upload to fireBase works
-                        Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
+
+
                         // TODO: Take the filepath (URI) and upload file to FireBase
+                        //csvHandler.csvUploader(filePath);
                         // TODO: return a String (URL) to file
+                        csvHandler.csvUploader(filePath);
                         // TODO: Call method to open email app with URL attached
 
                     } else {
@@ -135,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
      * Opens Android's default mail-application with a message of attached link and
      * link to a file.
      */
-    private void sendEmail() {
+    protected void sendEmail() {
         // Attachment message
         String attachmentMessage = "Please click the link to download report:\n\n";
 
@@ -185,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
      *             onFailure opens a dialog telling the user that no report is available for this date.
      *             TODO: Comment this method
      */
-    private void getUrlAsync(String date) {
+    protected void getUrlAsync(String date) {
 
         // Points to the specific file depending on date
         StorageReference dateRef = storageRef.child("/" + date + ".csv");
