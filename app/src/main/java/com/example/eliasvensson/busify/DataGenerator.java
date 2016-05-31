@@ -110,9 +110,10 @@ public class DataGenerator {
                         csvFormat[j][k] = splittedBusInfo[index];
                         index++;
 
-                        /* TODO: May be used for testing when merging with develop
+                        /*TODO: May be used for testing when merging with develop
                         Log.e("csvFormat[" + j + "][" + k + "] ", csvFormat[j][k]);
                         */
+
                     }
 
                 }
@@ -166,7 +167,6 @@ public class DataGenerator {
         double electricityPerKm = 0.0;
         if (csvFormat[row][2] != null && csvFormat[row][1] != null)
             electricityPerKm = (Double.parseDouble(csvFormat[row][2]) / Double.parseDouble(csvFormat[row][1]));
-        Log.e("csvFormat[" + row + "][" + 4 + "] ", Double.toString(electricityPerKm));
         return Double.toString(electricityPerKm);
 
     }
