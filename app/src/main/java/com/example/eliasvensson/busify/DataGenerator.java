@@ -22,6 +22,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 
 public class DataGenerator {
 
@@ -90,34 +93,45 @@ public class DataGenerator {
      */
     public String[][] busFields(String data) {
         //Replaces tokens with comma for easier splitting of the String
-        data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",").replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "").replace("Bus type", "");
+        data = data.replace("{", ",").replace("}", ",").replace("=", ",").replace(", ", ",")
+                .replace("Driving distance (km)", "").replace("Electric energy consumption (kWh)", "")
+                .replace("Bus type", "");
         //Splits String into a field
         String[] splittedBusInfo = data.split(",");
         //Fixes correct indices and add titles to csvFormat
-        splittedBusInfo = fixIndex(splittedBusInfo, (csvFormat.length - 1) * (csvFormat[0].length - 1));
+        splittedBusInfo = fixIndex(splittedBusInfo, (csvFormat.length - 1) *
+                (csvFormat[0].length - 1));
         addTitles(0);
 
         //Fills a two dimensional field with values from a one dimensional field representing Firebase data
         int index = 0;
         for (int j = 1; j < csvFormat.length; j++) {
             for (int k = 0; k < csvFormat[j].length; k++) {
+                // If on column 5: electricity/km
                 if (k == 4) {
                     //Adds a fifth column with calculated electricity per km
-                    csvFormat[j][k] = calculateElectricityPerKm(j);
+                    if (csvFormat[j][2] != null && csvFormat[j][1] != null) {
+                        Double electricity = (Double.parseDouble(csvFormat[j][2]));
+                        Double distance = (Double.parseDouble(csvFormat[j][1]));
+                        double electricityPerKm = electricity / distance;
+                        
+                        //Rounds the double to three significant figures
+                        BigDecimal bd = new BigDecimal(electricityPerKm);
+                        bd = bd.round(new MathContext(3));
+                        double rounded = bd.doubleValue();
+
+                        //Sets the rounded double into the correct field, as a String
+                        csvFormat[j][k] = String.valueOf(rounded);
+                        Log.e("LOG: ", csvFormat[j][k].toString());
+                    }
                 } else {
                     if (splittedBusInfo[index] != null) {
                         //Adds values from the database into csvFormat
                         csvFormat[j][k] = splittedBusInfo[index];
+                        Log.e("LOG: ", csvFormat[j][k].toString());
                         index++;
-
-                        /*TODO: May be used for testing when merging with develop
-                        Log.e("csvFormat[" + j + "][" + k + "] ", csvFormat[j][k]);
-                        */
-
                     }
-
                 }
-
             }
         }
         return csvFormat;
@@ -155,21 +169,4 @@ public class DataGenerator {
         }
         return trimmed;
     }
-
-    /**
-     * Calculates electricity per km from values representing
-     * electricity and driving distance for a certain bus.
-     *
-     * @param row row to be filled with a fifth column
-     * @return electricity per km for a specified bus as a String
-     */
-    private String calculateElectricityPerKm(int row) {
-        double electricityPerKm = 0.0;
-        if (csvFormat[row][2] != null && csvFormat[row][1] != null)
-            electricityPerKm = (Double.parseDouble(csvFormat[row][2]) / Double.parseDouble(csvFormat[row][1]));
-        return Double.toString(electricityPerKm);
-
-    }
-
-
 }
