@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
     protected void getUrlAsync(String date) {
 
         // Points to the specific file depending on date
-        StorageReference dateRef = storageRef.child("/" + date + ".csv");
+        StorageReference dateRef = storageRef.child("/reports/" + date + ".csv");
         dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri downloadUrl) {

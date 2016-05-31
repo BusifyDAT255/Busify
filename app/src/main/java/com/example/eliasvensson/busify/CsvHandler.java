@@ -118,10 +118,8 @@ public class CsvHandler {
 
     /**
      * Takes filePath as a String, finds the Uri, reserve place at "/reports/date.csv"
-     * Build metadata.
-     * Initiate a CancellableTask uploadTask and uses .putFile to upload file.
-     *
-     * Calls sendEmail().
+     * and builds metadata. Initiates a CancellableTask uploadTask and uses .putFile to upload file
+     * and calls sendEmail().
      *
      * TODO: refactor the sendEmail after checking execution order.
      * TODO: Look through comments for this code
