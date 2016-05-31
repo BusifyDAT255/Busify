@@ -60,7 +60,7 @@ public class CsvHandler {
         // parse 2D array to string in .csv format
         for (int i = 0; i < dataArray.length; i++) {
             for (int j = 0; j < dataArray[0].length; j++) {
-                csvText += dataArray[i][j] + ", ";
+                csvText += dataArray[i][j] + ";";
             }
             csvText += "\n";
         }
@@ -133,8 +133,8 @@ public class CsvHandler {
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                mainActivity.setProgress((int) progress);
+                //double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                //mainActivity.setProgress((int) progress);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

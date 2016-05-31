@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
                     progress.setMessage("Generating report");
                     progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progress.setIndeterminate(true);
-                    progress.setProgress(0);
                     progress.show();
 
                     //Saves the date chosen by the user as a String
@@ -151,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
      * link to a file.
      */
     protected void sendEmail() {
+        progress.cancel();
         // Attachment message
         String attachmentMessage = "Please click the link to download report:\n\n";
 
