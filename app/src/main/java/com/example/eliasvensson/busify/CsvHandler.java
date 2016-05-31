@@ -57,7 +57,7 @@ public class CsvHandler {
         String filename = callDate + ".csv";
         //Creates the String which will make up the text for the .csv
         String csvText = "";
-        // parse 2D array to string in .csv format
+        // Parses 2D array to string in .csv format
         for (int i = 0; i < dataArray.length; i++) {
             for (int j = 0; j < dataArray[0].length; j++) {
                 csvText += dataArray[i][j] + ";";
@@ -117,23 +117,20 @@ public class CsvHandler {
 
 
     /**
-     *
      * Takes filePath as a string, finds the Uri, reserve place at "/reports/date.csv"
      * Build metadata.
      * Initiate a CancellableTask uploadTask and uses .putFile to upload file.
      *
      * Calls sendEmail().
      *
-     * TODO: refactor the sendEmail after checking execvation order.
+     * TODO: refactor the sendEmail after checking execution order.
      * TODO: Fix what happends if Failure.
-     * TODO: Fix the progess in MainActivity to use "onProgress"?
-     *
+     * TODO: Fix the progress in MainActivity to use "onProgress"?
      *
      * @param filePath
      */
     public void csvUploader(String filePath) {
-        StorageReference mStorageReference = FirebaseStorage.getInstance().getReference();
-        Log.e("LOG", "Entering CSVUPLOADER");
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         Uri file = Uri.fromFile(new File(filePath));
         Log.e("csvUploader Uri File:", filePath.toString());
 
@@ -142,7 +139,7 @@ public class CsvHandler {
         Log.e("LOG","Metadata: " + metadata.toString());
 
         // Upload file and metadata to the path 'reports/date.csv'
-        CancellableTask uploadTask = mStorageReference.child("reports/" + file.getLastPathSegment()).putFile(file, metadata);
+        CancellableTask uploadTask = storageReference.child("reports/" + file.getLastPathSegment()).putFile(file, metadata);
 
 
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
