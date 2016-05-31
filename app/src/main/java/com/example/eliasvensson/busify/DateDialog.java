@@ -64,8 +64,8 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         */
         GregorianCalendar minDate = new GregorianCalendar(2016, 4, 18);
         GregorianCalendar maxDate = new GregorianCalendar(2016, 4, 24);
-        dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
-        dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+        //dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+        //dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
 
         return dialog;
     }

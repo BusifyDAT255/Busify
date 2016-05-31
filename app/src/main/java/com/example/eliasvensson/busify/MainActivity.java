@@ -5,7 +5,7 @@
  * @author Melinda Fulöp
  * @author Sara Kinell
  * @author Jonathan Fager
- * @version 8.0, 2016-05-30
+ * @version 9.0, 2016-05-31
  * @since 1.0
  *
  * Manages the interaction with, and function of, the main view of the app.
@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Defines variables for the DatePicker button, the button used to share
      * the link and the link attached in the email to be sent.
-     * A storage reference and DataGenerator is defined.
+     * Defines a ProgressDialog to show that the app is running "behind the scenes"
+     * Contains refereces to FirebaseStorage, to class CsvHandler and DateGenerator
      */
     protected Button shareButton;
     protected Button dateButton;
@@ -70,17 +71,21 @@ public class MainActivity extends AppCompatActivity {
         // Initiates a storage reference to the root reference
         storageRef = FirebaseStorage.getInstance().getReference();
 
-        // Sets the view to be displayed upon the start of the app
-        setContentView(R.layout.activity_main);
-
+        // Initiates a CsvHandler
         csvHandler = new CsvHandler(MainActivity.this);
 
         // Initiates the buttons for setting date and sharing the link
         dateButton = (Button) findViewById(R.id.date_button);
         shareButton = (Button) findViewById(R.id.share_button);
 
+        //Initiates progressbar
+        progress = new ProgressDialog(this);
+
         // Initiates a View.OnClickListener to listen for clicks on the dateButton and shareButton
         View.OnClickListener listener = clickHandler();
+
+        // Sets the view to be displayed upon the start of the app
+        setContentView(R.layout.activity_main);
 
         // Assigns the pre-defined listener to listen to the buttons
         dateButton.setOnClickListener(listener);
@@ -89,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
         // Disables the shareButton by default
         shareButton.setEnabled(false);
 
-        //Defines progressbar
-        progress = new ProgressDialog(this);
     }
 
     @NonNull
@@ -103,8 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 else if (v == findViewById(R.id.share_button)) {
                     // Disables the button to prohibit several mail-apps to open at once
                     shareButton.setEnabled(false);
-                    //Toast.makeText(MainActivity.this, "Generating report, please wait", Toast.LENGTH_SHORT).show();
-
+                    //Starts the progressbar
                     progress.setMessage("Generating report");
                     progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progress.setIndeterminate(true);
@@ -124,17 +126,8 @@ public class MainActivity extends AppCompatActivity {
                         csvHandler.writeFileFromArray(callDate, busData);
                         // Saves the file path to that .csv-file to a String
                         String filePath = csvHandler.getFilePath(callDate);
-                        // Shows the information in a String
-                        // TODO: Delete this Toast when file upload to fireBase works
-                        //Toast.makeText(MainActivity.this, filePath, Toast.LENGTH_SHORT).show();
-
-
-                        // TODO: Take the filepath (URI) and upload file to FireBase
-                        //csvHandler.csvUploader(filePath);
-                        // TODO: return a String (URL) to file
+                        //calls the csvUploader to upload the generated file to Firebase, calls sendEmail();
                         csvHandler.csvUploader(filePath);
-                        // TODO: Call method to open email app with URL attached
-
                     } else {
                         // TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
                         //Gets the URL of the file that already exists on Firebase Storage
