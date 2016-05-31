@@ -16,8 +16,21 @@
 package com.example.eliasvensson.busify;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.CancellableTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -99,4 +112,47 @@ public class CsvHandler {
         String filePath = mainActivity.getFilesDir().getAbsolutePath() + callDate + ".csv";
         return filePath;
     }
+
+
+    public void csvUploader (String filePath, String date){
+            StorageReference mStorageReference = FirebaseStorage.getInstance().getReference();
+
+            Uri file = Uri.fromFile(new File("reports/" + date + ".csv"));
+
+            // Create the file metadata
+            StorageMetadata metadata = new StorageMetadata.Builder().setContentType("text/csv").build();
+
+            // Upload file and metadata to the path 'reportds/date.csv'
+            CancellableTask uploadTask = mStorageReference.child("reports/" + file.getLastPathSegment()).putFile(file, metadata);
+
+
+            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    System.out.println("Upload is " + progress + "% done");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // Handle successful uploads on complete
+                    Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
+                }
+            });
+
+
+        }
+
+
+
+
+
+
+    }
+
 }
