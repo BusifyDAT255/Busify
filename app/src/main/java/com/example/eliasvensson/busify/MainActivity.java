@@ -50,8 +50,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Defines variables for the DatePicker button, the button used to share
      * the link and the link attached in the email to be sent.
-     * Defines a ProgressDialog to show that the app is running "behind the scenes"
-     * Contains refereces to FirebaseStorage, to class CsvHandler and DateGenerator
+     * A storage reference and DataGenerator is defined.
      */
     protected Button shareButton;
     protected Button dateButton;
@@ -71,21 +70,17 @@ public class MainActivity extends AppCompatActivity {
         // Initiates a storage reference to the root reference
         storageRef = FirebaseStorage.getInstance().getReference();
 
-        // Initiates a CsvHandler
+        // Sets the view to be displayed upon the start of the app
+        setContentView(R.layout.activity_main);
+
         csvHandler = new CsvHandler(MainActivity.this);
 
         // Initiates the buttons for setting date and sharing the link
         dateButton = (Button) findViewById(R.id.date_button);
         shareButton = (Button) findViewById(R.id.share_button);
 
-        //Initiates progressbar
-        progress = new ProgressDialog(this);
-
         // Initiates a View.OnClickListener to listen for clicks on the dateButton and shareButton
         View.OnClickListener listener = clickHandler();
-
-        // Sets the view to be displayed upon the start of the app
-        setContentView(R.layout.activity_main);
 
         // Assigns the pre-defined listener to listen to the buttons
         dateButton.setOnClickListener(listener);
@@ -94,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         // Disables the shareButton by default
         shareButton.setEnabled(false);
 
+        //Defines progressbar
+        progress = new ProgressDialog(this);
     }
 
     @NonNull
