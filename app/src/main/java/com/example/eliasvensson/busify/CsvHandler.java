@@ -41,7 +41,7 @@ public class CsvHandler {
      */
     public void writeFileFromArray(String callDate, String[][] dataArray) {
         String filename = callDate + ".csv";
-        //creates the String which will make up the text for the .csv
+        //Creates the String which will make up the text for the .csv
         String csvText = "";
         //Adds all elements in Array to the string
         //TODO: Make sure this parses the text correctly to .csv-file format (dependent on Sara & Annies method)
