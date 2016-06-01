@@ -46,15 +46,15 @@ public class MainActivity extends AppCompatActivity {
      * the link and the link attached in the email to be sent.
      * A storage reference and DatabaseHandler is defined.
      */
-    protected Button shareButton;
-    protected Button dateButton;
-    protected ProgressDialog progress;
-    protected DatabaseHandler dataGenerator;
-    protected CsvHandler csvHandler;
-    protected String reportDate;
-    protected EmailHandler emailHandler;
-    protected StorageHandler storageHandler;
-    protected EditText reportDateText;
+    private Button shareButton;
+    private Button dateButton;
+    private ProgressDialog progress;
+    private DatabaseHandler dataGenerator;
+    private CsvHandler csvHandler;
+    private String reportDate;
+    private EmailHandler emailHandler;
+    private StorageHandler storageHandler;
+    private EditText reportDateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 buildCsv(date);
 
                 // Upload the file to Firebase storage
-                storageHandler.csvUploader(csvHandler.getFilePath(reportDate));
+                storageHandler.uploadFile(csvHandler.getFilePath(reportDate));
 
                 // Recursive call to share the report
                 shareReport(reportDate);
@@ -228,5 +228,5 @@ public class MainActivity extends AppCompatActivity {
         //Re-enables the shareButton in the MainActivity class when the text is set.
         shareButton.setEnabled(true);
     }
-    
+
 }

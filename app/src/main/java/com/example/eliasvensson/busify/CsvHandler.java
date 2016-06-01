@@ -11,22 +11,11 @@
 
 package com.example.eliasvensson.busify;
 
+import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.CancellableTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageMetadata;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,13 +23,13 @@ import java.io.IOException;
 public class CsvHandler {
 
     // Initiates the mainActivity this class will talk with
-    private MainActivity mainActivity;
+    private Activity activity;
 
     //Creates a FileOutputStream for writing the file to internal storage
     FileOutputStream outputStream;
     
-    public CsvHandler(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public CsvHandler(Activity activity) {
+        this.activity = activity;
     }
 
     /**
@@ -65,16 +54,16 @@ public class CsvHandler {
         try {
             //Opens a FileOutputStream to a file with the specified filename
             //Creates file if it doesn't exist.
-            outputStream = mainActivity.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream = activity.openFileOutput(filename, Context.MODE_PRIVATE);
             //Writes the string to the specified file
             outputStream.write(csvText.getBytes());
             //Closes the FileOutputStream to produce a file
             outputStream.close();
 
         } catch (FileNotFoundException e) {
-            Toast.makeText(mainActivity, "Internal Error: No such file found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Internal Error: No such file found", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
-            Toast.makeText(mainActivity, "Internal Error: IOException", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Internal Error: IOException", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -85,7 +74,7 @@ public class CsvHandler {
      * @return the filepath for the specified date
      */
     public String getFilePath(String reportDate) {
-        String filePath = mainActivity.getFilesDir().getAbsolutePath() + "/" + reportDate + ".csv";
+        String filePath = activity.getFilesDir().getAbsolutePath() + "/" + reportDate + ".csv";
         Log.e("LOG", "Output from getFilePath " + filePath);
         return filePath;
     }

@@ -37,10 +37,10 @@ public class StorageHandler {
      *
      * @param filePath file path ending with [date].csv
      */
-    public void csvUploader(String filePath) {
+    public void uploadFile(String filePath) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         Uri file = Uri.fromFile(new File(filePath));
-        Log.e("csvUploader Uri File:", filePath.toString());
+        Log.e("uploadFile Uri File:", filePath.toString());
 
         // Creates the file metadata
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("text/csv").build();
@@ -64,16 +64,7 @@ public class StorageHandler {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                /*
-                // Handles successful uploads on complete
-                Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
-                String downloadLink = downloadUrl.toString();
-                Log.e("LOG", "Successfull CSVUPLOADER");
-                Log.e("LOG", taskSnapshot.getMetadata().getPath());
-                // Sets link to be downloaded and sends an email
-                mainActivity.getEmailHandler().sendEmail("Your ElectriCity report for " + mainActivity.getReportDate()
-                        , "Please click the link to download report:\n\n" + downloadLink, mainActivity.getProgress());
-                        */
+                //Do nothing(!)
             }
         });
     }
