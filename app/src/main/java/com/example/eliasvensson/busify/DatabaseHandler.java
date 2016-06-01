@@ -47,6 +47,25 @@ public class DatabaseHandler {
         dataToCsv = new String[row][col];
     }
 
+    protected void initiateDatabase(final String reportDate){
+        // Creates a thread to handle time delay in database access
+        Thread databaseTimer = new Thread() {
+            public void run() {
+                try {
+                    // Makes a call to the database to get access
+                    getBusInformation(reportDate);
+                    // Waits to get access to the database
+                    sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        // Starts the timer
+        databaseTimer.start();
+    }
+
     /**
      * Gets bus information (bus-ID, driving distance (km), electric energy
      * consumption (kWh) and bus type) for specified date.

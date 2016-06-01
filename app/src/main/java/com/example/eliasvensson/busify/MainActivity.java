@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Button shareButton;
     private Button dateButton;
     private ProgressDialog progress;
-    private DatabaseHandler dataGenerator;
+    private DatabaseHandler databaseHandler;
     private CsvHandler csvHandler;
     private String reportDate;
     private EmailHandler emailHandler;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Initializes a DatabaseHandler
-        dataGenerator = new DatabaseHandler(11, 5);
+        databaseHandler = new DatabaseHandler(11, 5);
 
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
@@ -105,23 +105,8 @@ public class MainActivity extends AppCompatActivity {
                     openDateDialog();
                 else if (v == shareButton) {
 
-                    // Creates a thread to handle time delay in database access
-                    Thread databaseTimer = new Thread() {
-                        public void run() {
-                            try {
-                                // Makes a call to the database to get access
-                                dataGenerator.getBusInformation(reportDate);
-                                // Waits to get access to the database
-                                sleep(500);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-
-
-                    // Starts the timer
-                    databaseTimer.start();
+                    // Starts the database connection
+                    databaseHandler.initiateDatabase(reportDate);
 
                     // Starts the progress bar
                     progress.setMessage("Generating report");
@@ -204,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
     private void buildCsv(String reportDate) {
 
         // Queries data from Firebase
-        String[][] busData = dataGenerator.getBusInformation(reportDate);
+        String[][] busData = databaseHandler.getBusInformation(reportDate);
 
         // Writes the data to a .csv-file
         csvHandler.writeFileFromArray(reportDate, busData);
