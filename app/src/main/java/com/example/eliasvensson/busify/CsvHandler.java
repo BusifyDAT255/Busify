@@ -43,7 +43,7 @@ public class CsvHandler {
     /**
      * Method that writes a two-dimensional array with string fields,
      * to a string on .csv-format with a specified date as the filename.
-     *
+     * The file gets stored on the internal memory on the phone.
      * @param dataArray array to write to a .csv
      * @param reportDate  specified date that gets passed to the filename
      */
@@ -92,7 +92,7 @@ public class CsvHandler {
 
     /**
      * Takes filePath as a String, finds the Uri, reserve place at "/reports/date.csv"
-     * and builds metadata. Initiates a CancellableTask uploadTask and uses .putFile to upload file
+     * and builds metadata . Initiates a CancellableTask uploadTask and uses .putFile to upload file
      * and calls sendEmail().
      *
      * TODO: refactor the sendEmail after checking execution order.

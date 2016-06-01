@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     };
 
+
                     // Starts the timer
                     databaseTimer.start();
 
