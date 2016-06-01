@@ -1,12 +1,16 @@
 /**
- * @author Sara Kinell
+ * @author Elias Svensson
+ * @author David Genelöv
  * @author Annie Söderström
+ * @author Melinda Fulöp
+ * @author Sara Kinell
+ * @author Jonathan Fager
  * @version 6.0, 2016-06-01
  * @since 1.0, 2016-05-27
- *
- * Information for buses from Firebase is combined with calculated values.
- * Error message will be shown if the ValueEventListener fails to
- * access the server or is removed because of Firebase settings.
+ * <p/>
+ * Manages the interaction between MainActivity and Firebase database.
+ * This is where the data is queried, and structured in a suitable format for making .csv-files
+ * (i.e. a two dimensional array of Strings)
  */
 
 package com.example.eliasvensson.busify;
