@@ -10,7 +10,6 @@
 package com.example.eliasvensson.busify;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -27,10 +26,7 @@ public class EmailHandler {
      * link to a file.
      */
 
-    protected void sendEmail( String subject, String emailText, ProgressDialog progress) {
-
-        // Stop the progress bar from running
-        progress.cancel();
+    protected void sendEmail( String subject, String emailText) {
 
         //Opens up the choice for sharing, e.g. via Gmail, other email clients, Slack etc.
         Intent i = new Intent(Intent.ACTION_SEND);

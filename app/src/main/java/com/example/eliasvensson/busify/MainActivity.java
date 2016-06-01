@@ -166,9 +166,13 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(Uri downloadUrl) {
                 Log.e("LOG", "file already existed.");
                 String downloadLink = downloadUrl.toString();
-                //sendEmail(downloadLink);
+
+                // Stops the progress bar from running
+                progress.cancel();
+
+                // Sends an email with the URL attached
                 emailHandler.sendEmail("Your ElectriCity report for " + reportDate
-                        , "Please click the link to download report:\n\n" + downloadLink, progress);
+                        , "Please click the link to download report:\n\n" + downloadLink);
             }
 
         }).addOnFailureListener(new OnFailureListener() {
