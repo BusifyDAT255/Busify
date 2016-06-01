@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
      * Shares the report for the date specified in the mainView
      * First tries to fetch a file for that specified date from Firebase storage
      * If available, a link to the file gets attached to an email, and an email-app starts
-     * 
+     *
      * If the file is not available, it creates it and uploads to Firebase storage
      * after upload, a link to the file gets attached to an email, and an email-app starts
      *
@@ -174,8 +174,21 @@ public class MainActivity extends AppCompatActivity {
                 // Upload the file to Firebase storage
                 storageHandler.uploadFile(csvHandler.getFilePath(reportDate));
 
-                // Recursive call to share the report
-                shareReport();
+                /*Starts a thread to wait for the storageHandler to upload the file.
+                  This takes approx 0.7 seconds. After that, it will make a recursive call to send
+                  the email.*/
+                Thread recursiveTimer = new Thread() {
+                    public void run() {
+                        try {
+                            sleep(1000);
+                            // Recursive call to share the report
+                            shareReport();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                recursiveTimer.start();
             }
         });
     }
@@ -215,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         this.reportDate = reportDate;
         reportDateText.setText(reportDate);
 
-        // Re-enables the share-button when the text is set.
+        // Enables the share-button when the text is set.
         shareButton.setEnabled(true);
     }
 }
