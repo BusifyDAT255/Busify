@@ -1,9 +1,9 @@
 /**
  * @author Sara Kinell
  * @author Annie Söderström
- * @version 5.0, 2016-05-31
+ * @version 6.0, 2016-06-01
  * @since 1.0, 2016-05-27
- * 
+ *
  * Information for buses from Firebase is combined with calculated values.
  * Error message will be shown if the ValueEventListener fails to
  * access the server or is removed because of Firebase settings.
@@ -115,7 +115,7 @@ public class DataGenerator {
                     //Adds values from the database into csvFormat
                     csvFormat[j][k] = splittedBusInfo[index];
 
-                    // Increments index for the one-dimensional array, IFF values for column
+                    // Increments index for the one-dimensional array, iff values for column
                     // 1-4 was changed
                     index++;
                 }
