@@ -25,7 +25,6 @@ package com.example.eliasvensson.busify;
 
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,7 +33,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     protected StorageReference storageRef;
     protected CsvHandler csvHandler;
     protected String reportDate;
+    protected EmailHandler emailHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Creates a CsvHandler object for handling everything concerning .csv-files
         csvHandler = new CsvHandler(MainActivity.this);
+
+        // Creates an EmailHandler for handling everything related to email sending
+        emailHandler = new EmailHandler(MainActivity.this);
 
         // Initiates progressbar
         progress = new ProgressDialog(this);
@@ -160,7 +162,9 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(Uri downloadUrl) {
                 Log.e("LOG", "file already existed.");
                 String downloadLink = downloadUrl.toString();
-                sendEmail(downloadLink);
+                //sendEmail(downloadLink);
+                emailHandler.sendEmail("Your ElectriCity report for " + reportDate
+                        , "Please click the link to download report:\n\n" + downloadLink, progress);
             }
 
         }).addOnFailureListener(new OnFailureListener() {
@@ -196,32 +200,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens Android's default mail-application with a message of attached link and
-     * link to a file.
-     */
-    protected void sendEmail(String downloadLink) {
-
-        // Stop the progress bar from running
-        progress.cancel();
-
-        //Opens up the choice for sharing, e.g. via Gmail, other email clients, Slack etc.
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("message/rfc822");
-
-        //Sets subject and content of email
-        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + reportDate);
-        i.putExtra(Intent.EXTRA_TEXT, "Please click the link to download report:\n\n" + downloadLink);
-
-        // Starts the email client
-        try {
-            startActivity(Intent.createChooser(i, "Choose application to share report"));
-            // Shows a toast if there is no email client available
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
      * Creates an instance of the class DateDialog, which opens the DateDialog
      *
      * @param viewId the ID of the view which the method will write the returned date to.
@@ -235,5 +213,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
+    }
+
+    public EmailHandler getEmailHandler() {
+        return emailHandler;
+    }
+
+    public String getReportDate() {
+        return reportDate;
+    }
+
+    public ProgressDialog getProgress() {
+        return progress;
     }
 }

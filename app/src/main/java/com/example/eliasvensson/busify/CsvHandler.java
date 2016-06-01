@@ -135,7 +135,8 @@ public class CsvHandler {
                 Log.e("LOG", "Successfull CSVUPLOADER");
                 Log.e("LOG", taskSnapshot.getMetadata().getPath());
                 // Sets link to be downloaded and sends an email
-                mainActivity.sendEmail(downloadLink);
+                mainActivity.getEmailHandler().sendEmail("Your ElectriCity report for " + mainActivity.getReportDate()
+                        , "Please click the link to download report:\n\n" + downloadLink, mainActivity.getProgress());
             }
         });
     }
