@@ -177,7 +177,15 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public void onFailure(@NonNull Exception e) {
+
+                //Create a .csv-file and upload to Firebase storage
                 buildCsv(date);
+
+                // Upload the file to Firebase storage
+                storageHandler.csvUploader(csvHandler.getFilePath(reportDate));
+
+                // Recursive call to share the report
+                shareReport(reportDate);
             }
         });
     }
@@ -190,18 +198,12 @@ public class MainActivity extends AppCompatActivity {
      * @param reportDate date of file to convert to a .csv-file.
      */
     private void buildCsv(String reportDate) {
+
         // Queries data from Firebase
         String[][] busData = dataGenerator.getBusInformation(reportDate);
 
         // Writes the data to a .csv-file
         csvHandler.writeFileFromArray(reportDate, busData);
-
-        // Saves the file path to that .csv-file to a String
-        String filePath = csvHandler.getFilePath(reportDate);
-
-        // Upload the file to storage and open email app with the link to the file attached
-        storageHandler.csvUploader(filePath);
-        shareReport(reportDate);
     }
 
     /**
@@ -226,16 +228,5 @@ public class MainActivity extends AppCompatActivity {
         //Re-enables the shareButton in the MainActivity class when the text is set.
         shareButton.setEnabled(true);
     }
-
-    public EmailHandler getEmailHandler() {
-        return emailHandler;
-    }
-
-    public String getReportDate() {
-        return reportDate;
-    }
-
-    public ProgressDialog getProgress() {
-        return progress;
-    }
+    
 }
