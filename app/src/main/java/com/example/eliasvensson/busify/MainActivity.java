@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Finds or creates the URL for the specified date, and opens a mail-application
                     // with the link attached
-                    getUrlAsync(reportDate);
+                    shareReport(reportDate);
                 }
             }
         };
@@ -140,11 +140,11 @@ public class MainActivity extends AppCompatActivity {
      * onSuccess sets the the downloadLink by call to setDownloadLink
      * and initiates the email by call to sendEmail
      * onFailure opens a dialog telling the user that no report is available for this date.
-     * TODO: refactor getUrlAsync method to two methods, getUrlAsync and sendEmail();
+     * TODO: refactor shareReport method to two methods, shareReport and sendEmail();
      *
      * @param date should be in the format of "YYYY-MM-DD"
      */
-    private void getUrlAsync(final String date) {
+    private void shareReport(final String date) {
 
         // Make a reference to the date-specific file on storage
         StorageReference dateRef = storageRef.child("/reports/" + date + ".csv");
