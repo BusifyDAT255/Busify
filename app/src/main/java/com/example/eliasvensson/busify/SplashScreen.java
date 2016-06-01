@@ -1,9 +1,14 @@
 /**
+ * @author Elias Svensson
+ * @author David Genelöv
+ * @author Annie Söderström
+ * @author Melinda Fulöp
+ * @author Sara Kinell
  * @author Jonathan Fager
- * @version 2.0, 2016-05-06
+ * @version 3.0, 2016-06-01
  * @since 1.0, 2016-05-04
  *
- * The method of creating a SplashScreen, onCreate, uses the Thread class.
+ * The class handling the SplashScreen, which shows onCreate.
  * A fairly small app, such as this one, might load so fast that the
  * splash screen never shows, which for branding purposes
  * is unwanted. Therefore, we start a thread (timerThread) and puts it to sleep for
@@ -28,7 +33,7 @@ public class SplashScreen extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
 
-        //Creates new thread
+        //Creates new thread for showing the splash screen
         Thread timerThread = new Thread() {
             public void run() {
                 try {
@@ -43,7 +48,7 @@ public class SplashScreen extends Activity {
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
             }
-        };
+        };g
         timerThread.start();
     }
 
@@ -53,5 +58,4 @@ public class SplashScreen extends Activity {
         super.onPause();
         finish();
     }
-
 }
