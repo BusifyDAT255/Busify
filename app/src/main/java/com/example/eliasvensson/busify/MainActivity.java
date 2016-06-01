@@ -200,7 +200,8 @@ public class MainActivity extends AppCompatActivity {
         String filePath = csvHandler.getFilePath(reportDate);
 
         // Upload the file to storage and open email app with the link to the file attached
-        csvHandler.csvUploader(filePath);
+        storageHandler.csvUploader(filePath);
+        shareReport(reportDate);
     }
 
     /**

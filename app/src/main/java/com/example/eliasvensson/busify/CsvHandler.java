@@ -90,56 +90,7 @@ public class CsvHandler {
         return filePath;
     }
 
-    /**
-     * Takes filePath as a String, finds the Uri, reserve place at "/reports/date.csv"
-     * and builds metadata . Initiates a CancellableTask uploadTask and uses .putFile to upload file
-     * and calls sendEmail().
-     *
-     * TODO: refactor the sendEmail after checking execution order.
-     * TODO: Look through comments for this code
-     * TODO: Fix what happends if Failure.
-     * TODO: Fix the progress in MainActivity to use "onProgress"?
-     *
-     * @param filePath file path ending with [date].csv
-     */
-    public void csvUploader(String filePath) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        Uri file = Uri.fromFile(new File(filePath));
-        Log.e("csvUploader Uri File:", filePath.toString());
 
-        // Creates the file metadata
-        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("text/csv").build();
-        Log.e("LOG","Metadata: " + metadata.toString());
-
-        // Uploads file and metadata to the path 'reports/date.csv'
-        CancellableTask uploadTask = storageReference.child("reports/" + file.getLastPathSegment()).putFile(file, metadata);
-
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                //double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                //mainActivity.setProgress((int) progress);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handles unsuccessful uploads
-                Log.e("LOG", "Unsucessfull in CSVUPLOADER");
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // Handles successful uploads on complete
-                Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
-                String downloadLink = downloadUrl.toString();
-                Log.e("LOG", "Successfull CSVUPLOADER");
-                Log.e("LOG", taskSnapshot.getMetadata().getPath());
-                // Sets link to be downloaded and sends an email
-                mainActivity.getEmailHandler().sendEmail("Your ElectriCity report for " + mainActivity.getReportDate()
-                        , "Please click the link to download report:\n\n" + downloadLink, mainActivity.getProgress());
-            }
-        });
-    }
 }
 
 
