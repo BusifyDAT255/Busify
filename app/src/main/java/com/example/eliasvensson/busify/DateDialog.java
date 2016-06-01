@@ -36,7 +36,6 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
      * Constructor that assigns which EditText-object the date will be written to
      * @param mainActivity The activity this fragment will be run from
      */
-
     public DateDialog(MainActivity mainActivity) {
             this.mainActivity = mainActivity;
     }

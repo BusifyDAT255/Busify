@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v == dateButton)
-                    setDateToView();
+                    openDateDialog();
                 else if (v == shareButton) {
 
                     // Creates a thread to handle time delay in database access
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
      * Creates an instance of the class DateDialog, which opens the DateDialog
      *
      */
-    private void setDateToView() {
+    private void openDateDialog() {
         // Initiates a DateDialog object for user interaction when choosing the date
         DateDialog dialog = new DateDialog(MainActivity.this);
 
