@@ -133,10 +133,10 @@ public class MainActivity extends AppCompatActivity {
     private void shareReport(final String date) {
 
         // Make a reference to the date-specific file on storage
-        storageHandler.setStorageReference("/reports/" + date + ".csv");
+        storageHandler.setDateStorageReference("/reports/" + date + ".csv");
 
         // Get the reference to the date-specific file on storage
-        StorageReference dateRef = storageHandler.getStorageReference();
+        StorageReference dateRef = storageHandler.getDateStorageReference();
 
         // Try to get the file from Firebase storage, based on the reference defined above
         dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

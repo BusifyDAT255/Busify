@@ -1,3 +1,17 @@
+/**
+ * @author Elias Svensson
+ * @author David Genelöv
+ * @author Annie Söderström
+ * @author Melinda Fulöp
+ * @author Sara Kinell
+ * @author Jonathan Fager
+ * @version 1.0, 2016-06-01
+ * @since 1.0
+ *
+ * Provides the methods the app need for all contact with Firebase storage,
+ * i.e uploading files and getting their URL-references
+ */
+
 package com.example.eliasvensson.busify;
 
 import android.net.Uri;
@@ -17,11 +31,14 @@ import java.io.File;
 
 public class StorageHandler {
 
+    // Variable for saving the reference to Firebase storage
     protected StorageReference storageReference;
+
+    // Variable for saving the date-specific reference to Firebase storage
     protected StorageReference dateStorageReference;
 
+    // Initiates a reference to the Firebase root storage
     public StorageHandler(){
-        // Initiates a storage reference to the root reference
         storageReference = FirebaseStorage.getInstance().getReference();
     }
 
@@ -34,8 +51,10 @@ public class StorageHandler {
      * @param filePath file path ending with [date].csv
      */
     public void uploadFile(String filePath) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        Uri file = Uri.fromFile(new File(filePath));
+
+        // Gets the URI for specified file from internal storage
+        Uri uriToFile = Uri.fromFile(new File(filePath));
+
         Log.e("uploadFile Uri File:", filePath.toString());
 
         // Creates the file metadata
@@ -43,33 +62,40 @@ public class StorageHandler {
         Log.e("LOG","Metadata: " + metadata.toString());
 
         // Uploads file and metadata to the path 'reports/date.csv'
-        CancellableTask uploadTask = storageReference.child("reports/" + file.getLastPathSegment()).putFile(file, metadata);
+        CancellableTask uploadTask = storageReference.child("reports/" + uriToFile.getLastPathSegment()).putFile(uriToFile, metadata);
 
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                // TODO: Delete this on release branch if not necessary
                 //double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                 //mainActivity.setProgress((int) progress);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Shuts down app if upload is unsuccesful
+                // Shuts down app if upload is unsuccessful
                 throw new InternalError(exception.getMessage());
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //Do nothing(!)
-            }
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {}
         });
     }
 
-    public void setStorageReference(String path){
+    /**
+     * Sets the DateStorageReference to the specified path.
+     * @param path: The path to Firebase storage for a specific date
+     */
+    public void setDateStorageReference(String path){
         dateStorageReference = storageReference.child(path);
     }
 
-    public StorageReference getStorageReference(){
+    /**
+     * Gets the current DateStorageReference
+     * @return the DateStorageReference for the current date
+     */
+    public StorageReference getDateStorageReference(){
         return dateStorageReference;
     }
 }

@@ -1,9 +1,3 @@
-package com.example.eliasvensson.busify;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-
 /**
  * @author Jonathan Fager
  * @version 2.0, 2016-05-06
@@ -19,6 +13,12 @@ import android.os.Bundle;
  * The finally block launches the actual app.
  *
  **/
+
+package com.example.eliasvensson.busify;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 
 
 public class SplashScreen extends Activity {
