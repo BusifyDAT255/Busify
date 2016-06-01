@@ -36,7 +36,6 @@ import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 
@@ -51,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
     protected Button dateButton;
     protected ProgressDialog progress;
     protected DatabaseHandler dataGenerator;
-    protected StorageReference storageRef;
     protected CsvHandler csvHandler;
     protected String reportDate;
     protected EmailHandler emailHandler;
+    protected StorageHandler storageHandler;
     protected EditText reportDateText;
 
     @Override
@@ -64,9 +63,6 @@ public class MainActivity extends AppCompatActivity {
         // Initializes a DatabaseHandler
         dataGenerator = new DatabaseHandler(this, 11, 5);
 
-        // Initiates a storage reference to the root reference
-        storageRef = FirebaseStorage.getInstance().getReference();
-
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);
 
@@ -75,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Creates an EmailHandler for handling everything related to email sending
         emailHandler = new EmailHandler(MainActivity.this);
+
+        //Creates a new StorageHandler for handling everything with Firebase Storage
+        storageHandler = new StorageHandler();
 
         // Initiates progressbar
         progress = new ProgressDialog(this);
@@ -151,7 +150,10 @@ public class MainActivity extends AppCompatActivity {
     private void shareReport(final String date) {
 
         // Make a reference to the date-specific file on storage
-        StorageReference dateRef = storageRef.child("/reports/" + date + ".csv");
+        storageHandler.setStorageReference("/reports/" + date + ".csv");
+
+        // Get the reference to the date-specific file on storage
+        StorageReference dateRef = storageHandler.getStorageReference();
 
         // Try to get the file from Firebase storage, based on the reference defined above
         dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
