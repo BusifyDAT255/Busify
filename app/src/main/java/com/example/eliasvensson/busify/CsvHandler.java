@@ -78,13 +78,13 @@ public class CsvHandler {
                 } else if (splittedBusInfo[index] != null) {
                     dataToCsv[j][k] = splittedBusInfo[index];
 
-                    // Increments index for the one-dimensional array, iff values for column
+                    // Increments index for the one-dimensional array, if values for column
                     // 1-4 was changed
                     index++;
                 }
             }
         }
-        // Returns a clone to not expose internal data (FINDBUGS <3)
+        // Returns a clone, for safety purposes
         return dataToCsv.clone();
     }
 
