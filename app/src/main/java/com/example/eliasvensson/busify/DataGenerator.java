@@ -3,7 +3,7 @@
  * @author Annie Söderström
  * @version 5.0, 2016-05-31
  * @since 1.0, 2016-05-27
- * <p/>
+ * 
  * Information for buses from Firebase is combined with calculated values.
  * Error message will be shown if the ValueEventListener fails to
  * access the server or is removed because of Firebase settings.
@@ -12,6 +12,7 @@
 package com.example.eliasvensson.busify;
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -108,19 +109,9 @@ public class DataGenerator {
                 if (k == 4) {
                     //Adds a fifth column with calculated electricity per km
                     if (csvFormat[j][2] != null && csvFormat[j][1] != null) {
-                        Double electricity = (Double.parseDouble(csvFormat[j][2]));
-                        Double distance = (Double.parseDouble(csvFormat[j][1]));
-                        double electricityPerKm = electricity / distance;
-
-                        //Rounds the double to three significant figures
-                        BigDecimal bd = new BigDecimal(electricityPerKm);
-                        bd = bd.round(new MathContext(3));
-                        double rounded = bd.doubleValue();
-
-                        //Sets the rounded double into the correct field, as a String
-                        csvFormat[j][k] = String.valueOf(rounded);
+                        csvFormat[j][k] = stringDivision(csvFormat[j][2], csvFormat[j][1]);
                     }
-                } else if (splittedBusInfo[index] != null){
+                } else if (splittedBusInfo[index] != null) {
                     //Adds values from the database into csvFormat
                     csvFormat[j][k] = splittedBusInfo[index];
 
@@ -131,19 +122,6 @@ public class DataGenerator {
             }
         }
         return csvFormat;
-    }
-
-    /**
-     * Adds titles to the first row, which represents the first row of the .csv-file.
-     *
-     * @param firstRow the first row number
-     */
-    private void addTitles(int firstRow) {
-        csvFormat[firstRow][0] = "Bus ID";
-        csvFormat[firstRow][1] = "Driving distance (km)";
-        csvFormat[firstRow][2] = "Electric energy consumption (kWh)";
-        csvFormat[firstRow][3] = "Bus type";
-        csvFormat[firstRow][4] = "Electricity per km (kWh/km)";
     }
 
     /**
@@ -165,4 +143,45 @@ public class DataGenerator {
         }
         return trimmed;
     }
+
+    /**
+     * Adds titles to the first row, which represents the first row of the .csv-file.
+     *
+     * @param firstRow the first row number
+     */
+    private void addTitles(int firstRow) {
+        csvFormat[firstRow][0] = "Bus ID";
+        csvFormat[firstRow][1] = "Driving distance (km)";
+        csvFormat[firstRow][2] = "Electric energy consumption (kWh)";
+        csvFormat[firstRow][3] = "Bus type";
+        csvFormat[firstRow][4] = "Electricity per km (kWh/km)";
+    }
+
+    /**
+     * Calculates the fraction of two Strings and rounds the
+     * resulting value.
+     *
+     * @param numerator top number of the fraction
+     * @param denominator bottom number of the fraction
+     * @return rounded String representation of the fraction
+     */
+    private String stringDivision(String numerator, String denominator) {
+        double fraction = 0.0;
+        try {
+            //Creates a fraction of the incoming values represented as Strings
+            fraction = (Double.parseDouble(numerator)) / (Double.parseDouble(denominator));
+        } catch (NumberFormatException e) {
+            // If Strings may not be converted to doubles, an empty String is returned
+            Log.e("Incorrect numbers", "String values may not be parsed to doubles");
+            return "#";
+        }
+        //Rounds the double to three significant figures
+        BigDecimal bd = new BigDecimal(fraction);
+        bd = bd.round(new MathContext(3));
+        double rounded = bd.doubleValue();
+
+        //Returns the rounded double into the correct field, as a String
+        return String.valueOf(rounded);
+    }
+
 }
