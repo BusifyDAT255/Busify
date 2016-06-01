@@ -150,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public void onSuccess(Uri downloadUrl) {
-                Log.e("LOG", "file already existed.");
 
                 // If an URI was found, converts it to a string
                 String downloadLink = downloadUrl.toString();
