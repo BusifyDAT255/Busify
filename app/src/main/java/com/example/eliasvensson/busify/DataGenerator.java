@@ -33,24 +33,23 @@ public class DataGenerator {
      * The busdata variable is used to contain data from Firebase.
      */
     private FirebaseDatabase database;
-    protected DatabaseReference ref;
-    private String chosenDate;
-    private Activity mainActivity;
+    private DatabaseReference databaseReference;
+    private Activity activity;
     private String busdata = "";
-    private String[][] csvFormat;
+    private String[][] dataToCsv;
 
     /**
      * Constructor for the DataGenerator class.
      *
-     * @param act MainActivity view
+     * @param act Activity view
      * @param row number of rows in the final .csv-file
      * @param col number of columns in the final .csv-file
      */
     public DataGenerator(Activity act, int row, int col) {
         database = FirebaseDatabase.getInstance();
-        ref = database.getReference();
-        mainActivity = act;
-        csvFormat = new String[row][col];
+        databaseReference = database.getReference();
+        activity = act;
+        dataToCsv = new String[row][col];
     }
 
     /**
@@ -61,10 +60,9 @@ public class DataGenerator {
      * @return the bus info for the specified date, as a String
      */
     public String[][] getBusInformation(String date) {
-        this.chosenDate = date;
 
-        //Adds mainActivity value event listener to the database reference
-        ref.child(chosenDate).addValueEventListener(new ValueEventListener() {
+        //Adds activity value event listener to the database reference
+        databaseReference.child(date).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -75,7 +73,7 @@ public class DataGenerator {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 //Displays an error message if the listener fails or is removed
-                Toast.makeText(mainActivity, "Cannot generate data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Cannot generate data", Toast.LENGTH_SHORT).show();
                 throw new InternalError(databaseError.getMessage());
             }
         });
@@ -97,23 +95,23 @@ public class DataGenerator {
         //Splits String into a field
         String[] splittedBusInfo = data.split(",");
         //Fixes correct indices and add titles to csvFormat
-        splittedBusInfo = fixIndex(splittedBusInfo, (csvFormat.length - 1) *
-                (csvFormat[0].length - 1));
+        splittedBusInfo = fixIndex(splittedBusInfo, (dataToCsv.length - 1) *
+                (dataToCsv[0].length - 1));
         addTitles(0);
 
         //Fills a two dimensional field with values from a one dimensional field representing Firebase data
         int index = 0;
-        for (int j = 1; j < csvFormat.length; j++) {
-            for (int k = 0; k < csvFormat[j].length; k++) {
+        for (int j = 1; j < dataToCsv.length; j++) {
+            for (int k = 0; k < dataToCsv[j].length; k++) {
                 // If on column 5: electricity/km
                 if (k == 4) {
                     //Adds a fifth column with calculated electricity per km
-                    if (csvFormat[j][2] != null && csvFormat[j][1] != null) {
-                        csvFormat[j][k] = stringDivision(csvFormat[j][2], csvFormat[j][1]);
+                    if (dataToCsv[j][2] != null && dataToCsv[j][1] != null) {
+                        dataToCsv[j][k] = stringDivision(dataToCsv[j][2], dataToCsv[j][1]);
                     }
                 } else if (splittedBusInfo[index] != null) {
                     //Adds values from the database into csvFormat
-                    csvFormat[j][k] = splittedBusInfo[index];
+                    dataToCsv[j][k] = splittedBusInfo[index];
 
                     // Increments index for the one-dimensional array, iff values for column
                     // 1-4 was changed
@@ -121,7 +119,7 @@ public class DataGenerator {
                 }
             }
         }
-        return csvFormat;
+        return dataToCsv;
     }
 
     /**
@@ -150,11 +148,11 @@ public class DataGenerator {
      * @param firstRow the first row number
      */
     private void addTitles(int firstRow) {
-        csvFormat[firstRow][0] = "Bus ID";
-        csvFormat[firstRow][1] = "Driving distance (km)";
-        csvFormat[firstRow][2] = "Electric energy consumption (kWh)";
-        csvFormat[firstRow][3] = "Bus type";
-        csvFormat[firstRow][4] = "Electricity per km (kWh/km)";
+        dataToCsv[firstRow][0] = "Bus ID";
+        dataToCsv[firstRow][1] = "Driving distance (km)";
+        dataToCsv[firstRow][2] = "Electric energy consumption (kWh)";
+        dataToCsv[firstRow][3] = "Bus type";
+        dataToCsv[firstRow][4] = "Electricity per km (kWh/km)";
     }
 
     /**
