@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.CancellableTask;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,7 +42,7 @@ public class StorageHandler {
     }
 
     /**
-     * Takes filePath as a String, finds the Uri, reserve place at "/reports/date.csv"
+     * Takes filePath as a String & reserve place at "/reports/date.csv"
      * and builds metadata . Initiates a CancellableTask uploadTask and uses .putFile to upload file
      * and calls sendEmail().
      * TODO: Look through comments for this code
@@ -55,23 +54,13 @@ public class StorageHandler {
         // Gets the URI for specified file from internal storage
         Uri uriToFile = Uri.fromFile(new File(filePath));
 
-        Log.e("uploadFile Uri File:", filePath.toString());
-
         // Creates the file metadata
         StorageMetadata metadata = new StorageMetadata.Builder().setContentType("text/csv").build();
-        Log.e("LOG","Metadata: " + metadata.toString());
 
         // Uploads file and metadata to the path 'reports/date.csv'
-        CancellableTask uploadTask = storageReference.child("reports/" + uriToFile.getLastPathSegment()).putFile(uriToFile, metadata);
+        CancellableTask<UploadTask.TaskSnapshot> uploadTask = storageReference.child("reports/" + uriToFile.getLastPathSegment()).putFile(uriToFile, metadata);
 
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                // TODO: Delete this on release branch if not necessary
-                //double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                //mainActivity.setProgress((int) progress);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Shuts down app if upload is unsuccessful
