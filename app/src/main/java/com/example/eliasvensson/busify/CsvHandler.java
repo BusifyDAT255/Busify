@@ -42,14 +42,21 @@ public class CsvHandler {
     public void writeFileFromArray(String reportDate, String[][] dataArray) {
         String filename = reportDate + ".csv";
         //Creates the String which will make up the text for the .csv
-        String csvText = "";
+
+        StringBuffer csvBuffer = new StringBuffer();
+
         // Parses 2D array to string in .csv format
         for (int i = 0; i < dataArray.length; i++) {
             for (int j = 0; j < dataArray[0].length; j++) {
-                csvText += dataArray[i][j] + ";";
+                // Add semi-colon to indicate new column in .csv file
+                csvBuffer.append(dataArray[i][j] + ";");
             }
-            csvText += "\n";
+            // Add new line to indicate new row in .csv file 
+            csvBuffer.append("\n");
         }
+
+        // Create string from buffer 
+        String csvText = csvBuffer.toString();
 
         try {
             //Opens a FileOutputStream to a file with the specified filename
