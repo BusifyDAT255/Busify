@@ -36,6 +36,9 @@ public class CsvHandler {
     // Initiates the mainActivity this class will talk with
     private MainActivity mainActivity;
 
+    //Creates a FileOutputStream for writing the file to internal storage
+    FileOutputStream outputStream;
+    
     public CsvHandler(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
@@ -58,9 +61,6 @@ public class CsvHandler {
             }
             csvText += "\n";
         }
-
-        //Creates a FileOutputStream for writing the file to internal storage
-        FileOutputStream outputStream;
 
         try {
             //Opens a FileOutputStream to a file with the specified filename
