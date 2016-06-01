@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v == findViewById(R.id.date_button))
-                    setDateToView(R.id.txt_date);
+                    setDateToView();
                 else if (v == findViewById(R.id.share_button)) {
 
                     // Saves the user specified date as a String
@@ -202,11 +202,10 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Creates an instance of the class DateDialog, which opens the DateDialog
      *
-     * @param viewId the ID of the view which the method will write the returned date to.
      */
-    private void setDateToView(int viewId) {
+    private void setDateToView() {
         // Initiates a DateDialog object for user interaction when choosing the date
-        DateDialog dialog = new DateDialog(findViewById(viewId), MainActivity.this);
+        DateDialog dialog = new DateDialog(MainActivity.this);
 
         // Sets a FragmentManager to track the interaction with the DateDialog-fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
