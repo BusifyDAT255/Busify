@@ -28,8 +28,7 @@ import java.util.GregorianCalendar;
 
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    // Variable that stores which EditText-object the date will be written to
-    private EditText textToChange;
+    // Variable that stores which Activity this will be linked to
     private MainActivity mainActivity;
 
     /**

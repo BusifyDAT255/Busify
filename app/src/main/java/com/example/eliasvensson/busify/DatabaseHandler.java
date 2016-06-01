@@ -78,7 +78,7 @@ public class DatabaseHandler {
             }
         });
 
-        return busFields(busdata);
+        return busFields(busdata).clone();
     }
 
     /**
