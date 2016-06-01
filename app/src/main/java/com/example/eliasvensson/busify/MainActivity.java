@@ -68,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Initializes a DatabaseHandler
-        databaseHandler = new DatabaseHandler(11, 5);
+        databaseHandler = new DatabaseHandler();
 
         // Initializes a CsvHandler object for handling everything concerning .csv-files
-        csvHandler = new CsvHandler(MainActivity.this);
+        csvHandler = new CsvHandler(MainActivity.this, 11, 5);
 
         // Initializes an EmailHandler for handling everything related to email sending
         emailHandler = new EmailHandler(MainActivity.this);
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
                 else if (v == shareButton) {
                     // Starts the database connection
-                    databaseHandler.initiateDatabase(reportDate);
+                    databaseHandler.initiateDatabase(reportDate, csvHandler);
 
                     // Starts the progressDialog
                     progressDialog.setMessage("Generating report, please wait.");
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void buildCsv() {
         // Queries data from Firebase
-        String[][] busData = databaseHandler.getBusInformation(reportDate);
+        String[][] busData = databaseHandler.getBusInformation(reportDate, csvHandler);
 
         // Writes the data to a .csv-file
         csvHandler.writeFileFromArray(reportDate, busData);
