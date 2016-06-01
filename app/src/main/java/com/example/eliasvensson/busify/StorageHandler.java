@@ -29,11 +29,7 @@ public class StorageHandler {
      * Takes filePath as a String, finds the Uri, reserve place at "/reports/date.csv"
      * and builds metadata . Initiates a CancellableTask uploadTask and uses .putFile to upload file
      * and calls sendEmail().
-     *
-     * TODO: refactor the sendEmail after checking execution order.
      * TODO: Look through comments for this code
-     * TODO: Fix what happends if Failure.
-     * TODO: Fix the progress in MainActivity to use "onProgress"?
      *
      * @param filePath file path ending with [date].csv
      */
@@ -58,8 +54,8 @@ public class StorageHandler {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handles unsuccessful uploads
-                Log.e("LOG", "Unsucessfull in CSVUPLOADER");
+                // Shuts down app if upload is unsuccesful
+                throw new InternalError(exception.getMessage());
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override

@@ -5,7 +5,7 @@
  * @author Melinda Fulöp
  * @author Sara Kinell
  * @author Jonathan Fager
- * @version 9.0, 2016-05-31
+ * @version 10.0, 2016-06-01
  * @since 1.0
  * <p/>
  * Manages the interaction with, and function of, the main view of the app.
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private Button shareButton;
     private Button dateButton;
-    private ProgressDialog progress;
+    private ProgressDialog progressDialog;
     private DatabaseHandler databaseHandler;
     private CsvHandler csvHandler;
     private String reportDate;
@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
         // Creates an EmailHandler for handling everything related to email sending
         emailHandler = new EmailHandler(MainActivity.this);
 
-        //Creates a new StorageHandler for handling everything with Firebase Storage
+        //Creates a new StorageHandler for handling everything with Firebase storage
         storageHandler = new StorageHandler();
 
-        // Initiates progressbar
-        progress = new ProgressDialog(this);
+        // Initiates a ProgressDialog, for use when the app is fetching data from database
+        progressDialog = new ProgressDialog(this);
 
         // Initiates the buttons for setting date and sharing the link
         dateButton = (Button) findViewById(R.id.date_button);
@@ -108,11 +108,11 @@ public class MainActivity extends AppCompatActivity {
                     // Starts the database connection
                     databaseHandler.initiateDatabase(reportDate);
 
-                    // Starts the progress bar
-                    progress.setMessage("Generating report");
-                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progress.setIndeterminate(true);
-                    progress.show();
+                    // Starts the progressDialog bar
+                    progressDialog.setMessage("Generating report");
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.setIndeterminate(true);
+                    progressDialog.show();
 
                     // Finds or creates the URL for the specified date, and opens a mail-application
                     // with the link attached
@@ -127,9 +127,7 @@ public class MainActivity extends AppCompatActivity {
      * using an async call.
      * onSuccess sets the the downloadLink by call to setDownloadLink
      * and initiates the email by call to sendEmail
-     * onFailure opens a dialog telling the user that no report is available for this date.
-     * TODO: refactor shareReport method to two methods, shareReport and sendEmail();
-     *
+     * onFailure opens a dialog telling the user that no report is available for this date.*
      * @param date should be in the format of "YYYY-MM-DD"
      */
     private void shareReport(final String date) {
@@ -152,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("LOG", "file already existed.");
                 String downloadLink = downloadUrl.toString();
 
-                // Stops the progress bar from running
-                progress.cancel();
+                // Stops the progressDialog bar from running
+                progressDialog.cancel();
 
                 // Sends an email with the URL attached
                 emailHandler.sendEmail("Your ElectriCity report for " + reportDate

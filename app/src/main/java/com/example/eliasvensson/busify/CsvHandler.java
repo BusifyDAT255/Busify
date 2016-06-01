@@ -19,6 +19,7 @@ import android.widget.Toast;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 public class CsvHandler {
 
@@ -59,11 +60,12 @@ public class CsvHandler {
         String csvText = csvBuffer.toString();
 
         try {
-            //Opens a FileOutputStream to a file with the specified filename
-            //Creates file if it doesn't exist.
+            /* Opens a FileOutputStream to a file with the specified filename
+               Creates file if it doesn't exist. */
             outputStream = activity.openFileOutput(filename, Context.MODE_PRIVATE);
-            //Writes the string to the specified file
-            outputStream.write(csvText.getBytes());
+            /* Writes the string to the specified file.
+               Uses UTF-8 encoding because it is always supported and can encode any character. */
+            outputStream.write(csvText.getBytes(Charset.forName("UTF-8")));
             //Closes the FileOutputStream to produce a file
             outputStream.close();
 
