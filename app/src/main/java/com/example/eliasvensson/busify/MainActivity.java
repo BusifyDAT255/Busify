@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     protected CsvHandler csvHandler;
     protected String reportDate;
     protected EmailHandler emailHandler;
+    protected EditText reportDateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
         dateButton = (Button) findViewById(R.id.date_button);
         shareButton = (Button) findViewById(R.id.share_button);
 
+        //Initiate text view
+        reportDateText = (EditText) findViewById(R.id.txt_date);
+
         // Initiates a View.OnClickListener to listen for clicks on the dateButton and shareButton
         View.OnClickListener listener = clickHandler();
 
@@ -98,12 +102,9 @@ public class MainActivity extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v == findViewById(R.id.date_button))
+                if (v == dateButton)
                     setDateToView();
-                else if (v == findViewById(R.id.share_button)) {
-
-                    // Saves the user specified date as a String
-                    reportDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
+                else if (v == shareButton) {
 
                     // Creates a thread to handle time delay in database access
                     Thread databaseTimer = new Thread() {
@@ -213,6 +214,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
+    }
+
+    protected void setReportDate(String reportDate){
+        this.reportDate = reportDate;
+        reportDateText.setText(reportDate);
+
+        //Re-enables the shareButton in the MainActivity class when the text is set.
+        shareButton.setEnabled(true);
     }
 
     public EmailHandler getEmailHandler() {

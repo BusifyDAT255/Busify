@@ -38,14 +38,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
      */
 
     public DateDialog(MainActivity mainActivity) {
-        View view = mainActivity.findViewById(R.id.txt_date);
-        if (view instanceof EditText) {
-            textToChange = (EditText) view;
             this.mainActivity = mainActivity;
-        }
-        else
-            throw new IllegalArgumentException("The view is not an EditText view");
-
     }
 
     /**
@@ -79,10 +72,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Show the selected date in the text box
         String date = String.format("%4d-%02d-%02d", year, (month + 1), day);
-        textToChange.setText(date);
-
-        //Re-enables the shareButton in the MainActivity class when the text is set.
-        mainActivity.shareButton.setEnabled(true);
+        mainActivity.setReportDate(date);
     }
 
 }
