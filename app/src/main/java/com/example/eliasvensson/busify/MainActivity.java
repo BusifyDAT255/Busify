@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Starts the email client
         try {
-            startActivity(Intent.createChooser(i, "Send mail..."));
+            startActivity(Intent.createChooser(i, "Choose application to share report"));
             // Shows a toast if there is no email client available
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(MainActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
