@@ -30,6 +30,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,12 +51,11 @@ public class MainActivity extends AppCompatActivity {
      */
     protected Button shareButton;
     protected Button dateButton;
-    private String attachmentLink;
     protected ProgressDialog progress;
     protected DataGenerator dataGenerator;
     protected StorageReference storageRef;
     protected CsvHandler csvHandler;
-    protected String callDate;
+    protected String reportDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,14 +101,14 @@ public class MainActivity extends AppCompatActivity {
                 else if (v == findViewById(R.id.share_button)) {
 
                     // Saves the user specified date as a String
-                    callDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
+                    reportDate = ((EditText) findViewById(R.id.txt_date)).getText().toString();
 
                     // Creates a thread to handle time delay in database access
                     Thread databaseTimer = new Thread() {
                         public void run() {
                             try {
                                 // Makes a call to the database to get access
-                                dataGenerator.getBusInformation(callDate);
+                                dataGenerator.getBusInformation(reportDate);
                                 // Waits to get access to the database
                                 sleep(500);
                             } catch (InterruptedException e) {
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Finds or creates the URL for the specified date, and opens a mail-application
                     // with the link attached
-                    getUrlAsync(callDate);
+                    getUrlAsync(reportDate);
                 }
             }
         };
@@ -158,8 +158,9 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public void onSuccess(Uri downloadUrl) {
-                setDownloadLink(downloadUrl);
-                sendEmail();
+                Log.e("LOG", "file already existed.");
+                String downloadLink = downloadUrl.toString();
+                sendEmail(downloadLink);
             }
 
         }).addOnFailureListener(new OnFailureListener() {
@@ -178,17 +179,17 @@ public class MainActivity extends AppCompatActivity {
      * saves it as a .csv-file on internal storage, and displays the
      * filepath of this file in a toast.
      *
-     * @param callDate date of file to convert to a .csv-file.
+     * @param reportDate date of file to convert to a .csv-file.
      */
-    private void buildCsv(String callDate) {
+    private void buildCsv(String reportDate) {
         // Queries data from Firebase
-        String[][] busData = dataGenerator.getBusInformation(callDate);
+        String[][] busData = dataGenerator.getBusInformation(reportDate);
 
         // Writes the data to a .csv-file
-        csvHandler.writeFileFromArray(callDate, busData);
+        csvHandler.writeFileFromArray(reportDate, busData);
 
         // Saves the file path to that .csv-file to a String
-        String filePath = csvHandler.getFilePath(callDate);
+        String filePath = csvHandler.getFilePath(reportDate);
 
         // Upload the file to storage and open email app with the link to the file attached
         csvHandler.csvUploader(filePath);
@@ -198,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
      * Opens Android's default mail-application with a message of attached link and
      * link to a file.
      */
-    protected void sendEmail() {
+    protected void sendEmail(String downloadLink) {
 
         // Stop the progress bar from running
         progress.cancel();
@@ -208,8 +209,8 @@ public class MainActivity extends AppCompatActivity {
         i.setType("message/rfc822");
 
         //Sets subject and content of email
-        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + callDate);
-        i.putExtra(Intent.EXTRA_TEXT, "Please click the link to download report:\n\n" + getDownloadLink());
+        i.putExtra(Intent.EXTRA_SUBJECT, "Your ElectriCity report for " + reportDate);
+        i.putExtra(Intent.EXTRA_TEXT, "Please click the link to download report:\n\n" + downloadLink);
 
         // Starts the email client
         try {
@@ -234,23 +235,5 @@ public class MainActivity extends AppCompatActivity {
 
         // Sets the DateDialog as visible to the user
         dialog.show(ft, "DatePicker");
-    }
-
-    /**
-     * Getter and setter for download link.
-     *
-     * @param link the URL link for the .csv-file
-     */
-    public void setDownloadLink(Uri link) {
-        attachmentLink = link.toString();
-    }
-
-    /**
-     * Gets the download link to the last created attachment
-     *
-     * @return The link to the created attachment
-     */
-    private String getDownloadLink() {
-        return attachmentLink;
     }
 }

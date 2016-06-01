@@ -45,10 +45,10 @@ public class CsvHandler {
      * to a string on .csv-format with a specified date as the filename.
      *
      * @param dataArray array to write to a .csv
-     * @param callDate  specified date that gets passed to the filename
+     * @param reportDate  specified date that gets passed to the filename
      */
-    public void writeFileFromArray(String callDate, String[][] dataArray) {
-        String filename = callDate + ".csv";
+    public void writeFileFromArray(String reportDate, String[][] dataArray) {
+        String filename = reportDate + ".csv";
         //Creates the String which will make up the text for the .csv
         String csvText = "";
         // Parses 2D array to string in .csv format
@@ -81,11 +81,11 @@ public class CsvHandler {
     /**
      * Method to extract a filePath for a specified date.
      *
-     * @param callDate a String with the date to return a filepath for
+     * @param reportDate a String with the date to return a filepath for
      * @return the filepath for the specified date
      */
-    public String getFilePath(String callDate) {
-        String filePath = mainActivity.getFilesDir().getAbsolutePath() + "/" + callDate + ".csv";
+    public String getFilePath(String reportDate) {
+        String filePath = mainActivity.getFilesDir().getAbsolutePath() + "/" + reportDate + ".csv";
         Log.e("LOG", "Output from getFilePath " + filePath);
         return filePath;
     }
@@ -131,11 +131,11 @@ public class CsvHandler {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // Handles successful uploads on complete
                 Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
+                String downloadLink = downloadUrl.toString();
                 Log.e("LOG", "Successfull CSVUPLOADER");
                 Log.e("LOG", taskSnapshot.getMetadata().getPath());
                 // Sets link to be downloaded and sends an email
-                mainActivity.setDownloadLink(downloadUrl);
-                mainActivity.sendEmail();
+                mainActivity.sendEmail(downloadLink);
             }
         });
     }
