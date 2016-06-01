@@ -127,11 +127,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Calls the server to securely obtain an unguessable download Url
-     * using an async call.
-     * onSuccess sets the the downloadLink by call to setDownloadLink
-     * and initiates the email by call to sendEmail
-     * onFailure opens a dialog telling the user that no report is available for this date.
+     * Shares the report for the date specified in the mainView
+     * First tries to fetch a file for that specified date from Firebase storage
+     * If available, a link to the file gets attached to an email, and an email-app starts
+     * 
+     * If the file is not available, it creates it and uploads to Firebase storage
+     * after upload, a link to the file gets attached to an email, and an email-app starts
+     *
      */
     private void shareReport() {
         // Make a reference to the date-specific file on storage
