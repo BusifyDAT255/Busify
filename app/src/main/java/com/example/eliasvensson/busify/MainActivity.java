@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
      * onFailure opens a dialog telling the user that no report is available for this date.
      */
     private void shareReport() {
-
         // Make a reference to the date-specific file on storage
         storageHandler.setDateStorageReference("/reports/" + reportDate + ".csv");
 
@@ -153,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSuccess(Uri downloadUrl) {
                 Log.e("LOG", "file already existed.");
 
-                // If an URI was found, convert it to a string
+                // If an URI was found, converts it to a string
                 String downloadLink = downloadUrl.toString();
 
                 // Stops the progressDialog from running
@@ -163,16 +162,14 @@ public class MainActivity extends AppCompatActivity {
                 emailHandler.sendEmail("Your ElectriCity report for " + reportDate
                         , "Please click the link to download report:\n\n" + downloadLink);
             }
-
         }).addOnFailureListener(new OnFailureListener() {
             /**
-             * If the specified file does not exist on storage, make a new one and attach to an email
+             * If the specified file does not exist on storage, make a new one and upload to storage
              */
             @Override
             public void onFailure(@NonNull Exception e) {
-
                 //Create a .csv-file and upload to Firebase storage
-                buildCsv(reportDate);
+                buildCsv();
 
                 // Upload the file to Firebase storage
                 storageHandler.uploadFile(csvHandler.getFilePath(reportDate));
@@ -184,14 +181,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Takes a String with a date, gets the data from that date from database,
-     * saves it as a .csv-file on internal storage, and displays the
-     * filepath of this file in a toast.
+     * Takes a String with a date, gets the data from that date from the database and
+     * saves it as a .csv-file on internal storage
      *
-     * @param reportDate date of file to convert to a .csv-file.
      */
-    private void buildCsv(String reportDate) {
-
+    private void buildCsv() {
         // Queries data from Firebase
         String[][] busData = databaseHandler.getBusInformation(reportDate);
 
@@ -200,8 +194,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates an instance of the class DateDialog, which opens the DateDialog
-     *
+     * Creates an instance of the class DateDialog, which opens the Dialog for picking a date
      */
     private void openDateDialog() {
         // Initiates a DateDialog object for user interaction when choosing the date
@@ -210,16 +203,19 @@ public class MainActivity extends AppCompatActivity {
         // Sets a FragmentManager to track the interaction with the DateDialog-fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        // Sets the DateDialog as visible to the user
+        // Makes the DateDialog visible to the user
         dialog.show(ft, "DatePicker");
     }
 
+    /**
+     * Sets the date in the Date-textfield, and also sets the reportDate to this date.
+     * @param reportDate
+     */
     protected void setReportDate(String reportDate){
         this.reportDate = reportDate;
         reportDateText.setText(reportDate);
 
-        //Re-enables the shareButton in the MainActivity class when the text is set.
+        // Re-enables the share-button when the text is set.
         shareButton.setEnabled(true);
     }
-
 }

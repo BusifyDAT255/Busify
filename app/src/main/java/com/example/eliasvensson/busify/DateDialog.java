@@ -1,7 +1,11 @@
 /**
  * @author Elias Svensson
  * @author David Genelöv
- * @version 7.0, 2016-05-30
+ * @author Annie Söderström
+ * @author Melinda Fulöp
+ * @author Sara Kinell
+ * @author Jonathan Fager
+ * @version 8.0, 2016-06-01
  * @since 1.0
  * This class was made with the aid of tutorials available at
  * http://developer.android.com/guide/topics/ui/controls/pickers.html#DatePicker
@@ -21,18 +25,16 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import java.util.GregorianCalendar;
 
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    // Variable that stores which Activity this will be linked to
+    // Variable that stores MainActivity, as this will be shown on top of that view
     private MainActivity mainActivity;
 
     /**
-     * Constructor that assigns which EditText-object the date will be written to
+     * Constructor that assigns which MainActivity this will be shown on top of
      * @param mainActivity The activity this fragment will be run from
      */
     public DateDialog(MainActivity mainActivity) {
@@ -40,7 +42,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
     }
 
     /**
-     * Sets the current date as default for a dialog
+     * Sets the 24th of May as default for a dialog, as that was the date before Lindholmen (D3)
      * @return A new instance of DatePickerDialog with May 24th as default date.
      * @param savedInstanceState The current state of the application
      */
@@ -50,27 +52,27 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         /** Set the max and min dates for the DatePicker, to guarantee that there is a file
          * that corresponds to the chosen date.
          * Dates set to the week 18-24th May(!) to demonstrate one week of functionality
-         * on the presentation on May 24th
+         * on the presentation on May 25th
         */
         GregorianCalendar minDate = new GregorianCalendar(2016, 4, 18);
         GregorianCalendar maxDate = new GregorianCalendar(2016, 4, 24);
         dialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
         dialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
-
         return dialog;
     }
 
     /**
-     * Sets the selected date to a String and sets the text of a view to the date
+     * Sets the selected date to a String and calls mainActivity to update the date
      * @param view The view to update the text with the date
      * @param year The selected year
      * @param month The selected month (integers ranging from 0 to 11, 0 being January)
      * @param day The selected day
      */
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        // Show the selected date in the text box
+        // Reformats the integers ot a string of the format YYYY-MM-DD
         String date = String.format("%4d-%02d-%02d", year, (month + 1), day);
+
+        // Sets the date in MainActivity view to this date
         mainActivity.setReportDate(date);
     }
-
 }
