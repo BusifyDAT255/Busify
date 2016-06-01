@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 
 
-public class DataGenerator {
+public class DatabaseHandler {
     /**
      * Defines variables handling the reference to the Firebase database,
      * the String containing the date for which bus information is to be shown,
@@ -39,13 +39,13 @@ public class DataGenerator {
     private String[][] dataToCsv;
 
     /**
-     * Constructor for the DataGenerator class.
+     * Constructor for the DatabaseHandler class.
      *
      * @param act Activity view
      * @param row number of rows in the final .csv-file
      * @param col number of columns in the final .csv-file
      */
-    public DataGenerator(Activity act, int row, int col) {
+    public DatabaseHandler(Activity act, int row, int col) {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
         activity = act;

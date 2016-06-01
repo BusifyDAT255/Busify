@@ -47,12 +47,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Defines variables for the DatePicker button, the button used to share
      * the link and the link attached in the email to be sent.
-     * A storage reference and DataGenerator is defined.
+     * A storage reference and DatabaseHandler is defined.
      */
     protected Button shareButton;
     protected Button dateButton;
     protected ProgressDialog progress;
-    protected DataGenerator dataGenerator;
+    protected DatabaseHandler dataGenerator;
     protected StorageReference storageRef;
     protected CsvHandler csvHandler;
     protected String reportDate;
@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Initializes a DataGenerator
-        dataGenerator = new DataGenerator(this, 11, 5);
+        // Initializes a DatabaseHandler
+        dataGenerator = new DatabaseHandler(this, 11, 5);
 
         // Initiates a storage reference to the root reference
         storageRef = FirebaseStorage.getInstance().getReference();
