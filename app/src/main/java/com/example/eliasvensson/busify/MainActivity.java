@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Initializes a DatabaseHandler
-        dataGenerator = new DatabaseHandler(this, 11, 5);
+        dataGenerator = new DatabaseHandler(11, 5);
 
         // Sets the view to be displayed upon the start of the app
         setContentView(R.layout.activity_main);

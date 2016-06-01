@@ -11,9 +11,7 @@
 
 package com.example.eliasvensson.busify;
 
-import android.app.Activity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,27 +26,24 @@ import java.math.MathContext;
 public class DatabaseHandler {
     /**
      * Defines variables handling the reference to the Firebase database,
-     * the String containing the date for which bus information is to be shown,
-     * a MainActivity reference and the csvFormat to be used when creating a .csv-file.
+     * the String containing the date for which bus information is to be shown
+     * and the csvFormat to be used when creating a .csv-file.
      * The busdata variable is used to contain data from Firebase.
      */
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
-    private Activity activity;
     private String busdata = "";
     private String[][] dataToCsv;
 
     /**
      * Constructor for the DatabaseHandler class.
      *
-     * @param act Activity view
      * @param row number of rows in the final .csv-file
      * @param col number of columns in the final .csv-file
      */
-    public DatabaseHandler(Activity act, int row, int col) {
+    public DatabaseHandler(int row, int col) {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
-        activity = act;
         dataToCsv = new String[row][col];
     }
 
@@ -72,8 +67,7 @@ public class DatabaseHandler {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //Displays an error message if the listener fails or is removed
-                Toast.makeText(activity, "Cannot generate data", Toast.LENGTH_SHORT).show();
+                //Shuts down the app if access to database is denied
                 throw new InternalError(databaseError.getMessage());
             }
         });
@@ -119,7 +113,7 @@ public class DatabaseHandler {
                 }
             }
         }
-        return dataToCsv;
+        return dataToCsv.clone();
     }
 
     /**
