@@ -30,16 +30,11 @@ import java.util.GregorianCalendar;
 
 public class DateDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    // Variable that stores MainActivity, as this will be shown on top of that view
+    // Variable for storing which activity this fragment will speak to
     private MainActivity mainActivity;
 
-    /**
-     * Constructor that assigns which MainActivity this will be shown on top of
-     * @param mainActivity The activity this fragment will be run from
-     */
-    public DateDialog(MainActivity mainActivity) {
-            this.mainActivity = mainActivity;
-    }
+    //Default constructor
+    public DateDialog() {}
 
     /**
      * Sets the 24th of May as default for a dialog, as that was the date before Lindholmen (D3)
@@ -47,6 +42,8 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
      * @param savedInstanceState The current state of the application
      */
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        mainActivity = (MainActivity)getActivity();
+
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, 2016, 5, 24);
 
         /** Set the max and min dates for the DatePicker, to guarantee that there is a file

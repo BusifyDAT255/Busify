@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void openDateDialog() {
         // Initiates a DateDialog object for user interaction when choosing the date
-        DateDialog dialog = new DateDialog(MainActivity.this);
+        DateDialog dialog = new DateDialog();
 
         // Sets a FragmentManager to track the interaction with the DateDialog-fragment
         FragmentTransaction ft = getFragmentManager().beginTransaction();
