@@ -1,13 +1,14 @@
-package com.example.eliasvensson.busify;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-
 /**
- * Created by Jonathan Fager on 2016-05-04.
+ * @author Elias Svensson
+ * @author David Genelöv
+ * @author Annie Söderström
+ * @author Melinda Fulöp
+ * @author Sara Kinell
+ * @author Jonathan Fager
+ * @version 3.0, 2016-06-01
+ * @since 1.0, 2016-05-04
  *
- * The method of creating a SplashScreen, onCreate, uses the Thread class.
+ * The class handling the SplashScreen, which shows onCreate.
  * A fairly small app, such as this one, might load so fast that the
  * splash screen never shows, which for branding purposes
  * is unwanted. Therefore, we start a thread (timerThread) and puts it to sleep for
@@ -16,10 +17,13 @@ import android.os.Bundle;
  * Consequently, the user cannot accidentally return to the splash screen.
  * The finally block launches the actual app.
  *
- * @author Jonathan Fager
- * @version 1.0
- * @since 1.0
  **/
+
+package com.example.eliasvensson.busify;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 
 
 public class SplashScreen extends Activity {
@@ -28,16 +32,17 @@ public class SplashScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
-        //Create new thread
+
+        //Creates new thread for showing the splash screen
         Thread timerThread = new Thread() {
             public void run() {
                 try {
-                    //sleep is the duration of the splash screen
+                    //Sets the duration of the splash screen
                     sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    //launches MainActivity
+                    //Launches MainActivity
                     Intent intent = new Intent(SplashScreen.this, MainActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -49,10 +54,8 @@ public class SplashScreen extends Activity {
 
     @Override
     protected void onPause() {
-        //onPause is run when activity switches. Destroys the thread and therefore the splash screen
+        //Runs when activity switches and destroys the thread, and therefore the splash screen
         super.onPause();
-        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         finish();
     }
-
 }

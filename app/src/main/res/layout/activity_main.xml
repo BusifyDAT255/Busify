@@ -18,15 +18,15 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
         android:src="@drawable/busify_mini"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_marginBottom="69dp"
         android:layout_alignParentStart="false"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_alignTop="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/textView2"/>
 
     <EditText
         android:id="@+id/txt_date"
@@ -37,9 +37,10 @@
         android:focusable="false"
         android:background="@drawable/button1"
         android:textAlignment="center"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"/>
 
     <Button
         android:layout_width="wrap_content"
@@ -47,18 +48,23 @@
         android:id="@+id/date_button"
         android:background="@android:color/transparent"
         android:textColor="#ffffffff"
-        android:layout_alignBottom="@+id/txt_date"
-        android:layout_centerHorizontal="true"
-        android:layout_alignLeft="@+id/txt_date"
-        android:layout_alignRight="@+id/txt_date"
+        android:textSize="20sp"
         android:layout_alignParentEnd="false"
-        android:layout_alignParentStart="false"/>
+        android:layout_alignParentStart="false"
+        android:height="200px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/txt_date"
+        android:layout_alignLeft="@+id/txt_date"
+        android:layout_alignBottom="@+id/txt_date"
+        android:layout_alignRight="@+id/txt_date"
+        />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="72dp"
+        android:textSize="22sp"
         android:text="Share report"
-        android:id="@+id/send_button"
+        android:id="@+id/share_button"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/button1"/>
@@ -67,13 +73,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Select date and click send report to generate and send your file"
+        android:text="Select date and click \n SHARE REPORT \n to generate and share your file"
         android:id="@+id/textView2"
         android:textColor="#ffffffff"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="148dp"
-        android:textAlignment="center"/>
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/imageView"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignStart="@+id/imageView"/>
 
 
 </RelativeLayout>
