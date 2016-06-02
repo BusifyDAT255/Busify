@@ -72,12 +72,7 @@ public class CsvHandler {
                 if (k == 4) {
                     // Adds a fifth column with calculated electricity per km
                     if (dataToCsv[j][2] != null && dataToCsv[j][1] != null) {
-                        if (dataToCsv[j][1] != "0"){
                             dataToCsv[j][k] = stringDivision(dataToCsv[j][2], dataToCsv[j][1]);
-                        }
-                        else{
-                            dataToCsv[j][k] = "-";
-                        }
                     }
                 //Adds values from the database into csvFormat
                 } else if (splittedBusInfo[index] != null) {
