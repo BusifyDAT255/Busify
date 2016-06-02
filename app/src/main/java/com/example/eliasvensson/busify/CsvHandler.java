@@ -135,17 +135,21 @@ public class CsvHandler {
      */
     private String stringDivision(String numerator, String denominator) {
         double fraction = 0.0;
+        double rounded;
         try {
             //Creates a fraction of the incoming values represented as Strings
             fraction = (Double.parseDouble(numerator)) / (Double.parseDouble(denominator));
+
+            //Rounds the double to three significant figures
+            BigDecimal bd = new BigDecimal(fraction);
+            bd = bd.round(new MathContext(3));
+            rounded = bd.doubleValue();
+
         } catch (NumberFormatException e) {
             // If Strings may not be converted to doubles, a hashtag is returned
-            return "#NAN#";
+            return "#NaN#";
         }
-        //Rounds the double to three significant figures
-        BigDecimal bd = new BigDecimal(fraction);
-        bd = bd.round(new MathContext(3));
-        double rounded = bd.doubleValue();
+
 
         //Returns the rounded double into the correct field, as a String
         return String.valueOf(rounded);
